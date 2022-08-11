@@ -1,6 +1,6 @@
 package fr.lusseau.claude.application.entity;
 
-import fr.lusseau.claude.domain.exception.DomainModelException;
+import fr.lusseau.claude.application.exception.EntityException;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -29,6 +29,7 @@ public class UserEntity implements Serializable {
     @Column(name = "user_lastName")
     private final String lastName;
     @Column(name = "user_role")
+    @Enumerated(EnumType.STRING)
     private final RoleEntity role;
     @OneToMany(targetEntity = ArticleEntity.class, mappedBy = "author")
     private final List<ArticleEntity> articles;
@@ -41,16 +42,16 @@ public class UserEntity implements Serializable {
 
     public UserEntity(UserBuilder builder) {
         if (builder.id < 0) {
-            throw new DomainModelException("Id cannot be null");
+            throw new EntityException("Id cannot be null");
         }
         if (builder.email == null) {
-            throw new DomainModelException("Email cannot be null");
+            throw new EntityException("Email cannot be null");
         }
         if (builder.password == null) {
-            throw new DomainModelException("Password cannot be null");
+            throw new EntityException("Password cannot be null");
         }
         if (builder.role == null) {
-            throw new DomainModelException("Role cannot be null");
+            throw new EntityException("Role cannot be null");
         }
         this.id = builder.id;
         this.email = builder.email;

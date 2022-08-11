@@ -1,7 +1,5 @@
 package fr.lusseau.claude.domain.model;
 
-import fr.lusseau.claude.domain.exception.DomainModelException;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -14,33 +12,22 @@ import java.util.Objects;
  */
 public class Education implements Serializable {
 
-    private final long id;
+    private final Long id;
     private final String title;
     private final String body;
     private final String url;
     private final String cover;
+    private final Company company;
+    private final LocalDateTime dateIn;
+    private final LocalDateTime dateOut;
     private final String miniature;
     private final boolean isActive;
+    private final EducationLevel level;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
     private final User author;
 
     public Education(EducationBuilder builder) {
-        if (builder.id < 0) {
-            throw new DomainModelException("Id cannot be null");
-        }
-        if (builder.title == null) {
-            throw new DomainModelException("Title cannot be null");
-        }
-        if (builder.url == null) {
-            throw new DomainModelException("Url cannot be null");
-        }
-        if (builder.createdAt == null) {
-            throw new DomainModelException("Created date cannot be null");
-        }
-        if (builder.author == null) {
-            throw new DomainModelException("Author date cannot be null");
-        }
         this.id = builder.id;
         this.title = builder.title;
         this.body = builder.body;
@@ -51,6 +38,10 @@ public class Education implements Serializable {
         this.createdAt = builder.createdAt;
         this.updatedAt = builder.updatedAt;
         this.author = builder.author;
+        this.company = builder.company;
+        this.level = builder.level;
+        this.dateIn = builder.dateIn;
+        this.dateOut = builder.dateOut;
     }
 
     public static EducationBuilder builder() {
@@ -58,18 +49,22 @@ public class Education implements Serializable {
     }
 
     public static class EducationBuilder {
-        private long id;
+        private Long id;
         private String title;
         private String body;
         private String url;
         private String cover;
         private String miniature;
+        private Company company;
+        private EducationLevel level;
         private boolean isActive;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
         private User author;
+        private LocalDateTime dateIn;
+        private LocalDateTime dateOut;
 
-        public EducationBuilder withId(long id) {
+        public EducationBuilder withId(Long id) {
             this.id = id;
             return this;
         }
@@ -99,8 +94,17 @@ public class Education implements Serializable {
             return this;
         }
 
+        public EducationBuilder withCompany(Company company) {
+            this.company = company;
+            return this;
+        }
+
         public EducationBuilder withIsActive(boolean isActive) {
             this.isActive = isActive;
+            return this;
+        }
+        public EducationBuilder withLevel(EducationLevel level) {
+            this.level = level;
             return this;
         }
 
@@ -119,12 +123,22 @@ public class Education implements Serializable {
             return this;
         }
 
+        public EducationBuilder withDateIn(LocalDateTime dateIn) {
+            this.dateIn = dateIn;
+            return this;
+        }
+
+        public EducationBuilder withDateOut(LocalDateTime dateOut) {
+            this.dateOut = dateOut;
+            return this;
+        }
+
         public Education build() {
             return new Education(this);
         }
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -164,17 +178,33 @@ public class Education implements Serializable {
         return author;
     }
 
+    public Company getCompany() {
+        return company;
+    }
+
+    public EducationLevel getLevel() {
+        return level;
+    }
+
+    public LocalDateTime getDateIn() {
+        return dateIn;
+    }
+
+    public LocalDateTime getDateOut() {
+        return dateOut;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Education education = (Education) o;
-        return id == education.id && isActive == education.isActive && Objects.equals(title, education.title) && Objects.equals(body, education.body) && Objects.equals(url, education.url) && Objects.equals(cover, education.cover) && Objects.equals(miniature, education.miniature) && Objects.equals(createdAt, education.createdAt) && Objects.equals(updatedAt, education.updatedAt) && Objects.equals(author, education.author);
+        return isActive == education.isActive && Objects.equals(id, education.id) && Objects.equals(title, education.title) && Objects.equals(body, education.body) && Objects.equals(url, education.url) && Objects.equals(cover, education.cover) && Objects.equals(company, education.company) && Objects.equals(dateIn, education.dateIn) && Objects.equals(dateOut, education.dateOut) && Objects.equals(miniature, education.miniature) && Objects.equals(level, education.level) && Objects.equals(createdAt, education.createdAt) && Objects.equals(updatedAt, education.updatedAt) && Objects.equals(author, education.author);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, body, url, cover, miniature, isActive, createdAt, updatedAt, author);
+        return Objects.hash(id, title, body, url, cover, company, dateIn, dateOut, miniature, isActive, level, createdAt, updatedAt, author);
     }
 
     @Override
@@ -185,8 +215,12 @@ public class Education implements Serializable {
         sb.append(", body='").append(body).append('\'');
         sb.append(", url='").append(url).append('\'');
         sb.append(", cover='").append(cover).append('\'');
+        sb.append(", company=").append(company);
+        sb.append(", dateIn=").append(dateIn);
+        sb.append(", dateOut=").append(dateOut);
         sb.append(", miniature='").append(miniature).append('\'');
         sb.append(", isActive=").append(isActive);
+        sb.append(", level=").append(level);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
         sb.append(", author=").append(author);

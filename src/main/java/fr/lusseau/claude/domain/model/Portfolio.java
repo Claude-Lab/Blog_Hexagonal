@@ -1,7 +1,5 @@
 package fr.lusseau.claude.domain.model;
 
-import fr.lusseau.claude.domain.exception.DomainModelException;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -26,21 +24,6 @@ public class Portfolio implements Serializable {
     private final User author;
 
     public Portfolio(PortfolioBuilder builder) {
-        if (builder.id < 0) {
-            throw new DomainModelException("Id cannot be null");
-        }
-        if (builder.title == null) {
-            throw new DomainModelException("Title cannot be null");
-        }
-        if (builder.url == null) {
-            throw new DomainModelException("Url cannot be null");
-        }
-        if (builder.createdAt == null) {
-            throw new DomainModelException("Created date cannot be null");
-        }
-        if (builder.author == null) {
-            throw new DomainModelException("Author date cannot be null");
-        }
         this.id = builder.id;
         this.title = builder.title;
         this.body = builder.body;

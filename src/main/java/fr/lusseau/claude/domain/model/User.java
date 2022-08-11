@@ -1,9 +1,7 @@
 package fr.lusseau.claude.domain.model;
 
-import fr.lusseau.claude.domain.exception.DomainModelException;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -22,18 +20,6 @@ public class User implements Serializable {
     private final Role role;
 
     public User(UserBuilder builder) {
-        if (builder.id < 0) {
-            throw new DomainModelException("Id cannot be null");
-        }
-        if (builder.email == null) {
-            throw new DomainModelException("Email cannot be null");
-        }
-        if (builder.password == null) {
-            throw new DomainModelException("Password cannot be null");
-        }
-        if (builder.role == null) {
-            throw new DomainModelException("Role cannot be null");
-        }
         this.id = builder.id;
         this.email = builder.email;
         this.password = builder.password;

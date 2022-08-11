@@ -1,6 +1,6 @@
 package fr.lusseau.claude.application.entity;
 
-import fr.lusseau.claude.domain.exception.DomainModelException;
+import fr.lusseau.claude.application.exception.EntityException;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -39,24 +39,24 @@ public class ArticleEntity implements Serializable {
     private final LocalDateTime updatedAt;
 
     @ManyToOne()
-    @JoinColumn( name="id_user", nullable=false  )
+    @JoinColumn(name = "id_user", nullable = false)
     private final UserEntity author;
 
     public ArticleEntity(ArticleBuilder builder) {
         if (builder.id < 0) {
-            throw new DomainModelException("Id cannot be null");
+            throw new EntityException("Id cannot be null");
         }
         if (builder.title == null) {
-            throw new DomainModelException("Title cannot be null");
+            throw new EntityException("Title cannot be null");
         }
         if (builder.url == null) {
-            throw new DomainModelException("Url cannot be null");
+            throw new EntityException("Url cannot be null");
         }
         if (builder.createdAt == null) {
-            throw new DomainModelException("Created date cannot be null");
+            throw new EntityException("Created date cannot be null");
         }
         if (builder.author == null) {
-            throw new DomainModelException("Author date cannot be null");
+            throw new EntityException("Author date cannot be null");
         }
         this.id = builder.id;
         this.title = builder.title;

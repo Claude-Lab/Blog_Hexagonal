@@ -1,7 +1,5 @@
 package fr.lusseau.claude.domain.model;
 
-import fr.lusseau.claude.domain.exception.DomainModelException;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -14,33 +12,22 @@ import java.util.Objects;
  */
 public class Experience implements Serializable {
 
-    private final long id;
+    private final Long id;
     private final String title;
+    private final String jobName;
     private final String body;
     private final String url;
     private final String cover;
     private final String miniature;
+    private final Company company;
     private final boolean isActive;
+    private final LocalDateTime dateIn;
+    private final LocalDateTime dateOut;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
     private final User author;
 
     public Experience(ExperienceBuilder builder) {
-        if (builder.id < 0) {
-            throw new DomainModelException("Id cannot be null");
-        }
-        if (builder.title == null) {
-            throw new DomainModelException("Title cannot be null");
-        }
-        if (builder.url == null) {
-            throw new DomainModelException("Url cannot be null");
-        }
-        if (builder.createdAt == null) {
-            throw new DomainModelException("Created date cannot be null");
-        }
-        if (builder.author == null) {
-            throw new DomainModelException("Author date cannot be null");
-        }
         this.id = builder.id;
         this.title = builder.title;
         this.body = builder.body;
@@ -51,6 +38,10 @@ public class Experience implements Serializable {
         this.createdAt = builder.createdAt;
         this.updatedAt = builder.updatedAt;
         this.author = builder.author;
+        this.company = builder.company;
+        this.dateIn = builder.dateIn;
+        this.dateOut = builder.dateOut;
+        this.jobName = builder.jobName;
     }
 
     public static ExperienceBuilder builder() {
@@ -58,18 +49,23 @@ public class Experience implements Serializable {
     }
 
     public static class ExperienceBuilder {
-        private long id;
+        private Long id;
         private String title;
         private String body;
         private String url;
         private String cover;
+        private Company company;
         private String miniature;
         private boolean isActive;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
         private User author;
+        private LocalDateTime dateIn;
+        private LocalDateTime dateOut;
 
-        public ExperienceBuilder withId(long id) {
+        private String jobName;
+
+        public ExperienceBuilder withId(Long id) {
             this.id = id;
             return this;
         }
@@ -99,6 +95,11 @@ public class Experience implements Serializable {
             return this;
         }
 
+        public ExperienceBuilder withCompany(Company company) {
+            this.company = company;
+            return this;
+        }
+
         public ExperienceBuilder withIsActive(boolean isActive) {
             this.isActive = isActive;
             return this;
@@ -119,12 +120,27 @@ public class Experience implements Serializable {
             return this;
         }
 
+        public ExperienceBuilder withDateIn(LocalDateTime dateIn) {
+            this.dateIn = dateIn;
+            return this;
+        }
+
+        public ExperienceBuilder withDateOut(LocalDateTime dateOut) {
+            this.dateOut = dateOut;
+            return this;
+        }
+
+        public ExperienceBuilder withJobName(String jobName) {
+            this.jobName = jobName;
+            return this;
+        }
+
         public Experience build() {
             return new Experience(this);
         }
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -160,8 +176,24 @@ public class Experience implements Serializable {
         return updatedAt;
     }
 
+    public Company getCompany() {
+        return company;
+    }
+
     public User getAuthor() {
         return author;
+    }
+
+    public LocalDateTime getDateIn() {
+        return dateIn;
+    }
+
+    public LocalDateTime getDateOut() {
+        return dateOut;
+    }
+
+    public String getJobName() {
+        return jobName;
     }
 
     @Override
@@ -169,12 +201,12 @@ public class Experience implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Experience that = (Experience) o;
-        return id == that.id && isActive == that.isActive && Objects.equals(title, that.title) && Objects.equals(body, that.body) && Objects.equals(url, that.url) && Objects.equals(cover, that.cover) && Objects.equals(miniature, that.miniature) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt) && Objects.equals(author, that.author);
+        return isActive == that.isActive && Objects.equals(id, that.id) && Objects.equals(title, that.title) && Objects.equals(jobName, that.jobName) && Objects.equals(body, that.body) && Objects.equals(url, that.url) && Objects.equals(cover, that.cover) && Objects.equals(miniature, that.miniature) && Objects.equals(company, that.company) && Objects.equals(dateIn, that.dateIn) && Objects.equals(dateOut, that.dateOut) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt) && Objects.equals(author, that.author);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, body, url, cover, miniature, isActive, createdAt, updatedAt, author);
+        return Objects.hash(id, title, jobName, body, url, cover, miniature, company, isActive, dateIn, dateOut, createdAt, updatedAt, author);
     }
 
     @Override
@@ -182,11 +214,15 @@ public class Experience implements Serializable {
         final StringBuilder sb = new StringBuilder("Experience{");
         sb.append("id=").append(id);
         sb.append(", title='").append(title).append('\'');
+        sb.append(", jobName='").append(jobName).append('\'');
         sb.append(", body='").append(body).append('\'');
         sb.append(", url='").append(url).append('\'');
         sb.append(", cover='").append(cover).append('\'');
         sb.append(", miniature='").append(miniature).append('\'');
+        sb.append(", company=").append(company);
         sb.append(", isActive=").append(isActive);
+        sb.append(", dateIn=").append(dateIn);
+        sb.append(", dateOut=").append(dateOut);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
         sb.append(", author=").append(author);
