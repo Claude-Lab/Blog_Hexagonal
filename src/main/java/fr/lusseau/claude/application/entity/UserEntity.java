@@ -3,8 +3,9 @@ package fr.lusseau.claude.application.entity;
 import fr.lusseau.claude.application.exception.EntityException;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -15,129 +16,120 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "user_blog")
+@Cacheable
 public class UserEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private final long id;
+    private Long id;
+    @NotNull(message = "Email is required.")
+    @NotBlank(message = "Email is required.")
     @Column(name = "user_email")
-    private final String email;
+    private String email;
+    @NotNull(message = "Password is required.")
+    @NotBlank(message = "Password is required.")
     @Column(name = "user_password")
-    private final String password;
+    private String password;
+    @NotNull(message = "Firstname is required.")
+    @NotBlank(message = "Firstname is required.")
     @Column(name = "user_firstName")
-    private final String firstName;
+    private String firstName;
+    @NotNull(message = "Lastname is required.")
+    @NotBlank(message = "Lastname is required.")
     @Column(name = "user_lastName")
-    private final String lastName;
+    private String lastName;
+    @NotNull(message = "Role is required.")
     @Column(name = "user_role")
     @Enumerated(EnumType.STRING)
-    private final RoleEntity role;
-    @OneToMany(targetEntity = ArticleEntity.class, mappedBy = "author")
-    private final List<ArticleEntity> articles;
-    @OneToMany(targetEntity = PortfolioEntity.class, mappedBy = "author")
-    private final List<PortfolioEntity> portfolios;
-    @OneToMany(targetEntity = EducationEntity.class, mappedBy = "author")
-    private final List<EducationEntity> educations;
-    @OneToMany(targetEntity = ExperienceEntity.class, mappedBy = "author")
-    private final List<ExperienceEntity> experiences;
+    private RoleEntity role;
 
-    public UserEntity(UserBuilder builder) {
-        if (builder.id < 0) {
-            throw new EntityException("Id cannot be null");
+    protected UserEntity() {
+    }
+
+    private UserEntity(Long id, String email, String password, String firstName, String lastName, RoleEntity role) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.role = role;
+    }
+
+    public UserEntity(UserEntityBuilder builder) {
+        if (builder.id == null) {
+            throw new EntityException("Id is required.");
         }
         if (builder.email == null) {
-            throw new EntityException("Email cannot be null");
+            throw new EntityException("Email is required.");
         }
         if (builder.password == null) {
-            throw new EntityException("Password cannot be null");
+            throw new EntityException("Password is required.");
+        }
+        if (builder.firstName == null) {
+            throw new EntityException("Firstname is required.");
+        }
+        if (builder.lastName == null) {
+            throw new EntityException("Lastname is required.");
         }
         if (builder.role == null) {
-            throw new EntityException("Role cannot be null");
+            throw new EntityException("Role is required.");
         }
-        this.id = builder.id;
-        this.email = builder.email;
-        this.password = builder.password;
-        this.firstName = builder.firstName;
-        this.lastName = builder.lastName;
-        this.role = builder.role;
-        this.articles = builder.articles;
-        this.portfolios = builder.portfolios;
-        this.educations = builder.educations;
-        this.experiences = builder.experiences;
+        id = builder.id;
+        email = builder.email;
+        password = builder.password;
+        firstName = builder.firstName;
+        lastName = builder.lastName;
+        role = builder.role;
     }
 
-    public static UserBuilder builder() {
-        return new UserBuilder();
+    public static UserEntityBuilder builder() {
+        return new UserEntityBuilder();
     }
 
-    public static class UserBuilder {
-        private long id;
+    public static class UserEntityBuilder {
+        private Long id;
         private String email;
         private String password;
         private String firstName;
         private String lastName;
         private RoleEntity role;
-        private List<ArticleEntity> articles;
-        private List<PortfolioEntity> portfolios;
-        private List<EducationEntity> educations;
-        private List<ExperienceEntity> experiences;
 
-        public UserBuilder withId(long id) {
+        public UserEntityBuilder withId(Long id) {
             this.id = id;
             return this;
         }
 
-        public UserBuilder withEmail(String email) {
+        public UserEntityBuilder withEmail(String email) {
             this.email = email;
             return this;
         }
 
-        public UserBuilder withPassword(String password) {
+        public UserEntityBuilder withPassword(String password) {
             this.password = password;
             return this;
         }
 
-        public UserBuilder withFirstName(String firstName) {
+        public UserEntityBuilder withFirstname(String firstName) {
             this.firstName = firstName;
             return this;
         }
 
-        public UserBuilder withLastName(String lastName) {
+        public UserEntityBuilder withLastname(String lastName) {
             this.lastName = lastName;
             return this;
         }
 
-        public UserBuilder withRole(RoleEntity role) {
+        public UserEntityBuilder withRole(RoleEntity role) {
             this.role = role;
-            return this;
-        }
-
-        public UserBuilder withArticles(List<ArticleEntity> articles) {
-            this.articles = articles;
-            return this;
-        }
-
-        public UserBuilder withPortfolios(List<PortfolioEntity> portfolios) {
-            this.portfolios = portfolios;
-            return this;
-        }
-
-        public UserBuilder withEducations(List<EducationEntity> educations) {
-            this.educations = educations;
-            return this;
-        }
-
-        public UserBuilder withExperiences(List<ExperienceEntity> experiences) {
-            this.experiences = experiences;
             return this;
         }
 
         public UserEntity build() {
             return new UserEntity(this);
         }
-
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -161,33 +153,17 @@ public class UserEntity implements Serializable {
         return role;
     }
 
-    public List<ArticleEntity> getArticles() {
-        return articles;
-    }
-
-    public List<PortfolioEntity> getPortfolios() {
-        return portfolios;
-    }
-
-    public List<EducationEntity> getEducations() {
-        return educations;
-    }
-
-    public List<ExperienceEntity> getExperiences() {
-        return experiences;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        UserEntity user = (UserEntity) o;
-        return id == user.id && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(role, user.role) && Objects.equals(articles, user.articles) && Objects.equals(portfolios, user.portfolios) && Objects.equals(educations, user.educations) && Objects.equals(experiences, user.experiences);
+        UserEntity that = (UserEntity) o;
+        return Objects.equals(id, that.id) && Objects.equals(email, that.email) && Objects.equals(password, that.password) && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && role == that.role;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, password, firstName, lastName, role, articles, portfolios, educations, experiences);
+        return Objects.hash(id, email, password, firstName, lastName, role);
     }
 
     @Override
@@ -199,10 +175,6 @@ public class UserEntity implements Serializable {
         sb.append(", firstName='").append(firstName).append('\'');
         sb.append(", lastName='").append(lastName).append('\'');
         sb.append(", role=").append(role);
-        sb.append(", articles=").append(articles);
-        sb.append(", portfolios=").append(portfolios);
-        sb.append(", educations=").append(educations);
-        sb.append(", experiences=").append(experiences);
         sb.append('}');
         return sb.toString();
     }

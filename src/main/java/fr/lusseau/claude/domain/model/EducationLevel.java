@@ -13,9 +13,9 @@ public class EducationLevel {
     private final Long id;
     private final String name;
 
-    public EducationLevel(EducationLevelBuilder builder){
-        this.id = builder.id;
-        this.name = builder.name;
+    public EducationLevel(EducationLevelBuilder builder) {
+        id = builder.id;
+        name = builder.name;
     }
 
     public static EducationLevelBuilder builder() {
@@ -31,7 +31,7 @@ public class EducationLevel {
             return this;
         }
 
-        public EducationLevelBuilder withName(String name) {
+        public EducationLevelBuilder withTitle(String name) {
             this.name = name;
             return this;
         }
@@ -53,8 +53,8 @@ public class EducationLevel {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        EducationLevel that = (EducationLevel) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name);
+        EducationLevel level = (EducationLevel) o;
+        return Objects.equals(id, level.id) && Objects.equals(name, level.name);
     }
 
     @Override

@@ -28,20 +28,20 @@ public class Education implements Serializable {
     private final User author;
 
     public Education(EducationBuilder builder) {
-        this.id = builder.id;
-        this.title = builder.title;
-        this.body = builder.body;
-        this.url = builder.url;
-        this.cover = builder.cover;
-        this.miniature = builder.miniature;
-        this.isActive = builder.isActive;
-        this.createdAt = builder.createdAt;
-        this.updatedAt = builder.updatedAt;
-        this.author = builder.author;
-        this.company = builder.company;
-        this.level = builder.level;
-        this.dateIn = builder.dateIn;
-        this.dateOut = builder.dateOut;
+        id = builder.id;
+        title = builder.title;
+        body = builder.body;
+        url = builder.url;
+        cover = builder.cover;
+        company = builder.company;
+        dateIn = builder.dateIn;
+        dateOut = builder.dateOut;
+        miniature = builder.miniature;
+        isActive = builder.isActive;
+        level = builder.level;
+        createdAt = builder.createdAt;
+        updatedAt = builder.updatedAt;
+        author = builder.author;
     }
 
     public static EducationBuilder builder() {
@@ -54,15 +54,15 @@ public class Education implements Serializable {
         private String body;
         private String url;
         private String cover;
-        private String miniature;
         private Company company;
-        private EducationLevel level;
+        private LocalDateTime dateIn;
+        private LocalDateTime dateOut;
+        private String miniature;
         private boolean isActive;
+        private EducationLevel level;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
         private User author;
-        private LocalDateTime dateIn;
-        private LocalDateTime dateOut;
 
         public EducationBuilder withId(Long id) {
             this.id = id;
@@ -89,20 +89,26 @@ public class Education implements Serializable {
             return this;
         }
 
-        public EducationBuilder withMiniature(String miniature) {
-            this.miniature = miniature;
-            return this;
-        }
-
         public EducationBuilder withCompany(Company company) {
             this.company = company;
             return this;
         }
 
-        public EducationBuilder withIsActive(boolean isActive) {
-            this.isActive = isActive;
+        public EducationBuilder withDateIn(LocalDateTime dateIn) {
+            this.dateIn = dateIn;
             return this;
         }
+
+        public EducationBuilder withDateOut(LocalDateTime dateOut) {
+            this.dateOut = dateOut;
+            return this;
+        }
+
+        public EducationBuilder withMiniature(String miniature) {
+            this.miniature = miniature;
+            return this;
+        }
+
         public EducationBuilder withLevel(EducationLevel level) {
             this.level = level;
             return this;
@@ -118,18 +124,13 @@ public class Education implements Serializable {
             return this;
         }
 
+        public EducationBuilder withIsActive(boolean isActive) {
+            this.isActive = isActive;
+            return this;
+        }
+
         public EducationBuilder withAuthor(User author) {
             this.author = author;
-            return this;
-        }
-
-        public EducationBuilder withDateIn(LocalDateTime dateIn) {
-            this.dateIn = dateIn;
-            return this;
-        }
-
-        public EducationBuilder withDateOut(LocalDateTime dateOut) {
-            this.dateOut = dateOut;
             return this;
         }
 
@@ -158,12 +159,28 @@ public class Education implements Serializable {
         return cover;
     }
 
+    public Company getCompany() {
+        return company;
+    }
+
+    public LocalDateTime getDateIn() {
+        return dateIn;
+    }
+
+    public LocalDateTime getDateOut() {
+        return dateOut;
+    }
+
     public String getMiniature() {
         return miniature;
     }
 
     public boolean isActive() {
         return isActive;
+    }
+
+    public EducationLevel getLevel() {
+        return level;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -176,22 +193,6 @@ public class Education implements Serializable {
 
     public User getAuthor() {
         return author;
-    }
-
-    public Company getCompany() {
-        return company;
-    }
-
-    public EducationLevel getLevel() {
-        return level;
-    }
-
-    public LocalDateTime getDateIn() {
-        return dateIn;
-    }
-
-    public LocalDateTime getDateOut() {
-        return dateOut;
     }
 
     @Override

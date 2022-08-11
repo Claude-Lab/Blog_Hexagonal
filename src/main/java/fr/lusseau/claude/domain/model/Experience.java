@@ -1,5 +1,9 @@
 package fr.lusseau.claude.domain.model;
 
+import fr.lusseau.claude.application.entity.CompanyEntity;
+import fr.lusseau.claude.application.entity.ExperienceEntity;
+import fr.lusseau.claude.application.entity.UserEntity;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -28,42 +32,41 @@ public class Experience implements Serializable {
     private final User author;
 
     public Experience(ExperienceBuilder builder) {
-        this.id = builder.id;
-        this.title = builder.title;
-        this.body = builder.body;
-        this.url = builder.url;
-        this.cover = builder.cover;
-        this.miniature = builder.miniature;
-        this.isActive = builder.isActive;
-        this.createdAt = builder.createdAt;
-        this.updatedAt = builder.updatedAt;
-        this.author = builder.author;
-        this.company = builder.company;
-        this.dateIn = builder.dateIn;
-        this.dateOut = builder.dateOut;
-        this.jobName = builder.jobName;
+        id = builder.id;
+        title = builder.title;
+        jobName = builder.jobName;
+        body = builder.body;
+        url = builder.url;
+        cover = builder.cover;
+        miniature = builder.miniature;
+        company = builder.company;
+        isActive = builder.isActive;
+        dateIn = builder.dateIn;
+        dateOut = builder.dateOut;
+        createdAt = builder.createdAt;
+        updatedAt = builder.updatedAt;
+        author = builder.author;
     }
 
     public static ExperienceBuilder builder() {
         return new ExperienceBuilder();
     }
 
-    public static class ExperienceBuilder {
+    public static class ExperienceBuilder{
         private Long id;
         private String title;
+        private Company company;
+        private String jobName;
         private String body;
         private String url;
         private String cover;
-        private Company company;
         private String miniature;
         private boolean isActive;
+        private LocalDateTime dateIn;
+        private LocalDateTime dateOut;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
         private User author;
-        private LocalDateTime dateIn;
-        private LocalDateTime dateOut;
-
-        private String jobName;
 
         public ExperienceBuilder withId(Long id) {
             this.id = id;
@@ -75,11 +78,20 @@ public class Experience implements Serializable {
             return this;
         }
 
+        public ExperienceBuilder withCompany(Company company) {
+            this.company = company;
+            return this;
+        }
+
+        public ExperienceBuilder witJobName(String jobName) {
+            this.jobName = jobName;
+            return this;
+        }
+
         public ExperienceBuilder withBody(String body) {
             this.body = body;
             return this;
         }
-
         public ExperienceBuilder withUrl(String url) {
             this.url = url;
             return this;
@@ -95,16 +107,10 @@ public class Experience implements Serializable {
             return this;
         }
 
-        public ExperienceBuilder withCompany(Company company) {
-            this.company = company;
-            return this;
-        }
-
         public ExperienceBuilder withIsActive(boolean isActive) {
             this.isActive = isActive;
             return this;
         }
-
         public ExperienceBuilder withCreatedAt(LocalDateTime createdAt) {
             this.createdAt = createdAt;
             return this;
@@ -114,12 +120,6 @@ public class Experience implements Serializable {
             this.updatedAt = updatedAt;
             return this;
         }
-
-        public ExperienceBuilder withAuthor(User author) {
-            this.author = author;
-            return this;
-        }
-
         public ExperienceBuilder withDateIn(LocalDateTime dateIn) {
             this.dateIn = dateIn;
             return this;
@@ -130,8 +130,8 @@ public class Experience implements Serializable {
             return this;
         }
 
-        public ExperienceBuilder withJobName(String jobName) {
-            this.jobName = jobName;
+        public ExperienceBuilder withAuthor(User author) {
+            this.author = author;
             return this;
         }
 
@@ -146,6 +146,10 @@ public class Experience implements Serializable {
 
     public String getTitle() {
         return title;
+    }
+
+    public String getJobName() {
+        return jobName;
     }
 
     public String getBody() {
@@ -164,24 +168,12 @@ public class Experience implements Serializable {
         return miniature;
     }
 
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
     public Company getCompany() {
         return company;
     }
 
-    public User getAuthor() {
-        return author;
+    public boolean isActive() {
+        return isActive;
     }
 
     public LocalDateTime getDateIn() {
@@ -192,8 +184,16 @@ public class Experience implements Serializable {
         return dateOut;
     }
 
-    public String getJobName() {
-        return jobName;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public User getAuthor() {
+        return author;
     }
 
     @Override

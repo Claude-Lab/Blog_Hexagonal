@@ -18,46 +18,42 @@ public class Company implements Serializable {
     private final String url;
 
     public Company(CompanyBuilder builder) {
-        this.id = builder.id;
-        this.name = builder.name;
-        this.type = builder.type;
-        this.url = builder.url;
-        this.place = builder.place;
+        id = builder.id;
+        name = builder.name;
+        place = builder.place;
+        type = builder.type;
+        url = builder.url;
     }
 
-    public CompanyBuilder builder() {
+    public static CompanyBuilder builder() {
         return new CompanyBuilder();
     }
 
     public static class CompanyBuilder {
         private Long id;
         private String name;
+        private String place;
         private String type;
         private String url;
-        private String place;
 
-        public CompanyBuilder withId(Long id) {
+        public CompanyBuilder withTitle(Long id) {
             this.id = id;
             return this;
         }
-
         public CompanyBuilder withName(String name) {
             this.name = name;
             return this;
         }
-
+        public CompanyBuilder withPlace(String place) {
+            this.place = place;
+            return this;
+        }
         public CompanyBuilder withType(String type) {
             this.type = type;
             return this;
         }
-
-        public CompanyBuilder withUrl( String url) {
+        public CompanyBuilder withUrl(String url) {
             this.url = url;
-            return this;
-        }
-
-        public CompanyBuilder withPlace(String place) {
-            this.place = place;
             return this;
         }
 
@@ -74,16 +70,16 @@ public class Company implements Serializable {
         return name;
     }
 
+    public String getPlace() {
+        return place;
+    }
+
     public String getType() {
         return type;
     }
 
     public String getUrl() {
         return url;
-    }
-
-    public String getPlace() {
-        return place;
     }
 
     @Override

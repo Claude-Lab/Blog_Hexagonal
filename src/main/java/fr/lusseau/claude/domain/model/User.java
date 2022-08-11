@@ -1,6 +1,5 @@
 package fr.lusseau.claude.domain.model;
 
-
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -12,7 +11,7 @@ import java.util.Objects;
  */
 public class User implements Serializable {
 
-    private final long id;
+    private final Long id;
     private final String email;
     private final String password;
     private final String firstName;
@@ -20,27 +19,27 @@ public class User implements Serializable {
     private final Role role;
 
     public User(UserBuilder builder) {
-        this.id = builder.id;
-        this.email = builder.email;
-        this.password = builder.password;
-        this.firstName = builder.firstName;
-        this.lastName = builder.lastName;
-        this.role = builder.role;
+        id = builder.id;
+        email = builder.email;
+        password = builder.password;
+        firstName = builder.firstName;
+        lastName = builder.lastName;
+        role = builder.role;
     }
 
     public static UserBuilder builder() {
         return new UserBuilder();
     }
-
-    public static class UserBuilder {
-        private long id;
+    
+    public static class UserBuilder{
+        private Long id;
         private String email;
         private String password;
         private String firstName;
         private String lastName;
         private Role role;
 
-        public UserBuilder withId(long id) {
+        public UserBuilder withId(Long id) {
             this.id = id;
             return this;
         }
@@ -55,12 +54,12 @@ public class User implements Serializable {
             return this;
         }
 
-        public UserBuilder withFirstName(String firstName) {
+        public UserBuilder withFirstname(String firstName) {
             this.firstName = firstName;
             return this;
         }
 
-        public UserBuilder withLastName(String lastName) {
+        public UserBuilder withLastname(String lastName) {
             this.lastName = lastName;
             return this;
         }
@@ -70,14 +69,12 @@ public class User implements Serializable {
             return this;
         }
 
-
         public User build() {
             return new User(this);
         }
-
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -106,7 +103,7 @@ public class User implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(role, user.role);
+        return Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && role == user.role;
     }
 
     @Override

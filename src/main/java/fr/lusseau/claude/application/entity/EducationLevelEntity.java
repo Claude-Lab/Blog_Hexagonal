@@ -3,6 +3,8 @@ package fr.lusseau.claude.application.entity;
 import fr.lusseau.claude.application.exception.EntityException;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -14,23 +16,37 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "education_level_blog")
+@Cacheable
 public class EducationLevelEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private final Long id;
+    private Long id;
+    @NotNull(message = "Name is required.")
+    @NotBlank(message = "Name is required.")
     @Column(name = "education_level_name")
-    private final String name;
+    private String name;
 
     public EducationLevelEntity(EducationLevelEntityBuilder builder) {
         if (builder.id == null) {
-            throw new EntityException("Id cannot be null");
+            throw new EntityException("Id is required.");
         }
         if (builder.name == null) {
-            throw new EntityException("Name cannot be null");
+            throw new EntityException("Name is required.");
         }
-        this.id = builder.id;
-        this.name = builder.name;
+        if (!builder.name.contains(" ")) {
+            throw new EntityException("Name is required.");
+        }
+        id = builder.id;
+        name = builder.name;
+    }
+
+    protected EducationLevelEntity() {
+    }
+
+    private EducationLevelEntity(Long id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     public static EducationLevelEntityBuilder builder() {
@@ -46,11 +62,10 @@ public class EducationLevelEntity implements Serializable {
             return this;
         }
 
-        public EducationLevelEntityBuilder withName(String name) {
+        public EducationLevelEntityBuilder withTitle(String name) {
             this.name = name;
             return this;
         }
-
         public EducationLevelEntity build() {
             return new EducationLevelEntity(this);
         }
@@ -79,7 +94,7 @@ public class EducationLevelEntity implements Serializable {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("EducationLevel{");
+        final StringBuilder sb = new StringBuilder("EducationLevelEntity{");
         sb.append("id=").append(id);
         sb.append(", name='").append(name).append('\'');
         sb.append('}');

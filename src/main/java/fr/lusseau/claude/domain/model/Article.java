@@ -1,5 +1,7 @@
 package fr.lusseau.claude.domain.model;
 
+import fr.lusseau.claude.application.exception.EntityException;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -12,7 +14,7 @@ import java.util.Objects;
  */
 public class Article implements Serializable {
 
-    private final long id;
+    private final Long id;
     private final String title;
     private final String body;
     private final String url;
@@ -24,16 +26,40 @@ public class Article implements Serializable {
     private final User author;
 
     public Article(ArticleBuilder builder) {
-        this.id = builder.id;
-        this.title = builder.title;
-        this.body = builder.body;
-        this.url = builder.url;
-        this.cover = builder.cover;
-        this.miniature = builder.miniature;
-        this.isActive = builder.isActive;
-        this.createdAt = builder.createdAt;
-        this.updatedAt = builder.updatedAt;
-        this.author = builder.author;
+        if (builder.id == null) {
+            throw new EntityException("Id is required.");
+        }
+        if (builder.title == null) {
+            throw new EntityException("Title is required.");
+        }
+        if (!builder.title.contains(" ")) {
+            throw new EntityException("Title is required.");
+        }
+        if (builder.body == null) {
+            throw new EntityException("Body is required.");
+        }
+        if (!builder.body.contains(" ")) {
+            throw new EntityException("Body is required.");
+        }
+        if (builder.url == null) {
+            throw new EntityException("Url is required.");
+        }
+        if (builder.createdAt == null) {
+            throw new EntityException("CreatedAt is required.");
+        }
+        if (builder.author == null) {
+            throw new EntityException("Author is required.");
+        }
+        id = builder.id;
+        title = builder.title;
+        body = builder.body;
+        url = builder.url;
+        cover = builder.cover;
+        miniature = builder.miniature;
+        isActive = builder.isActive;
+        createdAt = builder.createdAt;
+        updatedAt = builder.updatedAt;
+        author = builder.author;
     }
 
     public static ArticleBuilder builder() {
@@ -41,7 +67,7 @@ public class Article implements Serializable {
     }
 
     public static class ArticleBuilder {
-        private long id;
+        private Long id;
         private String title;
         private String body;
         private String url;
@@ -52,7 +78,7 @@ public class Article implements Serializable {
         private LocalDateTime updatedAt;
         private User author;
 
-        public ArticleBuilder withId(long id) {
+        public ArticleBuilder withId(Long id) {
             this.id = id;
             return this;
         }
@@ -107,7 +133,7 @@ public class Article implements Serializable {
         }
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -152,7 +178,7 @@ public class Article implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Article article = (Article) o;
-        return id == article.id && isActive == article.isActive && Objects.equals(title, article.title) && Objects.equals(body, article.body) && Objects.equals(url, article.url) && Objects.equals(cover, article.cover) && Objects.equals(miniature, article.miniature) && Objects.equals(createdAt, article.createdAt) && Objects.equals(updatedAt, article.updatedAt) && Objects.equals(author, article.author);
+        return isActive == article.isActive && Objects.equals(id, article.id) && Objects.equals(title, article.title) && Objects.equals(body, article.body) && Objects.equals(url, article.url) && Objects.equals(cover, article.cover) && Objects.equals(miniature, article.miniature) && Objects.equals(createdAt, article.createdAt) && Objects.equals(updatedAt, article.updatedAt) && Objects.equals(author, article.author);
     }
 
     @Override
