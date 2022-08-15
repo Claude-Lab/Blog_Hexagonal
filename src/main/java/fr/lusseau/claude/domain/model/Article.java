@@ -1,7 +1,5 @@
 package fr.lusseau.claude.domain.model;
 
-import fr.lusseau.claude.application.exception.EntityException;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -25,31 +23,7 @@ public class Article implements Serializable {
     private final LocalDateTime updatedAt;
     private final User author;
 
-    public Article(ArticleBuilder builder) {
-        if (builder.id == null) {
-            throw new EntityException("Id is required.");
-        }
-        if (builder.title == null) {
-            throw new EntityException("Title is required.");
-        }
-        if (!builder.title.contains(" ")) {
-            throw new EntityException("Title is required.");
-        }
-        if (builder.body == null) {
-            throw new EntityException("Body is required.");
-        }
-        if (!builder.body.contains(" ")) {
-            throw new EntityException("Body is required.");
-        }
-        if (builder.url == null) {
-            throw new EntityException("Url is required.");
-        }
-        if (builder.createdAt == null) {
-            throw new EntityException("CreatedAt is required.");
-        }
-        if (builder.author == null) {
-            throw new EntityException("Author is required.");
-        }
+    public Article(ArticleBuilder<?> builder) {
         id = builder.id;
         title = builder.title;
         body = builder.body;
@@ -62,11 +36,17 @@ public class Article implements Serializable {
         author = builder.author;
     }
 
+
     public static ArticleBuilder builder() {
-        return new ArticleBuilder();
+        return new ArticleBuilder() {
+            @Override
+            public ArticleBuilder getThis() {
+                return this;
+            }
+        };
     }
 
-    public static class ArticleBuilder {
+    public abstract  static class ArticleBuilder <T extends ArticleBuilder<T>> {
         private Long id;
         private String title;
         private String body;
@@ -78,54 +58,56 @@ public class Article implements Serializable {
         private LocalDateTime updatedAt;
         private User author;
 
-        public ArticleBuilder withId(Long id) {
+        public abstract T getThis();
+
+        public T withId(Long id) {
             this.id = id;
-            return this;
+            return this.getThis();
         }
 
-        public ArticleBuilder withTitle(String title) {
+        public T withTitle(String title) {
             this.title = title;
-            return this;
+            return this.getThis();
         }
 
-        public ArticleBuilder withBody(String body) {
+        public T withBody(String body) {
             this.body = body;
-            return this;
+            return this.getThis();
         }
 
-        public ArticleBuilder withUrl(String url) {
+        public T withUrl(String url) {
             this.url = url;
-            return this;
+            return this.getThis();
         }
 
-        public ArticleBuilder withCover(String cover) {
+        public T withCover(String cover) {
             this.cover = cover;
-            return this;
+            return this.getThis();
         }
 
-        public ArticleBuilder withMiniature(String miniature) {
+        public T withMiniature(String miniature) {
             this.miniature = miniature;
-            return this;
+            return this.getThis();
         }
 
-        public ArticleBuilder withIsActive(boolean isActive) {
+        public T withIsActive(boolean isActive) {
             this.isActive = isActive;
-            return this;
+            return this.getThis();
         }
 
-        public ArticleBuilder withCreatedAt(LocalDateTime createdAt) {
+        public T withCreatedAt(LocalDateTime createdAt) {
             this.createdAt = createdAt;
-            return this;
+            return this.getThis();
         }
 
-        public ArticleBuilder withUpdatedAt(LocalDateTime updatedAt) {
+        public T withUpdatedAt(LocalDateTime updatedAt) {
             this.updatedAt = updatedAt;
-            return this;
+            return this.getThis();
         }
 
-        public ArticleBuilder withAuthor(User author) {
+        public T withAuthor(User author) {
             this.author = author;
-            return this;
+            return this.getThis();
         }
 
         public Article build() {
