@@ -1,6 +1,6 @@
-package fr.lusseau.claude.application.entity;
+package fr.lusseau.claude.infrastructure.entity;
 
-import fr.lusseau.claude.application.exception.EntityException;
+import fr.lusseau.claude.infrastructure.entity.exception.EntityException;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
