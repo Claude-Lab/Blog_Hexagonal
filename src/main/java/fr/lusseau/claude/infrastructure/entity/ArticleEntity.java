@@ -1,6 +1,6 @@
-package fr.lusseau.claude.application.entity;
+package fr.lusseau.claude.infrastructure.entity;
 
-import fr.lusseau.claude.application.exception.EntityException;
+import fr.lusseau.claude.infrastructure.entity.exception.EntityException;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -16,12 +16,19 @@ import java.util.Objects;
  * @date 06/08/2022
  */
 @Entity
-@Table(name = "article_blog")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Cacheable
-public class ArticleEntity implements Serializable {
+public abstract class ArticleEntity implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @TableGenerator(
+            name="artGen",
+            table="ID_GEN",
+            pkColumnName="GEN_KEY",
+            valueColumnName="GEN_VALUE",
+            pkColumnValue="ART_ID",
+            allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "artGen")
     private Long id;
     @NotNull(message = "Title is required.")
     @NotBlank(message = "Title is required.")
@@ -52,10 +59,7 @@ public class ArticleEntity implements Serializable {
     @JoinColumn(name = "id_user", nullable = false)
     private UserEntity author;
 
-    protected ArticleEntity() {
-    }
-
-    private ArticleEntity(Long id, String title, String body, String url, String cover, String miniature, boolean isActive, LocalDateTime createdAt, LocalDateTime updatedAt, UserEntity author) {
+    protected ArticleEntity(Long id, String title, String body, String url, String cover, String miniature, boolean isActive, LocalDateTime createdAt, LocalDateTime updatedAt, UserEntity author) {
         this.id = id;
         this.title = title;
         this.body = body;
@@ -68,10 +72,10 @@ public class ArticleEntity implements Serializable {
         this.author = author;
     }
 
-    private ArticleEntity(ArticleEntityBuilder builder) {
-        if (builder.id == null) {
-            throw new EntityException("Id is required.");
-        }
+    protected ArticleEntity() {
+    }
+
+    protected ArticleEntity(ArticleEntityBuilder<?> builder) {
         if (builder.title == null) {
             throw new EntityException("Title is required.");
         }
@@ -100,11 +104,9 @@ public class ArticleEntity implements Serializable {
 
     }
 
-    public static ArticleEntityBuilder builder() {
-        return new ArticleEntityBuilder();
-    }
 
-    public static class ArticleEntityBuilder {
+
+    public abstract static class ArticleEntityBuilder<T extends ArticleEntityBuilder<T>> {
         private Long id;
         private String title;
         private String body;
@@ -116,59 +118,59 @@ public class ArticleEntity implements Serializable {
         private LocalDateTime updatedAt;
         private UserEntity author;
 
-        public ArticleEntityBuilder withId(Long id) {
+        public abstract T getThis();
+
+        public T withId(Long id) {
             this.id = id;
-            return this;
+            return this.getThis();
         }
 
-        public ArticleEntityBuilder withTitle(String title) {
+        public T withTitle(String title) {
             this.title = title;
-            return this;
+            return this.getThis();
         }
 
-        public ArticleEntityBuilder withBody(String body) {
+        public T withBody(String body) {
             this.body = body;
-            return this;
+            return this.getThis();
         }
 
-        public ArticleEntityBuilder withUrl(String url) {
+        public T withUrl(String url) {
             this.url = url;
-            return this;
+            return this.getThis();
         }
 
-        public ArticleEntityBuilder withCover(String cover) {
+        public T withCover(String cover) {
             this.cover = cover;
-            return this;
+            return this.getThis();
         }
 
-        public ArticleEntityBuilder withMiniature(String miniature) {
+        public T withMiniature(String miniature) {
             this.miniature = miniature;
-            return this;
+            return this.getThis();
         }
 
-        public ArticleEntityBuilder withIsActive(boolean isActive) {
+        public T withIsActive(boolean isActive) {
             this.isActive = isActive;
-            return this;
+            return this.getThis();
         }
 
-        public ArticleEntityBuilder withCreatedAt(LocalDateTime createdAt) {
+        public T withCreatedAt(LocalDateTime createdAt) {
             this.createdAt = createdAt;
-            return this;
+            return this.getThis();
         }
 
-        public ArticleEntityBuilder withUpdatedAt(LocalDateTime updatedAt) {
+        public T withUpdatedAt(LocalDateTime updatedAt) {
             this.updatedAt = updatedAt;
-            return this;
+            return this.getThis();
         }
 
-        public ArticleEntityBuilder withAuthor(UserEntity author) {
+        public T withAuthor(UserEntity author) {
             this.author = author;
-            return this;
+            return this.getThis();
         }
 
-        public ArticleEntity build() {
-            return new ArticleEntity(this);
-        }
+        public abstract ArticleEntity build();
     }
 
     public Long getId() {
