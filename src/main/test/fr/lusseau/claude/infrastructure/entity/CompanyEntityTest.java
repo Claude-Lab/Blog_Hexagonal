@@ -1,5 +1,6 @@
-package fr.lusseau.claude.application.entity;
+package fr.lusseau.claude.infrastructure.entity;
 
+import fr.lusseau.claude.infrastructure.entity.CompanyEntity;
 import org.junit.jupiter.api.Test;
 import org.wildfly.common.Assert;
 
