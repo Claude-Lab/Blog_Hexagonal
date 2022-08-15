@@ -1,10 +1,11 @@
-package fr.lusseau.claude.application.entity;
+package fr.lusseau.claude.infrastructure.entity;
 
-import fr.lusseau.claude.application.exception.EntityException;
+import fr.lusseau.claude.infrastructure.entity.exception.EntityException;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -24,22 +25,22 @@ public class UserEntity implements Serializable {
     private Long id;
     @NotNull(message = "Email is required.")
     @NotBlank(message = "Email is required.")
-    @Column(name = "user_email")
+    @Column(name = "user_email", unique = true, nullable = false)
     private String email;
     @NotNull(message = "Password is required.")
     @NotBlank(message = "Password is required.")
-    @Column(name = "user_password")
+    @Column(name = "user_password", nullable = false)
     private String password;
     @NotNull(message = "Firstname is required.")
     @NotBlank(message = "Firstname is required.")
-    @Column(name = "user_firstName")
+    @Column(name = "user_firstName", nullable = false)
     private String firstName;
     @NotNull(message = "Lastname is required.")
     @NotBlank(message = "Lastname is required.")
-    @Column(name = "user_lastName")
+    @Column(name = "user_lastName", nullable = false)
     private String lastName;
     @NotNull(message = "Role is required.")
-    @Column(name = "user_role")
+    @Column(name = "user_role", nullable = false)
     @Enumerated(EnumType.STRING)
     private RoleEntity role;
 
@@ -56,9 +57,6 @@ public class UserEntity implements Serializable {
     }
 
     public UserEntity(UserEntityBuilder builder) {
-        if (builder.id == null) {
-            throw new EntityException("Id is required.");
-        }
         if (builder.email == null) {
             throw new EntityException("Email is required.");
         }

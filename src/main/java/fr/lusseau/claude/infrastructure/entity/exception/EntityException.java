@@ -1,4 +1,4 @@
-package fr.lusseau.claude.application.exception;
+package fr.lusseau.claude.infrastructure.entity.exception;
 
 /**
  * @author Claude Lusseau
