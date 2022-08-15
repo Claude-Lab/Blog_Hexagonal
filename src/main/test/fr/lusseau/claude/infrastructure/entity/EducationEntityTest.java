@@ -1,4 +1,4 @@
-package fr.lusseau.claude.application.entity;
+package fr.lusseau.claude.infrastructure.entity;
 
 import org.junit.jupiter.api.Test;
 import org.wildfly.common.Assert;
@@ -14,21 +14,20 @@ import java.time.LocalDateTime;
 class EducationEntityTest {
 
     @Test
-    void shouldGetArticleInformation() {
+    void shouldGetEducationInformation() {
         EducationEntity article = EducationEntity.builder()
-                .withId(1L)
                 .withTitle("test title")
                 .withBody("Body test")
                 .withUrl("test url")
+                .withDateIn(LocalDateTime.of(2022,12,25,12,00,00))
                 .withCreatedAt(LocalDateTime.now())
-                .withDateIn(LocalDateTime.of(2011,12, 03,00,00))
                 .withAuthor(UserEntity.builder()
                         .withId(2L)
                         .withEmail("test@test.test")
                         .withFirstname("John")
                         .withLastname("Doe")
                         .withPassword("lost")
-                        .withRole(RoleEntity.ADMINISTRATOR)
+                        .withRole(RoleEntity.SUBSCRIBER)
                         .build())
                 .build();
         Assert.assertNotNull(article);
