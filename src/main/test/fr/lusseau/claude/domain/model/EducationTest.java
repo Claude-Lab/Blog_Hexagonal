@@ -12,7 +12,7 @@ import org.wildfly.common.Assert;
 class EducationTest {
 
     @Test
-    void shouldGetArticleInformation() {
+    void shouldGetEducationArticleInformation() {
         Education education = Education.builder().build();
         Assert.assertNotNull(education);
     }

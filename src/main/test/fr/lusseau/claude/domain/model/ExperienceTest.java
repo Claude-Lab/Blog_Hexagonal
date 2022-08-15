@@ -12,7 +12,7 @@ import org.wildfly.common.Assert;
 class ExperienceTest {
 
     @Test
-    void shouldGetArticleInformation() {
+    void shouldGetExperienceArticleInformation() {
         Experience experience = Experience.builder().build();
         Assert.assertNotNull(experience);
     }
