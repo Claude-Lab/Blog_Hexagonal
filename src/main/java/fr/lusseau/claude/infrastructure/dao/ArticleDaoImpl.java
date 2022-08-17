@@ -1,10 +1,12 @@
 package fr.lusseau.claude.infrastructure.dao;
 
 import fr.lusseau.claude.application.dao.IArticleDao;
-import fr.lusseau.claude.infrastructure.entity.ArticleEntity;
+import fr.lusseau.claude.infrastructure.dto.ArticleDTO;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
+import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 /**
  * @author Claude Lusseau
@@ -12,12 +14,14 @@ import javax.inject.Inject;
  * @package fr.lusseau.claude.infrastructure.dao
  * @date 15/08/2022
  */
-public abstract class ArticleDaoImpl<T extends ArticleEntity> implements IArticleDao<T> {
+@Named("ArticleDaoImpl")
+@LogAudited
+public abstract class ArticleDaoImpl<T extends ArticleDTO> implements IArticleDao<T> {
 
-    private FactoryService factoryService;
+    private final FactoryService factoryService;
 
     @Inject
-    public ArticleDaoImpl(FactoryService factoryService) {
+    ArticleDaoImpl(FactoryService factoryService) {
         this.factoryService = factoryService;
     }
 }
