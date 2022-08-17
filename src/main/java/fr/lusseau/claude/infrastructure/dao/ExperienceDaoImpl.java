@@ -2,9 +2,11 @@ package fr.lusseau.claude.infrastructure.dao;
 
 import fr.lusseau.claude.application.dao.IExperienceDao;
 import fr.lusseau.claude.infrastructure.dao.exception.DaoException;
-import fr.lusseau.claude.infrastructure.entity.ExperienceEntity;
+import fr.lusseau.claude.infrastructure.dto.ExperienceDTO;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
+import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
 
+import javax.inject.Named;
 import java.util.List;
 
 /**
@@ -13,34 +15,36 @@ import java.util.List;
  * @package fr.lusseau.claude.infrastructure.dao
  * @date 15/08/2022
  */
-public class ExperienceDaoImpl extends ArticleDaoImpl<ExperienceEntity> implements IExperienceDao {
+@Named("ExperienceDaoImpl")
+@LogAudited
+public class ExperienceDaoImpl extends ArticleDaoImpl<ExperienceDTO> implements IExperienceDao {
 
     public ExperienceDaoImpl(FactoryService factoryService) {
         super(factoryService);
     }
 
     @Override
-    public Long createArticle(ExperienceEntity article) throws DaoException {
+    public Long createArticle(ExperienceDTO article) throws DaoException {
         return null;
     }
 
     @Override
-    public Long edit(ExperienceEntity article) throws DaoException {
+    public Long edit(ExperienceDTO article) throws DaoException {
         return null;
     }
 
     @Override
-    public Boolean remove(ExperienceEntity article) throws DaoException {
+    public Boolean remove(ExperienceDTO article) throws DaoException {
         return null;
     }
 
     @Override
-    public ExperienceEntity findArticle(Long id) throws DaoException {
+    public ExperienceDTO findArticle(Long id) throws DaoException {
         return null;
     }
 
     @Override
-    public List<ExperienceEntity> findAllArticles() throws DaoException {
+    public List<ExperienceDTO> findAllArticles() throws DaoException {
         return null;
     }
 }
