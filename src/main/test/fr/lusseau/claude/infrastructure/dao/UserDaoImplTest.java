@@ -1,7 +1,7 @@
 package fr.lusseau.claude.infrastructure.dao;
 
-import fr.lusseau.claude.infrastructure.entity.RoleEntity;
-import fr.lusseau.claude.infrastructure.entity.UserEntity;
+import fr.lusseau.claude.domain.model.Role;
+import fr.lusseau.claude.infrastructure.dto.UserDTO;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
@@ -10,6 +10,8 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
+
+import static org.wildfly.common.Assert.assertTrue;
 
 /**
  * @author Claude Lusseau
@@ -32,14 +34,14 @@ class UserDaoImplTest {
 
     @Test
     void createUser() {
-        UserEntity user = UserEntity.builder()
+        UserDTO user = UserDTO.builder()
                 .withEmail("john.doe@lost.com")
                 .withFirstname("John")
                 .withLastname("Doe")
                 .withPassword("what")
-                .withRole(RoleEntity.SUBSCRIBER).build();
-        Long test = this.factoryService.createDaoFactory().getIUserDao().create(user);
-        Assertions.assertThat(user.getId()).isEqualTo(test);
+                .withRole(Role.SUBSCRIBER).build();
+        boolean result = this.factoryService.createDaoFactory().getIUserDao().create(user);
+       assertTrue(result);
     }
 
 //    @Test
@@ -58,13 +60,13 @@ class UserDaoImplTest {
 
     @Test
     void editUser() {
-        UserEntity user = UserEntity.builder()
+        UserDTO user = UserDTO.builder()
                 .withId(12L)
                 .withEmail("john.doe@lost.com")
                 .withFirstname("John")
                 .withLastname("Doe")
                 .withPassword("what")
-                .withRole(RoleEntity.SUBSCRIBER).build();
+                .withRole(Role.SUBSCRIBER).build();
         Long result =  this.factoryService.createDaoFactory().getIUserDao().edit(user);
         Assertions.assertThat(result).isNotNull();
     }
