@@ -1,7 +1,7 @@
 package fr.lusseau.claude.application.dao;
 
 import fr.lusseau.claude.infrastructure.dao.exception.DaoException;
-import fr.lusseau.claude.infrastructure.entity.ArticleEntity;
+import fr.lusseau.claude.infrastructure.dto.ArticleDTO;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import java.util.List;
  * @package fr.lusseau.claude.application.dao
  * @date 12/08/2022
  */
-public interface IArticleDao<T extends ArticleEntity> {
+public interface IArticleDao<T extends ArticleDTO> {
 
     Long createArticle(T article) throws DaoException;
 
