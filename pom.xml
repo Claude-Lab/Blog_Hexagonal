@@ -16,6 +16,8 @@
         <quarkus.platform.version>2.11.2.Final</quarkus.platform.version>
         <skipITs>true</skipITs>
         <surefire-plugin.version>3.0.0-M7</surefire-plugin.version>
+        <mapstruct.version>1.5.2.Final</mapstruct.version>
+        <mapstruct-processor.version>1.5.2.Final</mapstruct-processor.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -68,6 +70,17 @@
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-arc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${mapstruct.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <version>${mapstruct-processor.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
