@@ -49,7 +49,7 @@ public class UserRestControllerImpl {
     }
 
     @POST
-    public Response createNewUser(@QueryParam("email") String email, @QueryParam("password") String password, @QueryParam("firstname") String firstname, @QueryParam("lastname") String lastname, @QueryParam("role") Role role ) {
+    public Boolean createNewUser(@QueryParam("email") String email, @QueryParam("password") String password, @QueryParam("firstname") String firstname, @QueryParam("lastname") String lastname, @QueryParam("role") Role role) {
         User user = User.builder()
                 .withEmail(email)
                 .withPassword(password)
@@ -57,12 +57,7 @@ public class UserRestControllerImpl {
                 .withLastname(lastname)
                 .withRole(role)
                 .build();
-        boolean result = this.factoryService.createUseCaseFactory().createUserUseCase().createUser(user);
-        if (!result) {
-            return Response.notModified().build();
-
-        }
-        return Response.ok().status(Response.Status.CREATED).build();
+        return this.factoryService.createUseCaseFactory().createUserUseCase().createUser(user);
     }
 
     @PUT
