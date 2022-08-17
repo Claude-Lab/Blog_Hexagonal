@@ -3,11 +3,12 @@ package fr.lusseau.claude.infrastructure.dao.factory;
 import fr.lusseau.claude.application.dao.IEducationDao;
 import fr.lusseau.claude.application.dao.IExperienceDao;
 import fr.lusseau.claude.application.dao.IUserDao;
-import fr.lusseau.claude.application.dao.factory.IDaoFactory;
+import fr.lusseau.claude.application.factory.IDaoFactory;
 import fr.lusseau.claude.infrastructure.dao.EducationDaoImpl;
 import fr.lusseau.claude.infrastructure.dao.ExperienceDaoImpl;
 import fr.lusseau.claude.infrastructure.dao.UserDaoImpl;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
+import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -19,6 +20,7 @@ import javax.inject.Named;
  * @date 15/08/2022
  */
 @Named("DaoFactoryImpl")
+@LogAudited
 public class DaoFactoryImpl implements IDaoFactory {
 
     private final FactoryService factoryService;
