@@ -1,6 +1,5 @@
-package fr.lusseau.claude.infrastructure.entity;
+package fr.lusseau.claude.infrastructure.dto;
 
-import fr.lusseau.claude.infrastructure.entity.exception.EntityException;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -17,7 +16,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "education_level_blog")
 @Cacheable
-public class EducationLevelEntity implements Serializable {
+public class EducationLevelDTO implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,24 +26,15 @@ public class EducationLevelEntity implements Serializable {
     @Column(name = "education_level_name")
     private String name;
 
-    public EducationLevelEntity(EducationLevelEntityBuilder builder) {
-        if (builder.id == null) {
-            throw new EntityException("Id is required.");
-        }
-        if (builder.name == null) {
-            throw new EntityException("Name is required.");
-        }
-        if (!builder.name.contains(" ")) {
-            throw new EntityException("Name is required.");
-        }
+    public EducationLevelDTO(EducationLevelEntityBuilder builder) {
         id = builder.id;
         name = builder.name;
     }
 
-    protected EducationLevelEntity() {
+    protected EducationLevelDTO() {
     }
 
-    private EducationLevelEntity(Long id, String name) {
+    private EducationLevelDTO(Long id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -66,8 +56,8 @@ public class EducationLevelEntity implements Serializable {
             this.name = name;
             return this;
         }
-        public EducationLevelEntity build() {
-            return new EducationLevelEntity(this);
+        public EducationLevelDTO build() {
+            return new EducationLevelDTO(this);
         }
     }
 
@@ -83,7 +73,7 @@ public class EducationLevelEntity implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        EducationLevelEntity that = (EducationLevelEntity) o;
+        EducationLevelDTO that = (EducationLevelDTO) o;
         return Objects.equals(id, that.id) && Objects.equals(name, that.name);
     }
 
