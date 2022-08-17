@@ -1,6 +1,6 @@
 package fr.lusseau.claude.application.dao;
 
-import fr.lusseau.claude.infrastructure.entity.ExperienceEntity;
+import fr.lusseau.claude.infrastructure.dto.ExperienceDTO;
 
 /**
  * @author Claude Lusseau
@@ -8,7 +8,7 @@ import fr.lusseau.claude.infrastructure.entity.ExperienceEntity;
  * @package fr.lusseau.claude.application.dao
  * @date 15/08/2022
  */
-public interface IExperienceDao extends IArticleDao<ExperienceEntity> {
+public interface IExperienceDao extends IArticleDao<ExperienceDTO> {
 
 
 }
