@@ -1,7 +1,6 @@
 package fr.lusseau.claude.application.dao;
 
-import fr.lusseau.claude.infrastructure.dao.exception.DaoException;
-import fr.lusseau.claude.infrastructure.entity.EducationEntity;
+import fr.lusseau.claude.infrastructure.dto.EducationDTO;
 
 /**
  * @author Claude Lusseau
@@ -9,7 +8,7 @@ import fr.lusseau.claude.infrastructure.entity.EducationEntity;
  * @package fr.lusseau.claude.application.dao
  * @date 15/08/2022
  */
-public interface IEducationDao extends IArticleDao<EducationEntity> {
+public interface IEducationDao extends IArticleDao<EducationDTO> {
 
 
 }
