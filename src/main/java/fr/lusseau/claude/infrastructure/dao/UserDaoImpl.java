@@ -1,12 +1,14 @@
 package fr.lusseau.claude.infrastructure.dao;
 
 import fr.lusseau.claude.application.dao.IUserDao;
-import fr.lusseau.claude.infrastructure.entity.UserEntity;
+import fr.lusseau.claude.infrastructure.dto.UserDTO;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
 import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.Query;
+import java.util.List;
 
 /**
  * @author Claude Lusseau
@@ -26,30 +28,33 @@ public class UserDaoImpl implements IUserDao {
     }
 
     @Override
-    public Long create(UserEntity user) {
+    public Boolean create(UserDTO user) {
         factoryService.createEntityManager().persist(user);
-        factoryService.createEntityManager().flush();
-        return user.getId();
+        return user.getId() != null;
     }
 
     @Override
-    public Long edit(UserEntity user) {
-        factoryService.createEntityManager().merge(user);
-        factoryService.createEntityManager().flush();
-        return user.getId();
+    public Long edit(UserDTO userDTO) {
+        UserDTO newUser = factoryService.createEntityManager().merge(userDTO);
+        return newUser.getId();
     }
 
     @Override
-    public Boolean remove(UserEntity user) {
-        factoryService.createEntityManager().remove(user);
-        factoryService.createEntityManager().flush();
-        return user == null;
+    public Integer remove(Long id) {
+        Query query = this.factoryService.createEntityManager().createNamedQuery("User.delete", UserDTO.class);
+        query.setParameter("id", id);
+        return query.executeUpdate();
     }
 
     @Override
-    public UserEntity findUser(Long id) {
-        return factoryService.createEntityManager().find(UserEntity.class, id);
+    public UserDTO findUser(Long id) {
+        return factoryService.createEntityManager().find(UserDTO.class, id);
     }
 
+    @Override
+    public List<UserDTO> findAll() {
+        Query query = this.factoryService.createEntityManager().createNamedQuery("User.findAll", UserDTO.class);
+        return query.getResultList();
+    }
 
 }
