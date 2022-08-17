@@ -1,6 +1,8 @@
 package fr.lusseau.claude.application.dao;
 
-import fr.lusseau.claude.infrastructure.entity.UserEntity;
+import fr.lusseau.claude.infrastructure.dto.UserDTO;
+
+import java.util.List;
 
 /**
  * @author Claude Lusseau
@@ -10,11 +12,13 @@ import fr.lusseau.claude.infrastructure.entity.UserEntity;
  */
 public interface IUserDao {
 
-    Long create(UserEntity user);
+    Boolean create(UserDTO user);
 
-    Long edit(UserEntity user);
+    Long edit(UserDTO user);
 
-    Boolean remove(UserEntity user);
+    Integer remove(Long id);
 
-    UserEntity findUser(Long id);
+    UserDTO findUser(Long id);
+
+    List<UserDTO> findAll();
 }
