@@ -1,6 +1,8 @@
 package fr.lusseau.claude.infrastructure.factory;
 
-import fr.lusseau.claude.application.dao.factory.IDaoFactory;
+import fr.lusseau.claude.application.factory.IDaoFactory;
+import fr.lusseau.claude.application.factory.IUseCaseFactory;
+import fr.lusseau.claude.domain.usecase.UseCaseFactoryImpl;
 import fr.lusseau.claude.infrastructure.dao.factory.DaoFactoryImpl;
 import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
 
@@ -31,6 +33,12 @@ public class FactoryService {
     @Named("DaoFactoryImpl")
     public IDaoFactory createDaoFactory() {
         return new DaoFactoryImpl(this);
+    }
+
+    @Produces
+    @Named("UseCaseFactoryImpl")
+    public IUseCaseFactory createUseCaseFactory() {
+        return new UseCaseFactoryImpl(this);
     }
 
 }
