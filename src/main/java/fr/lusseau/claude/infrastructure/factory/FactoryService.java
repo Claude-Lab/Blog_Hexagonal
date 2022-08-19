@@ -6,6 +6,7 @@ import fr.lusseau.claude.domain.usecase.UseCaseFactoryImpl;
 import fr.lusseau.claude.infrastructure.dao.factory.DaoFactoryImpl;
 import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
 
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -19,6 +20,7 @@ import javax.ws.rs.Produces;
  * @date 13/08/2022
  */
 @LogAudited
+@RequestScoped
 public class FactoryService {
 
     @PersistenceContext
@@ -30,13 +32,13 @@ public class FactoryService {
     }
 
     @Produces
-    @Named("DaoFactoryImpl")
+    @Named
     public IDaoFactory createDaoFactory() {
         return new DaoFactoryImpl(this);
     }
 
     @Produces
-    @Named("UseCaseFactoryImpl")
+    @Named
     public IUseCaseFactory createUseCaseFactory() {
         return new UseCaseFactoryImpl(this);
     }
