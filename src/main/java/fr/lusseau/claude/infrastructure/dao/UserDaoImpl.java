@@ -28,22 +28,21 @@ public class UserDaoImpl implements IUserDao {
     }
 
     @Override
-    public Boolean create(UserDTO user) {
-        factoryService.createEntityManager().persist(user);
-        return user.getId() != null;
+    public Boolean create(UserDTO userDTO) {
+        factoryService.createEntityManager().persist(userDTO);
+        return userDTO.getId() != null;
     }
 
     @Override
-    public Long edit(UserDTO userDTO) {
-        UserDTO newUser = factoryService.createEntityManager().merge(userDTO);
-        return newUser.getId();
+    public void edit(UserDTO userDTO) {
+        factoryService.createEntityManager().merge(userDTO);
     }
 
     @Override
-    public Integer remove(Long id) {
-        Query query = this.factoryService.createEntityManager().createNamedQuery("User.delete", UserDTO.class);
+    public void remove(Long id) {
+        Query query = this.factoryService.createEntityManager().createNamedQuery("User.delete");
         query.setParameter("id", id);
-        return query.executeUpdate();
+        query.executeUpdate();
     }
 
     @Override
