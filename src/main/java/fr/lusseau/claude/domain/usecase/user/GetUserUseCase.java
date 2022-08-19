@@ -19,13 +19,10 @@ import java.util.List;
  * @date 12/08/2022
  */
 @LogAudited
-@Named("GetUserUseCase")
+@Named
 public class GetUserUseCase implements Serializable {
 
     private final FactoryService factoryService;
-
-    @Inject
-    private IUserMapper userMapper;
 
     @Inject
     public GetUserUseCase(FactoryService factoryService) {
@@ -34,11 +31,12 @@ public class GetUserUseCase implements Serializable {
 
 
     public User getOne(Long id) {
+
         UserDTO userDTO = this.factoryService.createDaoFactory().getIUserDao().findUser(id);
         if (userDTO == null) {
             return null;
         }
-        return userMapper.dtoToEntity(userDTO);
+        return IUserMapper.INSTANCE.userDtoToUser(userDTO);
     }
 
 
@@ -47,6 +45,7 @@ public class GetUserUseCase implements Serializable {
         if (userDTOS.isEmpty()) {
             return Collections.emptyList();
         }
-        return userMapper.dtosToEntities(userDTOS);
+        return IUserMapper.INSTANCE.userDtoListToUserList(userDTOS);
     }
+
 }

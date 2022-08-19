@@ -2,6 +2,7 @@ package fr.lusseau.claude.domain.usecase.user;
 
 import fr.lusseau.claude.domain.model.User;
 import fr.lusseau.claude.domain.validator.UserValidator;
+import fr.lusseau.claude.infrastructure.dto.UserDTO;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
 import fr.lusseau.claude.infrastructure.mapper.IUserMapper;
 
@@ -19,16 +20,14 @@ public class UpdateUserUseCase implements Serializable {
     private final FactoryService factoryService;
 
     @Inject
-    private IUserMapper userMapper;
-
-    @Inject
     public UpdateUserUseCase(FactoryService factoryService) {
         this.factoryService = factoryService;
     }
 
-    public Long updateUser(User user) {
+    public void updateUser(User user) {
         UserValidator.validateUser(user);
-        return this.factoryService.createDaoFactory().getIUserDao().edit(userMapper.entityToDTO(user));
+        UserDTO userDTO = IUserMapper.INSTANCE.userToUserDto(user);
+        this.factoryService.createDaoFactory().getIUserDao().edit(userDTO);
     }
 
 

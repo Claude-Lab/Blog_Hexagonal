@@ -1,10 +1,10 @@
 package fr.lusseau.claude.domain.usecase.user;
 
-import fr.lusseau.claude.domain.model.User;
+import fr.lusseau.claude.infrastructure.dto.exception.EntityException;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
-import fr.lusseau.claude.infrastructure.mapper.IUserMapper;
 import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
 
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -17,22 +17,21 @@ import java.io.Serializable;
  */
 @LogAudited
 @Named("DeleteUserUseCase")
+@RequestScoped
 public class DeleteUserUseCase implements Serializable {
 
     private final FactoryService factoryService;
 
-    @Inject
-    private IUserMapper userMapper;
 
     @Inject
     public DeleteUserUseCase(FactoryService factoryService) {
         this.factoryService = factoryService;
     }
 
-    public Integer removeUser(Long id) {
+    public void removeUser(Long id) {
         if (factoryService.createUseCaseFactory().getUserUseCase().getOne(id) == null) {
-            return null;
+            throw new EntityException("User doesn't exist");
         }
-        return this.factoryService.createDaoFactory().getIUserDao().remove(id);
+        this.factoryService.createDaoFactory().getIUserDao().remove(id);
     }
 }
