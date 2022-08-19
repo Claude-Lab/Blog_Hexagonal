@@ -36,8 +36,8 @@ class UserDaoImplTest {
     void createUser() {
         UserDTO user = UserDTO.builder()
                 .withEmail("john.doe@lost.com")
-                .withFirstname("John")
-                .withLastname("Doe")
+                .withFirstName("John")
+                .withLastName("Doe")
                 .withPassword("what")
                 .withRole(Role.SUBSCRIBER).build();
         boolean result = this.factoryService.createDaoFactory().getIUserDao().create(user);
@@ -63,12 +63,12 @@ class UserDaoImplTest {
         UserDTO user = UserDTO.builder()
                 .withId(12L)
                 .withEmail("john.doe@lost.com")
-                .withFirstname("John")
-                .withLastname("Doe")
+                .withFirstName("John")
+                .withLastName("Doe")
                 .withPassword("what")
                 .withRole(Role.SUBSCRIBER).build();
-        Long result =  this.factoryService.createDaoFactory().getIUserDao().edit(user);
-        Assertions.assertThat(result).isNotNull();
+        this.factoryService.createDaoFactory().getIUserDao().edit(user);
+        Assertions.assertThat(user).isNotNull();
     }
 
 //    @Test

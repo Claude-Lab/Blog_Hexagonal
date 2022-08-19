@@ -17,8 +17,8 @@ class UserEntityTest {
         UserDTO article = UserDTO.builder()
                 .withId(2L)
                 .withEmail("test@test.test")
-                .withFirstname("John")
-                .withLastname("Doe")
+                .withFirstName("John")
+                .withLastName("Doe")
                 .withPassword("lost")
                 .withRole(Role.ADMINISTRATOR)
                 .build();
