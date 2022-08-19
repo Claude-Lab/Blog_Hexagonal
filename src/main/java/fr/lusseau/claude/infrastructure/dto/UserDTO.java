@@ -49,14 +49,6 @@ public class UserDTO implements Serializable {
     protected UserDTO() {
     }
 
-    private UserDTO(Long id, String email, String password, String firstName, String lastName, Role role) {
-        this.id = id;
-        this.email = email;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.role = role;
-    }
 
     public UserDTO(UserEntityBuilder builder) {
         id = builder.id;
@@ -94,12 +86,12 @@ public class UserDTO implements Serializable {
             return this;
         }
 
-        public UserEntityBuilder withFirstname(String firstName) {
+        public UserEntityBuilder withFirstName(String firstName) {
             this.firstName = firstName;
             return this;
         }
 
-        public UserEntityBuilder withLastname(String lastName) {
+        public UserEntityBuilder withLastName(String lastName) {
             this.lastName = lastName;
             return this;
         }

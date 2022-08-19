@@ -11,12 +11,15 @@ import java.util.Objects;
  */
 public class User implements Serializable {
 
-    private final Long id;
-    private final String email;
-    private final String password;
-    private final String firstName;
-    private final String lastName;
-    private final Role role;
+    private Long id;
+    private String email;
+    private String password;
+    private String firstName;
+    private String lastName;
+    private Role role;
+
+    protected User() {
+    }
 
     public User(UserBuilder builder) {
         id = builder.id;
@@ -54,12 +57,12 @@ public class User implements Serializable {
             return this;
         }
 
-        public UserBuilder withFirstname(String firstName) {
+        public UserBuilder withFirstName(String firstName) {
             this.firstName = firstName;
             return this;
         }
 
-        public UserBuilder withLastname(String lastName) {
+        public UserBuilder withLastName(String lastName) {
             this.lastName = lastName;
             return this;
         }
