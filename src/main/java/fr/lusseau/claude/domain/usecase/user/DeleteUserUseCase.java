@@ -1,6 +1,5 @@
 package fr.lusseau.claude.domain.usecase.user;
 
-import fr.lusseau.claude.infrastructure.dto.exception.EntityException;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
 import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
 
@@ -28,10 +27,11 @@ public class DeleteUserUseCase implements Serializable {
         this.factoryService = factoryService;
     }
 
-    public void removeUser(Long id) {
-        if (factoryService.createUseCaseFactory().getUserUseCase().getOne(id) == null) {
-            throw new EntityException("User doesn't exist");
+    public Boolean removeUser(Long id) {
+        if (this.factoryService.createUseCaseFactory().getUserUseCase().getOne(id) == null) {
+            return false;
         }
         this.factoryService.createDaoFactory().getIUserDao().remove(id);
+        return this.factoryService.createUseCaseFactory().getUserUseCase().getOne(id) == null;
     }
 }

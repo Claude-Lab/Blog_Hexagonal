@@ -24,11 +24,11 @@ public class UpdateUserUseCase implements Serializable {
         this.factoryService = factoryService;
     }
 
-    public void updateUser(User user) {
+    public User updateUser(User user) {
         UserValidator.validateUser(user);
         UserDTO userDTO = IUserMapper.INSTANCE.userToUserDto(user);
         this.factoryService.createDaoFactory().getIUserDao().edit(userDTO);
+        return IUserMapper.INSTANCE.userDtoToUser(userDTO);
     }
-
 
 }

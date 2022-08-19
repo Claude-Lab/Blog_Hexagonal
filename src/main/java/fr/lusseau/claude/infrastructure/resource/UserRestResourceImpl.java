@@ -2,6 +2,7 @@ package fr.lusseau.claude.infrastructure.resource;
 
 
 import fr.lusseau.claude.domain.model.User;
+import fr.lusseau.claude.infrastructure.dto.UserDTO;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
 import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
 
@@ -45,13 +46,14 @@ public class UserRestResourceImpl {
 
     @DELETE
     @Path("/delete/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    public void removeUser(@PathParam("id") Long id) {
-        this.factoryService.createUseCaseFactory().deleteUserUseCase().removeUser(id);
+    public Boolean removeUser(@PathParam("id") Long id) {
+        return this.factoryService.createUseCaseFactory().deleteUserUseCase().removeUser(id);
     }
 
     @POST
-    @Path("")
+    @Path("/create")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Transactional
@@ -73,9 +75,10 @@ public class UserRestResourceImpl {
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/{id}")
-    public void updateUser(User user) {
-        this.factoryService.createUseCaseFactory().updateUserUseCase().updateUser(user);
+    @Path("/update")
+    @Transactional
+    public User updateUser(User user) {
+        return this.factoryService.createUseCaseFactory().updateUserUseCase().updateUser(user);
     }
 
 }

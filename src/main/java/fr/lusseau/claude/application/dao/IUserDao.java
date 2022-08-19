@@ -12,9 +12,9 @@ import java.util.List;
  */
 public interface IUserDao {
 
-    Boolean create(UserDTO user);
+    Boolean create(UserDTO userDTO);
 
-    void edit(UserDTO user);
+    UserDTO edit(UserDTO userDTO);
 
     void remove(Long id);
 

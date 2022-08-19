@@ -29,25 +29,26 @@ public class UserDaoImpl implements IUserDao {
 
     @Override
     public Boolean create(UserDTO userDTO) {
-        factoryService.createEntityManager().persist(userDTO);
+        this.factoryService.createEntityManager().persist(userDTO);
         return userDTO.getId() != null;
     }
 
     @Override
-    public void edit(UserDTO userDTO) {
-        factoryService.createEntityManager().merge(userDTO);
+    public UserDTO edit(UserDTO userDTO) {
+        this.factoryService.createEntityManager().merge(userDTO);
+        this.factoryService.createEntityManager().flush();
+        return userDTO;
     }
 
     @Override
     public void remove(Long id) {
-        Query query = this.factoryService.createEntityManager().createNamedQuery("User.delete");
-        query.setParameter("id", id);
-        query.executeUpdate();
+        UserDTO userDTO = this.factoryService.createDaoFactory().getIUserDao().findUser(id);
+        this.factoryService.createEntityManager().remove(userDTO);
     }
 
     @Override
     public UserDTO findUser(Long id) {
-        return factoryService.createEntityManager().find(UserDTO.class, id);
+        return this.factoryService.createEntityManager().find(UserDTO.class, id);
     }
 
     @Override
