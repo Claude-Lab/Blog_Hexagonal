@@ -1,4 +1,4 @@
-package fr.lusseau.claude.infrastructure.controller;
+package fr.lusseau.claude.infrastructure.resource;
 
 
 /**
@@ -7,7 +7,7 @@ package fr.lusseau.claude.infrastructure.controller;
  * @package fr.lusseau.claude.infrastructure.controller
  * @date 13/08/2022
  */
-public class ArticleRestControllerImpl {
+public class ArticleRestResourceImpl {
 
 
 }

@@ -1,8 +1,4 @@
-package fr.lusseau.claude.infrastructure.controller;
-
-import fr.lusseau.claude.domain.model.Role;
-import fr.lusseau.claude.domain.model.User;
-import org.junit.jupiter.api.Test;
+package fr.lusseau.claude.infrastructure.resource;
 
 import javax.inject.Inject;
 
@@ -15,11 +11,11 @@ import javax.inject.Inject;
 public class UserRestControllerTest {
 
 
-    private final UserRestControllerImpl userRestController;
+    private final UserRestResourceImpl userRestResource;
 
     @Inject
-    public UserRestControllerTest(UserRestControllerImpl userRestController) {
-        this.userRestController = userRestController;
+    public UserRestControllerTest(UserRestResourceImpl userRestResource) {
+        this.userRestResource = userRestResource;
     }
 
 //    @Test
