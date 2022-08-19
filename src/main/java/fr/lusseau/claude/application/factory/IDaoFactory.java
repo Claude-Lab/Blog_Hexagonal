@@ -11,7 +11,6 @@ import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
  * @package fr.lusseau.claude.application.dao.factory
  * @date 15/08/2022
  */
-@LogAudited
 public interface IDaoFactory {
 
     IEducationDao getIEducationDao();
