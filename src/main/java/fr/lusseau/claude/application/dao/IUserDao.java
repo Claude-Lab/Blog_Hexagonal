@@ -14,9 +14,9 @@ public interface IUserDao {
 
     Boolean create(UserDTO user);
 
-    Long edit(UserDTO user);
+    void edit(UserDTO user);
 
-    Integer remove(Long id);
+    void remove(Long id);
 
     UserDTO findUser(Long id);
 
