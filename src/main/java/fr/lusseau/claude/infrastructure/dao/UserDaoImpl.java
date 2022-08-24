@@ -28,15 +28,13 @@ public class UserDaoImpl implements IUserDao {
     }
 
     @Override
-    public Boolean create(UserDTO userDTO) {
+    public void create(UserDTO userDTO) {
         this.factoryService.createEntityManager().persist(userDTO);
-        return userDTO.getId() != null;
     }
 
     @Override
     public UserDTO edit(UserDTO userDTO) {
         this.factoryService.createEntityManager().merge(userDTO);
-        this.factoryService.createEntityManager().flush();
         return userDTO;
     }
 
@@ -55,6 +53,14 @@ public class UserDaoImpl implements IUserDao {
     public List<UserDTO> findAll() {
         Query query = this.factoryService.createEntityManager().createNamedQuery("User.findAll", UserDTO.class);
         return query.getResultList();
+    }
+
+    @Override
+    public Boolean isEmailExist(String email) {
+        Query query = this.factoryService.createEntityManager().createNamedQuery("User.findByEmail", UserDTO.class)
+                .setParameter("email", email);
+        List<UserDTO> users =  query.getResultList();
+        return users.isEmpty();
     }
 
 }
