@@ -1,9 +1,6 @@
 package fr.lusseau.claude.application.factory;
 
-import fr.lusseau.claude.domain.usecase.user.CreateUserUseCase;
-import fr.lusseau.claude.domain.usecase.user.DeleteUserUseCase;
-import fr.lusseau.claude.domain.usecase.user.GetUserUseCase;
-import fr.lusseau.claude.domain.usecase.user.UpdateUserUseCase;
+import fr.lusseau.claude.application.usecase.user.*;
 
 /**
  * @author Claude Lusseau
@@ -20,4 +17,6 @@ public interface IUseCaseFactory {
     CreateUserUseCase createUserUseCase();
 
     UpdateUserUseCase updateUserUseCase();
+
+    EmailCheckUseCase emailCheckUseCase();
 }
