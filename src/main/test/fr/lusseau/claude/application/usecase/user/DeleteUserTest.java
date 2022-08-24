@@ -1,4 +1,4 @@
-package fr.lusseau.claude.domain.usecase.user;
+package fr.lusseau.claude.application.usecase.user;
 
 /**
  * @author Claude Lusseau
@@ -6,5 +6,5 @@ package fr.lusseau.claude.domain.usecase.user;
  * @package fr.lusseau.claude.domain.usecase.user
  * @date 19/08/2022
  */
-public class GetUserTest {
+public class DeleteUserTest {
 }

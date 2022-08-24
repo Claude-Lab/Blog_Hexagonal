@@ -1,10 +1,7 @@
-package fr.lusseau.claude.domain.usecase;
+package fr.lusseau.claude.application.usecase;
 
 import fr.lusseau.claude.application.factory.IUseCaseFactory;
-import fr.lusseau.claude.domain.usecase.user.CreateUserUseCase;
-import fr.lusseau.claude.domain.usecase.user.DeleteUserUseCase;
-import fr.lusseau.claude.domain.usecase.user.GetUserUseCase;
-import fr.lusseau.claude.domain.usecase.user.UpdateUserUseCase;
+import fr.lusseau.claude.application.usecase.user.*;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
 import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
 
@@ -46,5 +43,10 @@ public class UseCaseFactoryImpl implements IUseCaseFactory {
     @Override
     public UpdateUserUseCase updateUserUseCase() {
         return new UpdateUserUseCase(factoryService);
+    }
+
+    @Override
+    public EmailCheckUseCase emailCheckUseCase() {
+        return new EmailCheckUseCase(factoryService);
     }
 }

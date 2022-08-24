@@ -1,4 +1,4 @@
-package fr.lusseau.claude.domain.usecase.user;
+package fr.lusseau.claude.application.usecase.user;
 
 /**
  * @author Claude Lusseau

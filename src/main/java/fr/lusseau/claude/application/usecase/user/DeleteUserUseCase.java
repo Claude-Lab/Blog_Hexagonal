@@ -1,4 +1,4 @@
-package fr.lusseau.claude.domain.usecase.user;
+package fr.lusseau.claude.application.usecase.user;
 
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
 import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
@@ -27,11 +27,7 @@ public class DeleteUserUseCase implements Serializable {
         this.factoryService = factoryService;
     }
 
-    public Boolean removeUser(Long id) {
-        if (this.factoryService.createUseCaseFactory().getUserUseCase().getOne(id) == null) {
-            return false;
-        }
+    public void removeUser(Long id) {
         this.factoryService.createDaoFactory().getIUserDao().remove(id);
-        return this.factoryService.createUseCaseFactory().getUserUseCase().getOne(id) == null;
     }
 }

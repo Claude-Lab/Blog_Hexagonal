@@ -1,4 +1,4 @@
-package fr.lusseau.claude.domain.usecase.user;
+package fr.lusseau.claude.application.usecase.user;
 
 import fr.lusseau.claude.domain.model.User;
 import fr.lusseau.claude.infrastructure.dto.UserDTO;

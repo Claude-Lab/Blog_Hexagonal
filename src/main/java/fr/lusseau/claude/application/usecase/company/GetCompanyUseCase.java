@@ -1,4 +1,4 @@
-package fr.lusseau.claude.domain.usecase.article;
+package fr.lusseau.claude.application.usecase.company;
 
 /**
  * @author Claude Lusseau
@@ -6,5 +6,5 @@ package fr.lusseau.claude.domain.usecase.article;
  * @package fr.lusseau.claude.application.usecase.article
  * @date 12/08/2022
  */
-public class CreateEducationArticleUseCase {
+public class GetCompanyUseCase {
 }

@@ -1,14 +1,12 @@
-package fr.lusseau.claude.domain.usecase.user;
+package fr.lusseau.claude.application.usecase.user;
 
 import fr.lusseau.claude.domain.model.User;
 import fr.lusseau.claude.domain.validator.UserValidator;
 import fr.lusseau.claude.infrastructure.dto.UserDTO;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
 import fr.lusseau.claude.infrastructure.mapper.IUserMapper;
-import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import java.io.Serializable;
 
 /**
@@ -17,20 +15,20 @@ import java.io.Serializable;
  * @package fr.lusseau.claude.application.usecase.user
  * @date 12/08/2022
  */
-@LogAudited
-@Named("CreateUserUseCase")
-public class CreateUserUseCase implements Serializable {
+public class UpdateUserUseCase implements Serializable {
 
     private final FactoryService factoryService;
 
     @Inject
-    public CreateUserUseCase(FactoryService factoryService) {
+    public UpdateUserUseCase(FactoryService factoryService) {
         this.factoryService = factoryService;
     }
 
-    public Boolean createUser(User user) {
+    public User updateUser(User user) {
         UserValidator.validateUser(user);
         UserDTO userDTO = IUserMapper.INSTANCE.userToUserDto(user);
-        return this.factoryService.createDaoFactory().getIUserDao().create(userDTO);
+        this.factoryService.createDaoFactory().getIUserDao().edit(userDTO);
+        return IUserMapper.INSTANCE.userDtoToUser(userDTO);
     }
+
 }
