@@ -20,6 +20,7 @@ import java.util.Objects;
 @Cacheable
 @NamedQuery(name = "User.findAll", query = "SELECT u FROM UserDTO u")
 @NamedQuery(name = "User.delete", query = "DELETE FROM UserDTO u WHERE u.id = :id")
+@NamedQuery(name = "User.findByEmail", query = "SELECT u FROM UserDTO u WHERE u.email = :email")
 public class UserDTO implements Serializable {
 
     @Id
