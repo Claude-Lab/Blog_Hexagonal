@@ -31,7 +31,6 @@ class UserDaoImplTest {
         this.factoryService = factoryService;
     }
 
-
     @Test
     void createUser() {
         UserDTO user = UserDTO.builder()
@@ -40,23 +39,9 @@ class UserDaoImplTest {
                 .withLastName("Doe")
                 .withPassword("what")
                 .withRole(Role.SUBSCRIBER).build();
-        boolean result = this.factoryService.createDaoFactory().getIUserDao().create(user);
-       assertTrue(result);
-    }
+        this.factoryService.createDaoFactory().getIUserDao().create(user);
 
-//    @Test
-//    void findUser() {
-//        UserEntity user = UserEntity.builder()
-//                .withId(12L)
-//                .withEmail("john.doe@lost.com")
-//                .withFirstname("John")
-//                .withLastname("Doe")
-//                .withPassword("what")
-//                .withRole(RoleEntity.SUBSCRIBER).build();
-//        UserEntity findUser = this.factory.createUserDao().findById(12L);
-//        Assertions.assertThat(Objects.equals(findUser.getId(), user.getId())).isTrue();
-//
-//    }
+    }
 
     @Test
     void editUser() {
@@ -70,17 +55,4 @@ class UserDaoImplTest {
         this.factoryService.createDaoFactory().getIUserDao().edit(user);
         Assertions.assertThat(user).isNotNull();
     }
-
-//    @Test
-//    void removeUser() {
-//        UserEntity user = UserEntity.builder()
-//                .withId(12L)
-//                .withEmail("john.doe@lost.com")
-//                .withFirstname("John")
-//                .withLastname("Doe")
-//                .withPassword("what")
-//                .withRole(RoleEntity.SUBSCRIBER).build();
-//        Boolean test = this.factory.createUserDao().remove(user);
-//        Assertions.assertThat(test).isTrue();
-//    }
 }
