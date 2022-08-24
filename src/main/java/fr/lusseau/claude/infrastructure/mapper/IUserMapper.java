@@ -16,6 +16,7 @@ import java.util.List;
  * @date 18/08/2022
  */
 @Mapper
+@Named
 public interface IUserMapper {
 
     IUserMapper INSTANCE = Mappers.getMapper(IUserMapper.class);
