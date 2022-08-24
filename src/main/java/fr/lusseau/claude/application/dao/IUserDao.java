@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface IUserDao {
 
-    Boolean create(UserDTO userDTO);
+    void create(UserDTO userDTO);
 
     UserDTO edit(UserDTO userDTO);
 
@@ -21,4 +21,6 @@ public interface IUserDao {
     UserDTO findUser(Long id);
 
     List<UserDTO> findAll();
+
+    Boolean isEmailExist(String email);
 }
