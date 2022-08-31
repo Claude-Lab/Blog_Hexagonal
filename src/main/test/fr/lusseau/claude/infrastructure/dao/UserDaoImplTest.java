@@ -1,7 +1,7 @@
 package fr.lusseau.claude.infrastructure.dao;
 
 import fr.lusseau.claude.domain.model.Role;
-import fr.lusseau.claude.infrastructure.dto.UserDTO;
+import fr.lusseau.claude.infrastructure.entity.UserEntity;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
@@ -31,7 +31,7 @@ class UserDaoImplTest {
 
     @Test
     void createUser() {
-        UserDTO user = UserDTO.builder()
+        UserEntity user = UserEntity.builder()
                 .withEmail("john.doe@lost.com")
                 .withFirstName("John")
                 .withLastName("Doe")
@@ -43,7 +43,7 @@ class UserDaoImplTest {
 
     @Test
     void editUser() {
-        UserDTO user = UserDTO.builder()
+        UserEntity user = UserEntity.builder()
                 .withId(12L)
                 .withEmail("john.doe@lost.com")
                 .withFirstName("John")

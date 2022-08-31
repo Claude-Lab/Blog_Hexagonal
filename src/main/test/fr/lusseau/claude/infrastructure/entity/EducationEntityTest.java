@@ -1,4 +1,4 @@
-package fr.lusseau.claude.infrastructure.dto;
+package fr.lusseau.claude.infrastructure.entity;
 
 import fr.lusseau.claude.domain.model.Role;
 import org.junit.jupiter.api.Test;
@@ -16,13 +16,13 @@ class EducationEntityTest {
 
     @Test
     void shouldGetEducationInformation() {
-        EducationDTO article = EducationDTO.builder()
+        EducationEntity article = EducationEntity.builder()
                 .withTitle("test title")
                 .withBody("Body test")
                 .withUrl("test url")
                 .withDateIn(LocalDateTime.of(2022,12,25,12,00,00))
                 .withCreatedAt(LocalDateTime.now())
-                .withAuthor(UserDTO.builder()
+                .withAuthor(UserEntity.builder()
                         .withId(2L)
                         .withEmail("test@test.test")
                         .withFirstName("John")

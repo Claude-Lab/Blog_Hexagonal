@@ -1,6 +1,4 @@
-package fr.lusseau.claude.infrastructure.dto;
-
-import fr.lusseau.claude.infrastructure.dto.exception.EntityException;
+package fr.lusseau.claude.infrastructure.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -16,18 +14,18 @@ import java.util.Objects;
 @Entity
 @Table(name = "experience_blog")
 @Cacheable
-public class ExperienceDTO extends ArticleDTO implements Serializable {
+public class ExperienceEntity extends ArticleEntity implements Serializable {
 
     @Column(name = "experience_job_name")
     private String jobName;
     @Column(name = "experience_company")
-    private CompanyDTO company;
+    private CompanyEntity company;
     @Column(name = "experience_dateIn")
     private LocalDateTime dateIn;
     @Column(name = "experience_dateOut")
     private LocalDateTime dateOut;
 
-    private ExperienceDTO(Long id, String title, String body, String url, String cover, String miniature, boolean isActive, LocalDateTime createdAt, LocalDateTime updatedAt, UserDTO author, String jobName, CompanyDTO company, LocalDateTime dateIn, LocalDateTime dateOut) {
+    private ExperienceEntity(Long id, String title, String body, String url, String cover, String miniature, boolean isActive, LocalDateTime createdAt, LocalDateTime updatedAt, UserEntity author, String jobName, CompanyEntity company, LocalDateTime dateIn, LocalDateTime dateOut) {
         super(id, title, body, url, cover, miniature, isActive, createdAt, updatedAt, author);
         this.jobName = jobName;
         this.company = company;
@@ -35,10 +33,10 @@ public class ExperienceDTO extends ArticleDTO implements Serializable {
         this.dateOut = dateOut;
     }
 
-    public ExperienceDTO() {
+    public ExperienceEntity() {
     }
 
-    public ExperienceDTO(ExperienceEntityBuilder builder) {
+    public ExperienceEntity(ExperienceEntityBuilder builder) {
         super(builder);
         jobName = builder.jobName;
         company = builder.company;
@@ -51,7 +49,7 @@ public class ExperienceDTO extends ArticleDTO implements Serializable {
     }
 
     public static class ExperienceEntityBuilder extends ArticleEntityBuilder<ExperienceEntityBuilder> {
-        private CompanyDTO company;
+        private CompanyEntity company;
         private String jobName;
         private LocalDateTime dateIn;
         private LocalDateTime dateOut;
@@ -61,7 +59,7 @@ public class ExperienceDTO extends ArticleDTO implements Serializable {
             return this;
         }
 
-        public ExperienceEntityBuilder withCompany(CompanyDTO company) {
+        public ExperienceEntityBuilder withCompany(CompanyEntity company) {
             this.company = company;
             return this;
         }
@@ -81,8 +79,8 @@ public class ExperienceDTO extends ArticleDTO implements Serializable {
             return this;
         }
 
-        public ExperienceDTO build() {
-            return new ExperienceDTO(this);
+        public ExperienceEntity build() {
+            return new ExperienceEntity(this);
         }
     }
 
@@ -91,7 +89,7 @@ public class ExperienceDTO extends ArticleDTO implements Serializable {
         return jobName;
     }
 
-    public CompanyDTO getCompany() {
+    public CompanyEntity getCompany() {
         return company;
     }
 
@@ -109,7 +107,7 @@ public class ExperienceDTO extends ArticleDTO implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        ExperienceDTO that = (ExperienceDTO) o;
+        ExperienceEntity that = (ExperienceEntity) o;
         return Objects.equals(jobName, that.jobName) && Objects.equals(company, that.company) && Objects.equals(dateIn, that.dateIn) && Objects.equals(dateOut, that.dateOut);
     }
 

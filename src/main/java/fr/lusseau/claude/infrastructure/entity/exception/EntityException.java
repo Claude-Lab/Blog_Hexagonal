@@ -1,4 +1,4 @@
-package fr.lusseau.claude.infrastructure.dto.exception;
+package fr.lusseau.claude.infrastructure.entity.exception;
 
 import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
 

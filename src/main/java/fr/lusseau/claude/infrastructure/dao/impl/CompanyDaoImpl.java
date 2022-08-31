@@ -1,6 +1,6 @@
 package fr.lusseau.claude.infrastructure.dao.impl;
 
-import fr.lusseau.claude.infrastructure.dto.CompanyDTO;
+import fr.lusseau.claude.infrastructure.entity.CompanyEntity;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
 import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
@@ -18,7 +18,7 @@ import javax.inject.Named;
 @Named("CompanyDaoImpl")
 @LogAudited
 @ApplicationScoped
-public class CompanyDaoImpl implements PanacheRepository<CompanyDTO> {
+public class CompanyDaoImpl implements PanacheRepository<CompanyEntity> {
 
     private final FactoryService factoryService;
 
@@ -28,7 +28,7 @@ public class CompanyDaoImpl implements PanacheRepository<CompanyDTO> {
     }
 
 
-    public CompanyDTO isNameExist(String name) {
+    public CompanyEntity isNameExist(String name) {
         return find("name", name).firstResult();
     }
 

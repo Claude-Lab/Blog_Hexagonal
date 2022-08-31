@@ -1,4 +1,4 @@
-package fr.lusseau.claude.infrastructure.dto;
+package fr.lusseau.claude.infrastructure.entity;
 
 import fr.lusseau.claude.domain.model.Role;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ class UserEntityTest {
 
     @Test
     void shouldGetUserInformation() {
-        UserDTO article = UserDTO.builder()
+        UserEntity article = UserEntity.builder()
                 .withId(2L)
                 .withEmail("test@test.test")
                 .withFirstName("John")

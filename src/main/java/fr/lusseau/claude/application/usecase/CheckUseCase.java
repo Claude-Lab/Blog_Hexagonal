@@ -1,6 +1,6 @@
 package fr.lusseau.claude.application.usecase;
 
-import fr.lusseau.claude.infrastructure.dto.*;
+import fr.lusseau.claude.infrastructure.entity.*;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
 import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
 
@@ -25,37 +25,37 @@ public class CheckUseCase {
 
 
     public boolean checkIfTitleExperienceExist(String title) {
-        ExperienceDTO experienceDTO = this.factoryService.getDaoFactory().getExperienceDao().isTitleExist(title);
+        ExperienceEntity experienceDTO = this.factoryService.getDaoFactory().getExperienceDao().isTitleExist(title);
         return experienceDTO != null;
     }
 
     public boolean checkIfUrlExperienceExist(String url) {
-        ExperienceDTO experienceDTO = this.factoryService.getDaoFactory().getExperienceDao().isUrlExist(url);
+        ExperienceEntity experienceDTO = this.factoryService.getDaoFactory().getExperienceDao().isUrlExist(url);
         return experienceDTO != null;
     }
 
     public boolean checkIfTitleEducationExist(String title) {
-        EducationDTO educationDTO = this.factoryService.getDaoFactory().getEducationDao().isTitleExist(title);
+        EducationEntity educationDTO = this.factoryService.getDaoFactory().getEducationDao().isTitleExist(title);
         return educationDTO != null;
     }
 
     public boolean checkIfEducationLevelNameExist(String name) {
-        EducationLevelDTO educationLevelDTO = factoryService.getDaoFactory().getEducationLevelDao().isNameExist(name);
-        return educationLevelDTO != null;
+        EducationLevelEntity educationLevelEntity = factoryService.getDaoFactory().getEducationLevelDao().isNameExist(name);
+        return educationLevelEntity != null;
     }
 
     public boolean checkIfUrlEducationExist(String url) {
-        EducationDTO educationDTO = this.factoryService.getDaoFactory().getEducationDao().isUrlExist(url);
+        EducationEntity educationDTO = this.factoryService.getDaoFactory().getEducationDao().isUrlExist(url);
         return educationDTO != null;
     }
 
     public boolean checkIfCompanyNameExist(String name) {
-        CompanyDTO companyDTO = this.factoryService.getDaoFactory().getCompanyDao().isNameExist(name);
-        return companyDTO != null;
+        CompanyEntity companyEntity = this.factoryService.getDaoFactory().getCompanyDao().isNameExist(name);
+        return companyEntity != null;
     }
 
     public boolean isEmailExist(String email) {
-        UserDTO userDTO = this.factoryService.getDaoFactory().getUserDao().isEmailExist(email);
-        return userDTO != null;
+        UserEntity userEntity = this.factoryService.getDaoFactory().getUserDao().isEmailExist(email);
+        return userEntity != null;
     }
 }

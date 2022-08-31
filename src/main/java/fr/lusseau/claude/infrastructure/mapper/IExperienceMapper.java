@@ -1,7 +1,7 @@
 package fr.lusseau.claude.infrastructure.mapper;
 
 import fr.lusseau.claude.domain.model.Experience;
-import fr.lusseau.claude.infrastructure.dto.ExperienceDTO;
+import fr.lusseau.claude.infrastructure.entity.ExperienceEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -35,7 +35,7 @@ public interface IExperienceMapper {
     @Mapping(target = "withDateIn", source = "dateIn")
     @Mapping(target = "withDateOut", source = "dateOut")
     @Mapping(target = "witJobName", source = "jobName")
-    Experience experienceDtoToExperience(ExperienceDTO experienceDTO);
+    Experience experienceDtoToExperience(ExperienceEntity experienceDTO);
 
     @Mapping(target = "withId", source = "id")
     @Mapping(target = "withTitle", source = "title")
@@ -51,7 +51,7 @@ public interface IExperienceMapper {
     @Mapping(target = "withDateIn", source = "dateIn")
     @Mapping(target = "withDateOut", source = "dateOut")
     @Mapping(target = "witJobName", source = "jobName")
-    ExperienceDTO experienceToExperienceDto(Experience experience);
+    ExperienceEntity experienceToExperienceDto(Experience experience);
 
     @Mapping(target = "withId", source = "id")
     @Mapping(target = "withTitle", source = "title")
@@ -67,7 +67,7 @@ public interface IExperienceMapper {
     @Mapping(target = "withDateIn", source = "dateIn")
     @Mapping(target = "withDateOut", source = "dateOut")
     @Mapping(target = "witJobName", source = "jobName")
-    List<Experience> experienceDtoListToExperienceList(List<ExperienceDTO> experienceDTOS);
+    List<Experience> experienceDtoListToExperienceList(List<ExperienceEntity> experienceDTOS);
 
     @Mapping(target = "withId", source = "id")
     @Mapping(target = "withTitle", source = "title")
@@ -83,5 +83,5 @@ public interface IExperienceMapper {
     @Mapping(target = "withDateIn", source = "dateIn")
     @Mapping(target = "withDateOut", source = "dateOut")
     @Mapping(target = "witJobName", source = "jobName")
-    List<ExperienceDTO> experienceListToExperienceDtoList(List<Experience> experiences);
+    List<ExperienceEntity> experienceListToExperienceDtoList(List<Experience> experiences);
 }

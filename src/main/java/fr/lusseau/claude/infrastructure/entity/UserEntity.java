@@ -1,4 +1,4 @@
-package fr.lusseau.claude.infrastructure.dto;
+package fr.lusseau.claude.infrastructure.entity;
 
 import fr.lusseau.claude.domain.model.Role;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
@@ -18,7 +18,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "user_blog")
 @Cacheable
-public class UserDTO extends PanacheEntityBase implements Serializable {
+public class UserEntity extends PanacheEntityBase implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,11 +44,11 @@ public class UserDTO extends PanacheEntityBase implements Serializable {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    protected UserDTO() {
+    protected UserEntity() {
     }
 
 
-    public UserDTO(UserEntityBuilder builder) {
+    public UserEntity(UserEntityBuilder builder) {
         id = builder.id;
         email = builder.email;
         password = builder.password;
@@ -99,8 +99,8 @@ public class UserDTO extends PanacheEntityBase implements Serializable {
             return this;
         }
 
-        public UserDTO build() {
-            return new UserDTO(this);
+        public UserEntity build() {
+            return new UserEntity(this);
         }
     }
 
@@ -132,7 +132,7 @@ public class UserDTO extends PanacheEntityBase implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        UserDTO that = (UserDTO) o;
+        UserEntity that = (UserEntity) o;
         return Objects.equals(id, that.id) && Objects.equals(email, that.email) && Objects.equals(password, that.password) && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && role == that.role;
     }
 

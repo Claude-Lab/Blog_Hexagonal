@@ -1,6 +1,4 @@
-package fr.lusseau.claude.infrastructure.dto;
-
-import fr.lusseau.claude.infrastructure.dto.exception.EntityException;
+package fr.lusseau.claude.infrastructure.entity;
 
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
@@ -20,19 +18,19 @@ import java.util.Objects;
 @Entity
 @Table(name = "education_blog")
 @Cacheable
-public class EducationDTO extends ArticleDTO implements Serializable {
+public class EducationEntity extends ArticleEntity implements Serializable {
 
     @Column(name = "education_company")
-    private CompanyDTO company;
+    private CompanyEntity company;
     @NotNull(message = "Date in is required.")
     @Column(name = "education_dateIn")
     private LocalDateTime dateIn;
     @Column(name = "education_dateOut")
     private LocalDateTime dateOut;
     @Column(name = "education_level")
-    private EducationLevelDTO level;
+    private EducationLevelEntity level;
 
-    private EducationDTO(Long id, String title, String body, String url, String cover, String miniature, boolean isActive, LocalDateTime createdAt, LocalDateTime updatedAt, UserDTO author, CompanyDTO company, LocalDateTime dateIn, LocalDateTime dateOut, EducationLevelDTO level) {
+    private EducationEntity(Long id, String title, String body, String url, String cover, String miniature, boolean isActive, LocalDateTime createdAt, LocalDateTime updatedAt, UserEntity author, CompanyEntity company, LocalDateTime dateIn, LocalDateTime dateOut, EducationLevelEntity level) {
         super(id, title, body, url, cover, miniature, isActive, createdAt, updatedAt, author);
         this.company = company;
         this.dateIn = dateIn;
@@ -40,10 +38,10 @@ public class EducationDTO extends ArticleDTO implements Serializable {
         this.level = level;
     }
 
-    public EducationDTO() {
+    public EducationEntity() {
     }
 
-    public EducationDTO(EducationEntityBuilder builder) {
+    public EducationEntity(EducationEntityBuilder builder) {
         super(builder);
         company = builder.company;
         dateIn = builder.dateIn;
@@ -56,17 +54,17 @@ public class EducationDTO extends ArticleDTO implements Serializable {
     }
 
     public static class EducationEntityBuilder extends ArticleEntityBuilder<EducationEntityBuilder> {
-        private CompanyDTO company;
+        private CompanyEntity company;
         private LocalDateTime dateIn;
         private LocalDateTime dateOut;
-        private EducationLevelDTO level;
+        private EducationLevelEntity level;
 
         @Override
         public EducationEntityBuilder getThis() {
             return this;
         }
 
-        public EducationEntityBuilder withCompany(CompanyDTO company) {
+        public EducationEntityBuilder withCompany(CompanyEntity company) {
             this.company = company;
             return this;
         }
@@ -81,18 +79,18 @@ public class EducationDTO extends ArticleDTO implements Serializable {
             return this;
         }
 
-        public EducationEntityBuilder withLevel(EducationLevelDTO level) {
+        public EducationEntityBuilder withLevel(EducationLevelEntity level) {
             this.level = level;
             return this;
         }
 
-        public EducationDTO build() {
-            return new EducationDTO(this);
+        public EducationEntity build() {
+            return new EducationEntity(this);
         }
     }
 
 
-    public CompanyDTO getCompany() {
+    public CompanyEntity getCompany() {
         return company;
     }
 
@@ -104,7 +102,7 @@ public class EducationDTO extends ArticleDTO implements Serializable {
         return dateOut;
     }
 
-    public EducationLevelDTO getLevel() {
+    public EducationLevelEntity getLevel() {
         return level;
     }
 
@@ -113,7 +111,7 @@ public class EducationDTO extends ArticleDTO implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        EducationDTO that = (EducationDTO) o;
+        EducationEntity that = (EducationEntity) o;
         return Objects.equals(company, that.company) && Objects.equals(dateIn, that.dateIn) && Objects.equals(dateOut, that.dateOut) && Objects.equals(level, that.level);
     }
 

@@ -2,7 +2,7 @@ package fr.lusseau.claude.application.usecase;
 
 import fr.lusseau.claude.domain.model.EducationLevel;
 import fr.lusseau.claude.domain.validator.EducationLevelValidator;
-import fr.lusseau.claude.infrastructure.dto.EducationLevelDTO;
+import fr.lusseau.claude.infrastructure.entity.EducationLevelEntity;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
 import fr.lusseau.claude.infrastructure.mapper.IEducationLevelMapper;
 import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
@@ -30,12 +30,12 @@ public class CrudEducationLevelUseCase {
     }
 
     public void create(EducationLevel educationLevel) {
-        EducationLevelDTO educationLevelLevelDTO = IEducationLevelMapper.INSTANCE.educationLevelToEducationLevelDto(educationLevel);
+        EducationLevelEntity educationLevelLevelDTO = IEducationLevelMapper.INSTANCE.educationLevelToEducationLevelDto(educationLevel);
         this.factoryService.getDaoFactory().getEducationLevelDao().persistAndFlush(educationLevelLevelDTO);
     }
 
     public EducationLevel getOne(Long id) {
-        EducationLevelDTO educationLevelLevelDTO = this.factoryService.getDaoFactory().getEducationLevelDao().findById(id);
+        EducationLevelEntity educationLevelLevelDTO = this.factoryService.getDaoFactory().getEducationLevelDao().findById(id);
         if (educationLevelLevelDTO == null) {
             return null;
         }
@@ -44,7 +44,7 @@ public class CrudEducationLevelUseCase {
 
 
     public List<EducationLevel> getAll() {
-        List<EducationLevelDTO> educationLevelLevelDTOS = this.factoryService.getDaoFactory().getEducationLevelDao().listAll();
+        List<EducationLevelEntity> educationLevelLevelDTOS = this.factoryService.getDaoFactory().getEducationLevelDao().listAll();
         if (educationLevelLevelDTOS.isEmpty()) {
             return Collections.emptyList();
         }
@@ -53,7 +53,7 @@ public class CrudEducationLevelUseCase {
 
     public void update(EducationLevel educationLevel) {
         EducationLevelValidator.validateEducationLevel(educationLevel);
-        EducationLevelDTO educationLevelLevelDTO = IEducationLevelMapper.INSTANCE.educationLevelToEducationLevelDto(educationLevel);
+        EducationLevelEntity educationLevelLevelDTO = IEducationLevelMapper.INSTANCE.educationLevelToEducationLevelDto(educationLevel);
         this.factoryService.getDaoFactory().getEducationLevelDao().update(educationLevelLevelDTO);
     }
 

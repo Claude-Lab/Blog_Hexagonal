@@ -2,7 +2,7 @@ package fr.lusseau.claude.application.usecase;
 
 import fr.lusseau.claude.domain.model.Experience;
 import fr.lusseau.claude.domain.validator.ExperienceValidator;
-import fr.lusseau.claude.infrastructure.dto.ExperienceDTO;
+import fr.lusseau.claude.infrastructure.entity.ExperienceEntity;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
 import fr.lusseau.claude.infrastructure.mapper.IExperienceMapper;
 import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
@@ -30,12 +30,12 @@ public class CrudExperienceUseCase {
     }
 
     public void create(Experience education) {
-        ExperienceDTO experienceDTO = IExperienceMapper.INSTANCE.experienceToExperienceDto(education);
+        ExperienceEntity experienceDTO = IExperienceMapper.INSTANCE.experienceToExperienceDto(education);
         this.factoryService.getDaoFactory().getExperienceDao().persistAndFlush(experienceDTO);
     }
 
     public Experience getOne(Long id) {
-        ExperienceDTO experienceDTO = this.factoryService.getDaoFactory().getExperienceDao().findById(id);
+        ExperienceEntity experienceDTO = this.factoryService.getDaoFactory().getExperienceDao().findById(id);
         if (experienceDTO == null) {
             return null;
         }
@@ -44,7 +44,7 @@ public class CrudExperienceUseCase {
 
 
     public List<Experience> getAll() {
-        List<ExperienceDTO> experienceDTOS = this.factoryService.getDaoFactory().getExperienceDao().listAll();
+        List<ExperienceEntity> experienceDTOS = this.factoryService.getDaoFactory().getExperienceDao().listAll();
         if (experienceDTOS.isEmpty()) {
             return Collections.emptyList();
         }
@@ -53,7 +53,7 @@ public class CrudExperienceUseCase {
 
     public void update(Experience education) {
         ExperienceValidator.validateExperienceArticle(education);
-        ExperienceDTO experienceDTO = IExperienceMapper.INSTANCE.experienceToExperienceDto(education);
+        ExperienceEntity experienceDTO = IExperienceMapper.INSTANCE.experienceToExperienceDto(education);
         this.factoryService.getDaoFactory().getExperienceDao().update(experienceDTO);
     }
 

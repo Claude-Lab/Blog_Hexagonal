@@ -1,4 +1,4 @@
-package fr.lusseau.claude.infrastructure.dto;
+package fr.lusseau.claude.infrastructure.entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
@@ -17,7 +17,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "education_level_blog")
 @Cacheable
-public class EducationLevelDTO extends PanacheEntityBase implements Serializable {
+public class EducationLevelEntity extends PanacheEntityBase implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,15 +27,15 @@ public class EducationLevelDTO extends PanacheEntityBase implements Serializable
     @Column(name = "education_level_name")
     private String name;
 
-    public EducationLevelDTO(EducationLevelEntityBuilder builder) {
+    public EducationLevelEntity(EducationLevelEntityBuilder builder) {
         id = builder.id;
         name = builder.name;
     }
 
-    protected EducationLevelDTO() {
+    protected EducationLevelEntity() {
     }
 
-    private EducationLevelDTO(Long id, String name) {
+    private EducationLevelEntity(Long id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -57,8 +57,8 @@ public class EducationLevelDTO extends PanacheEntityBase implements Serializable
             this.name = name;
             return this;
         }
-        public EducationLevelDTO build() {
-            return new EducationLevelDTO(this);
+        public EducationLevelEntity build() {
+            return new EducationLevelEntity(this);
         }
     }
 
@@ -74,7 +74,7 @@ public class EducationLevelDTO extends PanacheEntityBase implements Serializable
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        EducationLevelDTO that = (EducationLevelDTO) o;
+        EducationLevelEntity that = (EducationLevelEntity) o;
         return Objects.equals(id, that.id) && Objects.equals(name, that.name);
     }
 

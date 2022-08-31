@@ -1,9 +1,7 @@
 package fr.lusseau.claude.infrastructure.mapper;
 
-import fr.lusseau.claude.domain.model.Company;
 import fr.lusseau.claude.domain.model.EducationLevel;
-import fr.lusseau.claude.infrastructure.dto.CompanyDTO;
-import fr.lusseau.claude.infrastructure.dto.EducationLevelDTO;
+import fr.lusseau.claude.infrastructure.entity.EducationLevelEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -25,17 +23,17 @@ public interface IEducationLevelMapper {
 
     @Mapping(target = "withId", source = "id")
     @Mapping(target = "withName", source = "name")
-    EducationLevel educationLevelDtoToEducationLevel(EducationLevelDTO educationLevelDTO);
+    EducationLevel educationLevelDtoToEducationLevel(EducationLevelEntity educationLevelEntity);
 
     @Mapping(target = "withId", source = "id")
     @Mapping(target = "withName", source = "name")
-    EducationLevelDTO educationLevelToEducationLevelDto(EducationLevel educationLevel);
+    EducationLevelEntity educationLevelToEducationLevelDto(EducationLevel educationLevel);
 
     @Mapping(target = "withId", source = "id")
     @Mapping(target = "withName", source = "name")
-    List<EducationLevel> educationLevelDtoListToEducationLevelList(List<EducationLevelDTO> educationLevelDTOS);
+    List<EducationLevel> educationLevelDtoListToEducationLevelList(List<EducationLevelEntity> educationLevelEntities);
 
     @Mapping(target = "withId", source = "id")
     @Mapping(target = "withName", source = "name")
-    List<EducationLevelDTO> educationLevelListToEducationLevelDtoList(List<EducationLevel> educationLevels);
+    List<EducationLevelEntity> educationLevelListToEducationLevelDtoList(List<EducationLevel> educationLevels);
 }

@@ -1,7 +1,7 @@
 package fr.lusseau.claude.infrastructure.mapper;
 
 import fr.lusseau.claude.domain.model.User;
-import fr.lusseau.claude.infrastructure.dto.UserDTO;
+import fr.lusseau.claude.infrastructure.entity.UserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -27,7 +27,7 @@ public interface IUserMapper {
     @Mapping(target = "withFirstName", source = "firstName")
     @Mapping(target = "withLastName", source = "lastName")
     @Mapping(target = "withRole", source = "role")
-    User userDtoToUser(UserDTO userDTO);
+    User userDtoToUser(UserEntity userEntity);
 
     @Mapping(target = "withId", source = "id")
     @Mapping(target = "withEmail", source = "email")
@@ -35,7 +35,7 @@ public interface IUserMapper {
     @Mapping(target = "withFirstName", source = "firstName")
     @Mapping(target = "withLastName", source = "lastName")
     @Mapping(target = "withRole", source = "role")
-    UserDTO userToUserDto(User user);
+    UserEntity userToUserDto(User user);
 
     @Mapping(target = "withId", source = "withId")
     @Mapping(target = "withEmail", source = "withEmail")
@@ -43,7 +43,7 @@ public interface IUserMapper {
     @Mapping(target = "withFirstName", source = "withFirstName")
     @Mapping(target = "withLastName", source = "withLastName")
     @Mapping(target = "withRole", source = "withRole")
-    List<User> userDtoListToUserList(List<UserDTO> userDTOList);
+    List<User> userDtoListToUserList(List<UserEntity> userEntityList);
 
     @Mapping(target = "withId", source = "withId")
     @Mapping(target = "withEmail", source = "withEmail")
@@ -51,5 +51,5 @@ public interface IUserMapper {
     @Mapping(target = "withFirstName", source = "withFirstName")
     @Mapping(target = "withLastName", source = "withLastName")
     @Mapping(target = "withRole", source = "withRole")
-    List<UserDTO> userListToUserDtoList(List<User> users);
+    List<UserEntity> userListToUserDtoList(List<User> users);
 }

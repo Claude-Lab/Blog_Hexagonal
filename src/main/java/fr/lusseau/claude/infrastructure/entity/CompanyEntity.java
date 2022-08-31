@@ -1,4 +1,4 @@
-package fr.lusseau.claude.infrastructure.dto;
+package fr.lusseau.claude.infrastructure.entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
@@ -15,7 +15,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "company_blog")
 @Cacheable
-public class CompanyDTO extends PanacheEntityBase implements Serializable {
+public class CompanyEntity extends PanacheEntityBase implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,17 +28,17 @@ public class CompanyDTO extends PanacheEntityBase implements Serializable {
     @Column(name = "company_type")
     private String type;
 
-    protected CompanyDTO() {
+    protected CompanyEntity() {
     }
 
-    private CompanyDTO(Long id, String name, String place, String type) {
+    private CompanyEntity(Long id, String name, String place, String type) {
         this.id = id;
         this.name = name;
         this.place = place;
         this.type = type;
     }
 
-    public CompanyDTO(CompanyEntityBuilder builder) {
+    public CompanyEntity(CompanyEntityBuilder builder) {
         id = builder.id;
         name =  builder.name;
         place =  builder.place;
@@ -72,8 +72,8 @@ public class CompanyDTO extends PanacheEntityBase implements Serializable {
             return this;
         }
 
-        public CompanyDTO build() {
-            return new CompanyDTO(this);
+        public CompanyEntity build() {
+            return new CompanyEntity(this);
         }
     }
 
@@ -97,7 +97,7 @@ public class CompanyDTO extends PanacheEntityBase implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CompanyDTO that = (CompanyDTO) o;
+        CompanyEntity that = (CompanyEntity) o;
         return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(place, that.place) && Objects.equals(type, that.type);
     }
 

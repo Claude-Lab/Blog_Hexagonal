@@ -1,4 +1,4 @@
-package fr.lusseau.claude.infrastructure.dto;
+package fr.lusseau.claude.infrastructure.entity;
 
 import org.junit.jupiter.api.Test;
 import org.wildfly.common.Assert;
@@ -9,15 +9,13 @@ import org.wildfly.common.Assert;
  * @package fr.lusseau.claude.application.entity
  * @date 11/08/2022
  */
-class CompanyEntityTest {
+class EducationLevelEntityTest {
 
     @Test
-    void shouldGetCompanyInformation() {
-        CompanyDTO article = CompanyDTO.builder()
+    void shouldGetEducationLevelInformation() {
+        EducationLevelEntity article = EducationLevelEntity.builder()
                 .withId(1L)
-                .withName("test title")
-                .withPlace("France")
-                .withType("Laboratoire de test logiciel")
+                .withName("Master degree")
                 .build();
         Assert.assertNotNull(article);
     }

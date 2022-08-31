@@ -1,7 +1,7 @@
 package fr.lusseau.claude.infrastructure.mapper;
 
 import fr.lusseau.claude.domain.model.Education;
-import fr.lusseau.claude.infrastructure.dto.EducationDTO;
+import fr.lusseau.claude.infrastructure.entity.EducationEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -35,7 +35,7 @@ public interface IEducationMapper {
     @Mapping(target = "withDateIn", source = "dateIn")
     @Mapping(target = "withDateOut", source = "dateOut")
     @Mapping(target = "withLevel", source = "level")
-    Education educationDtoToEducation(EducationDTO educationDTO);
+    Education educationDtoToEducation(EducationEntity educationDTO);
 
     @Mapping(target = "withId", source = "id")
     @Mapping(target = "withTitle", source = "title")
@@ -51,7 +51,7 @@ public interface IEducationMapper {
     @Mapping(target = "withDateIn", source = "dateIn")
     @Mapping(target = "withDateOut", source = "dateOut")
     @Mapping(target = "withLevel", source = "level")
-    EducationDTO educationToEducationDto(Education education);
+    EducationEntity educationToEducationDto(Education education);
 
     @Mapping(target = "withId", source = "id")
     @Mapping(target = "withTitle", source = "title")
@@ -67,7 +67,7 @@ public interface IEducationMapper {
     @Mapping(target = "withDateIn", source = "dateIn")
     @Mapping(target = "withDateOut", source = "dateOut")
     @Mapping(target = "withLevel", source = "level")
-    List<Education> educationDtoListToEducationList(List<EducationDTO> educationDTOS);
+    List<Education> educationDtoListToEducationList(List<EducationEntity> educationDTOS);
 
     @Mapping(target = "withId", source = "id")
     @Mapping(target = "withTitle", source = "title")
@@ -83,5 +83,5 @@ public interface IEducationMapper {
     @Mapping(target = "withDateIn", source = "dateIn")
     @Mapping(target = "withDateOut", source = "dateOut")
     @Mapping(target = "withLevel", source = "level")
-    List<EducationDTO> educationListToEducationDtoList(List<Education> educations);
+    List<EducationEntity> educationListToEducationDtoList(List<Education> educations);
 }

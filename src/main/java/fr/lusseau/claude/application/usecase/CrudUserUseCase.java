@@ -2,7 +2,7 @@ package fr.lusseau.claude.application.usecase;
 
 import fr.lusseau.claude.domain.model.User;
 import fr.lusseau.claude.domain.validator.UserValidator;
-import fr.lusseau.claude.infrastructure.dto.UserDTO;
+import fr.lusseau.claude.infrastructure.entity.UserEntity;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
 import fr.lusseau.claude.infrastructure.mapper.IUserMapper;
 import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
@@ -30,33 +30,33 @@ public class CrudUserUseCase {
     }
 
     public void create(User user) {
-        UserDTO userDTO = IUserMapper.INSTANCE.userToUserDto(user);
-        this.factoryService.getDaoFactory().getUserDao().persistAndFlush(userDTO);
+        UserEntity userEntity = IUserMapper.INSTANCE.userToUserDto(user);
+        this.factoryService.getDaoFactory().getUserDao().persistAndFlush(userEntity);
     }
 
     public User getOne(Long id) {
 
-        UserDTO userDTO = this.factoryService.getDaoFactory().getUserDao().findById(id);
-        if (userDTO == null) {
+        UserEntity userEntity = this.factoryService.getDaoFactory().getUserDao().findById(id);
+        if (userEntity == null) {
             return null;
         }
-        return IUserMapper.INSTANCE.userDtoToUser(userDTO);
+        return IUserMapper.INSTANCE.userDtoToUser(userEntity);
     }
 
 
     public List<User> getAllUsers() {
-        List<UserDTO> userDTOS = this.factoryService.getDaoFactory().getUserDao().listAll();
-        if (userDTOS.isEmpty()) {
+        List<UserEntity> userEntities = this.factoryService.getDaoFactory().getUserDao().listAll();
+        if (userEntities.isEmpty()) {
             return Collections.emptyList();
         }
-        return IUserMapper.INSTANCE.userDtoListToUserList(userDTOS);
+        return IUserMapper.INSTANCE.userDtoListToUserList(userEntities);
     }
 
     public void update(User user) {
         User entity = getOne(user.getId());
         UserValidator.validateUser(user);
-        UserDTO userDTO = IUserMapper.INSTANCE.userToUserDto(entity);
-        this.factoryService.getDaoFactory().getUserDao().update(userDTO);
+        UserEntity userEntity = IUserMapper.INSTANCE.userToUserDto(entity);
+        this.factoryService.getDaoFactory().getUserDao().update(userEntity);
     }
 
     public void removeUser(User user) {

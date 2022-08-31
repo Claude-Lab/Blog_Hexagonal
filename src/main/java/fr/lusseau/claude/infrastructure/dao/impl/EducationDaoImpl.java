@@ -1,6 +1,6 @@
 package fr.lusseau.claude.infrastructure.dao.impl;
 
-import fr.lusseau.claude.infrastructure.dto.EducationDTO;
+import fr.lusseau.claude.infrastructure.entity.EducationEntity;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
 import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
@@ -18,7 +18,7 @@ import javax.inject.Named;
 @Named("EducationDaoImpl")
 @LogAudited
 @ApplicationScoped
-public class EducationDaoImpl implements PanacheRepository<EducationDTO> {
+public class EducationDaoImpl implements PanacheRepository<EducationEntity> {
 
     private final FactoryService factoryService;
 
@@ -27,15 +27,15 @@ public class EducationDaoImpl implements PanacheRepository<EducationDTO> {
         this.factoryService = factoryService;
     }
 
-    public void update(EducationDTO educationDTO) {
+    public void update(EducationEntity educationDTO) {
         factoryService.createEntityManager().merge(educationDTO);
     }
 
-    public EducationDTO isTitleExist(String title) {
+    public EducationEntity isTitleExist(String title) {
         return find("title",title).firstResult();
     }
 
-    public EducationDTO isUrlExist(String url) {
+    public EducationEntity isUrlExist(String url) {
         return find("url",url).firstResult();
     }
 }

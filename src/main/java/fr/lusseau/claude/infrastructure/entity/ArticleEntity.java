@@ -1,4 +1,4 @@
-package fr.lusseau.claude.infrastructure.dto;
+package fr.lusseau.claude.infrastructure.entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
@@ -18,7 +18,7 @@ import java.util.Objects;
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Cacheable
-public abstract class ArticleDTO extends PanacheEntityBase implements Serializable  {
+public abstract class ArticleEntity extends PanacheEntityBase implements Serializable  {
 
     @Id
     @TableGenerator(
@@ -57,9 +57,9 @@ public abstract class ArticleDTO extends PanacheEntityBase implements Serializab
     @NotNull(message = "Author is required.")
     @ManyToOne
     @JoinColumn(name = "id_user", nullable = false)
-    private UserDTO author;
+    private UserEntity author;
 
-    protected ArticleDTO(Long id, String title, String body, String url, String cover, String miniature, boolean active, LocalDateTime createdAt, LocalDateTime updatedAt, UserDTO author) {
+    protected ArticleEntity(Long id, String title, String body, String url, String cover, String miniature, boolean active, LocalDateTime createdAt, LocalDateTime updatedAt, UserEntity author) {
         this.id = id;
         this.title = title;
         this.body = body;
@@ -72,10 +72,10 @@ public abstract class ArticleDTO extends PanacheEntityBase implements Serializab
         this.author = author;
     }
 
-    protected ArticleDTO() {
+    protected ArticleEntity() {
     }
 
-    protected ArticleDTO(ArticleEntityBuilder<?> builder) {
+    protected ArticleEntity(ArticleEntityBuilder<?> builder) {
         id = builder.id;
         title = builder.title;
         body = builder.body;
@@ -100,7 +100,7 @@ public abstract class ArticleDTO extends PanacheEntityBase implements Serializab
         private boolean active;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
-        private UserDTO author;
+        private UserEntity author;
 
         public abstract T getThis();
 
@@ -149,12 +149,12 @@ public abstract class ArticleDTO extends PanacheEntityBase implements Serializab
             return this.getThis();
         }
 
-        public T withAuthor(UserDTO author) {
+        public T withAuthor(UserEntity author) {
             this.author = author;
             return this.getThis();
         }
 
-        public abstract ArticleDTO build();
+        public abstract ArticleEntity build();
     }
 
     public Long getId() {
@@ -193,7 +193,7 @@ public abstract class ArticleDTO extends PanacheEntityBase implements Serializab
         return updatedAt;
     }
 
-    public UserDTO getAuthor() {
+    public UserEntity getAuthor() {
         return author;
     }
 
@@ -201,7 +201,7 @@ public abstract class ArticleDTO extends PanacheEntityBase implements Serializab
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ArticleDTO article = (ArticleDTO) o;
+        ArticleEntity article = (ArticleEntity) o;
         return active == article.active && Objects.equals(id, article.id) && Objects.equals(title, article.title) && Objects.equals(body, article.body) && Objects.equals(url, article.url) && Objects.equals(cover, article.cover) && Objects.equals(miniature, article.miniature) && Objects.equals(createdAt, article.createdAt) && Objects.equals(updatedAt, article.updatedAt) && Objects.equals(author, article.author);
     }
 

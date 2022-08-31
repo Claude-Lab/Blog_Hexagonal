@@ -2,7 +2,7 @@ package fr.lusseau.claude.application.usecase;
 
 import fr.lusseau.claude.domain.model.Education;
 import fr.lusseau.claude.domain.validator.EducationValidator;
-import fr.lusseau.claude.infrastructure.dto.EducationDTO;
+import fr.lusseau.claude.infrastructure.entity.EducationEntity;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
 import fr.lusseau.claude.infrastructure.mapper.IEducationMapper;
 import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
@@ -31,12 +31,12 @@ public class CrudEducationUseCase {
 
 
     public void create(Education education) {
-        EducationDTO educationDTO = IEducationMapper.INSTANCE.educationToEducationDto(education);
+        EducationEntity educationDTO = IEducationMapper.INSTANCE.educationToEducationDto(education);
         this.factoryService.getDaoFactory().getEducationDao().persistAndFlush(educationDTO);
     }
 
     public Education getOne(Long id) {
-        EducationDTO educationDTO = this.factoryService.getDaoFactory().getEducationDao().findById(id);
+        EducationEntity educationDTO = this.factoryService.getDaoFactory().getEducationDao().findById(id);
         if (educationDTO == null) {
             return null;
         }
@@ -45,7 +45,7 @@ public class CrudEducationUseCase {
 
 
     public List<Education> getAll() {
-        List<EducationDTO> educationDTOS = this.factoryService.getDaoFactory().getEducationDao().listAll();
+        List<EducationEntity> educationDTOS = this.factoryService.getDaoFactory().getEducationDao().listAll();
         if (educationDTOS.isEmpty()) {
             return Collections.emptyList();
         }
@@ -54,7 +54,7 @@ public class CrudEducationUseCase {
 
     public void update(Education education) {
         EducationValidator.validateEducationArticle(education);
-        EducationDTO educationDTO = IEducationMapper.INSTANCE.educationToEducationDto(education);
+        EducationEntity educationDTO = IEducationMapper.INSTANCE.educationToEducationDto(education);
         this.factoryService.getDaoFactory().getEducationDao().update(educationDTO);
     }
 

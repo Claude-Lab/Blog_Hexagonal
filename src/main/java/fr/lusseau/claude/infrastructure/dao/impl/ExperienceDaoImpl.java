@@ -1,6 +1,6 @@
 package fr.lusseau.claude.infrastructure.dao.impl;
 
-import fr.lusseau.claude.infrastructure.dto.ExperienceDTO;
+import fr.lusseau.claude.infrastructure.entity.ExperienceEntity;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
 import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
@@ -18,7 +18,7 @@ import javax.inject.Named;
 @Named("ExperienceDaoImpl")
 @LogAudited
 @ApplicationScoped
-public class ExperienceDaoImpl implements PanacheRepository<ExperienceDTO>  {
+public class ExperienceDaoImpl implements PanacheRepository<ExperienceEntity>  {
 
     private final FactoryService factoryService;
 
@@ -27,15 +27,15 @@ public class ExperienceDaoImpl implements PanacheRepository<ExperienceDTO>  {
         this.factoryService = factoryService;
     }
 
-    public void update(ExperienceDTO experienceDTO) {
+    public void update(ExperienceEntity experienceDTO) {
         factoryService.createEntityManager().merge(experienceDTO);
     }
 
-    public ExperienceDTO isTitleExist(String title) {
+    public ExperienceEntity isTitleExist(String title) {
         return find("title", title).firstResult();
     }
 
-    public ExperienceDTO isUrlExist(String url) {
+    public ExperienceEntity isUrlExist(String url) {
         return find("url", url).firstResult();
     }
 

@@ -1,6 +1,6 @@
 package fr.lusseau.claude.infrastructure.dao.impl;
 
-import fr.lusseau.claude.infrastructure.dto.UserDTO;
+import fr.lusseau.claude.infrastructure.entity.UserEntity;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
 import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
@@ -18,7 +18,7 @@ import javax.inject.Named;
 @Named("UserDaoImpl")
 @LogAudited
 @ApplicationScoped
-public class UserDaoImpl implements PanacheRepository<UserDTO> {
+public class UserDaoImpl implements PanacheRepository<UserEntity> {
 
     private final FactoryService factoryService;
 
@@ -27,11 +27,11 @@ public class UserDaoImpl implements PanacheRepository<UserDTO> {
         this.factoryService = factoryService;
     }
 
-    public void update(UserDTO userDTO) {
-        factoryService.createEntityManager().merge(userDTO);
+    public void update(UserEntity userEntity) {
+        factoryService.createEntityManager().merge(userEntity);
     }
 
-    public UserDTO isEmailExist(String email) {
+    public UserEntity isEmailExist(String email) {
         return find("email",email).firstResult();
     }
 

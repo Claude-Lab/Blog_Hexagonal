@@ -1,9 +1,7 @@
 package fr.lusseau.claude.infrastructure.mapper;
 
 import fr.lusseau.claude.domain.model.Company;
-import fr.lusseau.claude.domain.model.User;
-import fr.lusseau.claude.infrastructure.dto.CompanyDTO;
-import fr.lusseau.claude.infrastructure.dto.UserDTO;
+import fr.lusseau.claude.infrastructure.entity.CompanyEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -27,23 +25,23 @@ public interface ICompanyMapper {
     @Mapping(target = "withName", source = "name")
     @Mapping(target = "withPlace", source = "place")
     @Mapping(target = "withType", source = "type")
-    Company companyDtoToCompany(CompanyDTO companyDTO);
+    Company companyDtoToCompany(CompanyEntity companyEntity);
 
     @Mapping(target = "withId", source = "id")
     @Mapping(target = "withName", source = "name")
     @Mapping(target = "withPlace", source = "place")
     @Mapping(target = "withType", source = "type")
-    CompanyDTO companyToCompanyDto(Company company);
+    CompanyEntity companyToCompanyDto(Company company);
 
     @Mapping(target = "withId", source = "id")
     @Mapping(target = "withName", source = "name")
     @Mapping(target = "withPlace", source = "place")
     @Mapping(target = "withType", source = "type")
-    List<Company> companyDtoListToCompanyList(List<CompanyDTO> companyDTOS);
+    List<Company> companyDtoListToCompanyList(List<CompanyEntity> companyEntities);
 
     @Mapping(target = "withId", source = "id")
     @Mapping(target = "withName", source = "name")
     @Mapping(target = "withPlace", source = "place")
     @Mapping(target = "withType", source = "type")
-    List<CompanyDTO> companyListToCompanyDtoList(List<Company> companies);
+    List<CompanyEntity> companyListToCompanyDtoList(List<Company> companies);
 }

@@ -1,8 +1,7 @@
 package fr.lusseau.claude.application.usecase;
 
 import fr.lusseau.claude.domain.model.Company;
-import fr.lusseau.claude.domain.validator.CompanyValidator;
-import fr.lusseau.claude.infrastructure.dto.CompanyDTO;
+import fr.lusseau.claude.infrastructure.entity.CompanyEntity;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
 import fr.lusseau.claude.infrastructure.mapper.ICompanyMapper;
 import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
@@ -30,30 +29,30 @@ public class CrudCompanyUseCase {
     }
 
     public void create(Company company) {
-        CompanyDTO companyDTO = ICompanyMapper.INSTANCE.companyToCompanyDto(company);
-        this.factoryService.getDaoFactory().getCompanyDao().persistAndFlush(companyDTO);
+        CompanyEntity companyEntity = ICompanyMapper.INSTANCE.companyToCompanyDto(company);
+        this.factoryService.getDaoFactory().getCompanyDao().persistAndFlush(companyEntity);
     }
 
     public Company getOne(Long id) {
-        CompanyDTO companyDTO = this.factoryService.getDaoFactory().getCompanyDao().findById(id);
-        if (companyDTO == null) {
+        CompanyEntity companyEntity = this.factoryService.getDaoFactory().getCompanyDao().findById(id);
+        if (companyEntity == null) {
             return null;
         }
-        return ICompanyMapper.INSTANCE.companyDtoToCompany(companyDTO);
+        return ICompanyMapper.INSTANCE.companyDtoToCompany(companyEntity);
     }
 
 
     public List<Company> getAll() {
-        List<CompanyDTO> companyDTOS = this.factoryService.getDaoFactory().getCompanyDao().listAll();
-        if (companyDTOS.isEmpty()) {
+        List<CompanyEntity> companyEntities = this.factoryService.getDaoFactory().getCompanyDao().listAll();
+        if (companyEntities.isEmpty()) {
             return Collections.emptyList();
         }
-        return ICompanyMapper.INSTANCE.companyDtoListToCompanyList(companyDTOS);
+        return ICompanyMapper.INSTANCE.companyDtoListToCompanyList(companyEntities);
     }
 
     public void update(Company company) {
-        CompanyDTO companyDTO = ICompanyMapper.INSTANCE.companyToCompanyDto(company);
-        this.factoryService.getDaoFactory().getCompanyDao().update(companyDTO);
+        CompanyEntity companyEntity = ICompanyMapper.INSTANCE.companyToCompanyDto(company);
+        this.factoryService.getDaoFactory().getCompanyDao().update(companyEntity);
     }
 
     public void remove(Company company) {
