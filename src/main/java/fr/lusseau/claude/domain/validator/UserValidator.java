@@ -1,10 +1,11 @@
 package fr.lusseau.claude.domain.validator;
 
-import fr.lusseau.claude.domain.exception.ValidationException;
 import fr.lusseau.claude.domain.model.User;
+import fr.lusseau.claude.domain.exception.ValidatorException;
+
+import java.io.Serializable;
 
 import static java.util.Objects.isNull;
-import static org.apache.maven.shared.utils.StringUtils.isBlank;
 
 /**
  * @author Claude Lusseau
@@ -12,22 +13,31 @@ import static org.apache.maven.shared.utils.StringUtils.isBlank;
  * @package fr.lusseau.claude.domain.validator
  * @date 16/08/2022
  */
-public class UserValidator {
+public class UserValidator implements Serializable {
+
+    static String emailRequired = "emailRequired";
+
+    static String firstnameRequired = "firstnameRequired";
+
+    static String lastnameRequired = "lastnameRequired";
+
+    static String roleRequired = "roleRequired";
+
+    static String passwordRequired = "passwordRequired";
 
     protected UserValidator() {
     }
 
     public static void validateUser(final User user) {
 
-        if (isNull(user)) throw new ValidationException("User should not be null");
-        if (isNull(user.getEmail())) throw new ValidationException("User email should not be null");
-        if (isBlank(user.getEmail())) throw new ValidationException("User email should not be blank");
-        if (isNull(user.getFirstName())) throw new ValidationException("User firstname in should not be null");
-        if (isBlank(user.getFirstName())) throw new ValidationException("User firstname should not be blank");
-        if (isNull(user.getLastName())) throw new ValidationException("User lastname should not be null");
-        if (isBlank(user.getLastName())) throw new ValidationException("User lastname should not be null");
-        if (isNull(user.getRole())) throw new ValidationException("User role should not be null");
-        if (isNull(user.getPassword())) throw new ValidationException("User password date should not be null");
-        if (isBlank(user.getPassword())) throw new ValidationException("User password should not be blank");
+        if (isNull(user.getEmail())) throw new ValidatorException(emailRequired);
+        if ((user.getEmail().isBlank())) throw new ValidatorException(emailRequired);
+        if (isNull(user.getFirstName())) throw new ValidatorException(firstnameRequired);
+        if ((user.getFirstName().isBlank())) throw new ValidatorException(firstnameRequired);
+        if (isNull(user.getLastName())) throw new ValidatorException(lastnameRequired);
+        if ((user.getLastName().isBlank()))throw new ValidatorException(lastnameRequired);
+        if (isNull(user.getRole())) throw new ValidatorException(roleRequired);
+        if (isNull(user.getPassword())) throw new ValidatorException(passwordRequired);
+        if ((user.getPassword().isBlank())) throw new ValidatorException(passwordRequired);
     }
 }

@@ -1,7 +1,5 @@
 package fr.lusseau.claude.infrastructure.resource.exception;
 
-import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
-
 import java.io.Serializable;
 
 /**

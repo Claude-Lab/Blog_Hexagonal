@@ -24,7 +24,11 @@ import javax.ws.rs.Produces;
 public class FactoryService {
 
     @PersistenceContext
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
+
+    public FactoryService(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 
     @Produces
     public EntityManager createEntityManager() {
@@ -33,14 +37,16 @@ public class FactoryService {
 
     @Produces
     @Named
-    public IDaoFactory createDaoFactory() {
+    public IDaoFactory getDaoFactory() {
         return new DaoFactoryImpl(this);
     }
 
     @Produces
     @Named
-    public IUseCaseFactory createUseCaseFactory() {
+    public IUseCaseFactory getUseCaseFactory() {
         return new UseCaseFactoryImpl(this);
     }
+
+
 
 }

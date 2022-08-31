@@ -2,12 +2,15 @@ package fr.lusseau.claude.infrastructure.dto.exception;
 
 import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
 
+import javax.inject.Named;
+
 /**
  * @author Claude Lusseau
  * @project site_perso
  * @package fr.lusseau.claude.domain.exception
  * @date 06/08/2022
  */
+@Named
 @LogAudited
 public class EntityException extends RuntimeException {
 

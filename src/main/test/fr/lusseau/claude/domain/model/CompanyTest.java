@@ -13,7 +13,12 @@ class CompanyTest {
 
     @Test
     void shouldGetCompanyInformation() {
-        Company company = Company.builder().build();
+        Company company = Company.builder()
+                .withId(1L)
+                .withName("Kereval")
+                .withType("Laboratoire de test logiciel")
+                .withPlace("Rennes")
+                .build();
         Assert.assertNotNull(company);
     }
 }

@@ -1,11 +1,11 @@
 package fr.lusseau.claude.infrastructure.dto;
 
 import fr.lusseau.claude.domain.model.Role;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -18,10 +18,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "user_blog")
 @Cacheable
-@NamedQuery(name = "User.findAll", query = "SELECT u FROM UserDTO u")
-@NamedQuery(name = "User.delete", query = "DELETE FROM UserDTO u WHERE u.id = :id")
-@NamedQuery(name = "User.findByEmail", query = "SELECT u FROM UserDTO u WHERE u.email = :email")
-public class UserDTO implements Serializable {
+public class UserDTO extends PanacheEntityBase implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

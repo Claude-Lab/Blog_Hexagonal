@@ -1,5 +1,6 @@
 package fr.lusseau.claude.domain.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -8,7 +9,7 @@ import java.util.Objects;
  * @package fr.lusseau.claude.domain.model
  * @date 10/08/2022
  */
-public class EducationLevel {
+public class EducationLevel implements Serializable {
 
     private final Long id;
     private final String name;
@@ -31,7 +32,7 @@ public class EducationLevel {
             return this;
         }
 
-        public EducationLevelBuilder withTitle(String name) {
+        public EducationLevelBuilder withName(String name) {
             this.name = name;
             return this;
         }

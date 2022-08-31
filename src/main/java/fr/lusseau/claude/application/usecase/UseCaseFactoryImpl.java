@@ -1,7 +1,6 @@
 package fr.lusseau.claude.application.usecase;
 
 import fr.lusseau.claude.application.factory.IUseCaseFactory;
-import fr.lusseau.claude.application.usecase.user.*;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
 import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
 
@@ -11,11 +10,11 @@ import javax.inject.Named;
 /**
  * @author Claude Lusseau
  * @project site_perso
- * @package fr.lusseau.claude.domain.usecase
- * @date 17/08/2022
+ * @package fr.lusseau.claude.application.usecase.impl
+ * @date 29/08/2022
  */
+@Named
 @LogAudited
-@Named("UseCaseFactoryImpl")
 public class UseCaseFactoryImpl implements IUseCaseFactory {
 
     private final FactoryService factoryService;
@@ -26,27 +25,35 @@ public class UseCaseFactoryImpl implements IUseCaseFactory {
     }
 
     @Override
-    public GetUserUseCase getUserUseCase() {
-        return new GetUserUseCase(factoryService);
+    public CrudCompanyUseCase getCrudCompanyUseCase() {
+        return new CrudCompanyUseCase(factoryService);
     }
 
     @Override
-    public DeleteUserUseCase deleteUserUseCase() {
-        return new DeleteUserUseCase(factoryService);
+    public CrudUserUseCase getCrudUserUseCase() {
+        return new CrudUserUseCase(factoryService);
     }
 
     @Override
-    public CreateUserUseCase createUserUseCase() {
-        return new CreateUserUseCase(factoryService);
+    public CrudEducationLevelUseCase getCrudEducationLevelUseCase() {
+        return new CrudEducationLevelUseCase(factoryService);
     }
 
     @Override
-    public UpdateUserUseCase updateUserUseCase() {
-        return new UpdateUserUseCase(factoryService);
+    public CrudExperienceUseCase getCrudExperienceUseCase() {
+        return new CrudExperienceUseCase(factoryService);
     }
 
     @Override
-    public EmailCheckUseCase emailCheckUseCase() {
-        return new EmailCheckUseCase(factoryService);
+    public CrudEducationUseCase getCrudEducationUseCase() {
+        return new CrudEducationUseCase(factoryService);
     }
+
+    @Override
+    public CheckUseCase getCheckUseCase() {
+        return new CheckUseCase(factoryService);
+    }
+
+
+
 }

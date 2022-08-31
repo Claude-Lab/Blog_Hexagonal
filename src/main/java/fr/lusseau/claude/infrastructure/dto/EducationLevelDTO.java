@@ -1,5 +1,6 @@
 package fr.lusseau.claude.infrastructure.dto;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -16,7 +17,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "education_level_blog")
 @Cacheable
-public class EducationLevelDTO implements Serializable {
+public class EducationLevelDTO extends PanacheEntityBase implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,7 +53,7 @@ public class EducationLevelDTO implements Serializable {
             return this;
         }
 
-        public EducationLevelEntityBuilder withTitle(String name) {
+        public EducationLevelEntityBuilder withName(String name) {
             this.name = name;
             return this;
         }

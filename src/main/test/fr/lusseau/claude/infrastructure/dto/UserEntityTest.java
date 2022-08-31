@@ -13,7 +13,7 @@ import org.wildfly.common.Assert;
 class UserEntityTest {
 
     @Test
-    void shouldGetArticleInformation() {
+    void shouldGetUserInformation() {
         UserDTO article = UserDTO.builder()
                 .withId(2L)
                 .withEmail("test@test.test")

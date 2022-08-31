@@ -12,10 +12,10 @@ import org.wildfly.common.Assert;
 class EducationLevelEntityTest {
 
     @Test
-    void shouldGetArticleInformation() {
+    void shouldGetEducationLevelInformation() {
         EducationLevelDTO article = EducationLevelDTO.builder()
                 .withId(1L)
-                .withTitle("Master degree")
+                .withName("Master degree")
                 .build();
         Assert.assertNotNull(article);
     }

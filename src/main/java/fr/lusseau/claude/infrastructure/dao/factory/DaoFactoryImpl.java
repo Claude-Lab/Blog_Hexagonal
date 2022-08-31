@@ -1,12 +1,7 @@
 package fr.lusseau.claude.infrastructure.dao.factory;
 
-import fr.lusseau.claude.application.dao.IEducationDao;
-import fr.lusseau.claude.application.dao.IExperienceDao;
-import fr.lusseau.claude.application.dao.IUserDao;
 import fr.lusseau.claude.application.factory.IDaoFactory;
-import fr.lusseau.claude.infrastructure.dao.EducationDaoImpl;
-import fr.lusseau.claude.infrastructure.dao.ExperienceDaoImpl;
-import fr.lusseau.claude.infrastructure.dao.UserDaoImpl;
+import fr.lusseau.claude.infrastructure.dao.impl.*;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
 import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
 
@@ -31,18 +26,28 @@ public class DaoFactoryImpl implements IDaoFactory {
     }
 
     @Override
-    public IEducationDao getIEducationDao() {
+    public UserDaoImpl getUserDao() {
+        return new UserDaoImpl(factoryService);
+    }
+
+    @Override
+    public CompanyDaoImpl getCompanyDao() {
+        return new CompanyDaoImpl(factoryService);
+    }
+
+    @Override
+    public EducationLevelDaoImpl getEducationLevelDao() {
+        return new EducationLevelDaoImpl(factoryService);
+    }
+
+    @Override
+    public EducationDaoImpl getEducationDao() {
         return new EducationDaoImpl(factoryService);
     }
 
     @Override
-    public IExperienceDao getIExperienceDao() {
+    public ExperienceDaoImpl getExperienceDao() {
         return new ExperienceDaoImpl(factoryService);
-    }
-
-    @Override
-    public IUserDao getIUserDao() {
-        return new UserDaoImpl(factoryService);
     }
 
 }

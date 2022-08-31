@@ -1,5 +1,7 @@
 package fr.lusseau.claude.infrastructure.dto;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -16,21 +18,21 @@ import java.util.Objects;
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Cacheable
-public abstract class ArticleDTO implements Serializable {
+public abstract class ArticleDTO extends PanacheEntityBase implements Serializable  {
 
     @Id
     @TableGenerator(
-            name="artGen",
-            table="ID_GEN",
-            pkColumnName="GEN_KEY",
-            valueColumnName="GEN_VALUE",
-            pkColumnValue="ART_ID",
-            allocationSize=1)
+            name = "artGen",
+            table = "ID_GEN",
+            pkColumnName = "GEN_KEY",
+            valueColumnName = "GEN_VALUE",
+            pkColumnValue = "ART_ID",
+            allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "artGen")
     private Long id;
     @NotNull(message = "Title is required.")
     @NotBlank(message = "Title is required.")
-    @Column(name = "article_title")
+    @Column(name = "article_title", unique = true, nullable = false)
     private String title;
     @Lob
     @NotNull(message = "Body is required.")
@@ -39,14 +41,14 @@ public abstract class ArticleDTO implements Serializable {
     private String body;
     @NotNull(message = "Url is required.")
     @NotBlank(message = "Url is required.")
-    @Column(name = "article_url")
+    @Column(name = "article_url", unique = true, nullable = false)
     private String url;
     @Column(name = "article_cover")
     private String cover;
     @Column(name = "article_miniature")
     private String miniature;
-    @Column(name = "article_isActive")
-    private boolean isActive;
+    @Column(name = "article_active")
+    private boolean active;
     @NotNull(message = "CreatedAt is required.")
     @Column(name = "article_createdAt")
     private LocalDateTime createdAt;
@@ -57,14 +59,14 @@ public abstract class ArticleDTO implements Serializable {
     @JoinColumn(name = "id_user", nullable = false)
     private UserDTO author;
 
-    protected ArticleDTO(Long id, String title, String body, String url, String cover, String miniature, boolean isActive, LocalDateTime createdAt, LocalDateTime updatedAt, UserDTO author) {
+    protected ArticleDTO(Long id, String title, String body, String url, String cover, String miniature, boolean active, LocalDateTime createdAt, LocalDateTime updatedAt, UserDTO author) {
         this.id = id;
         this.title = title;
         this.body = body;
         this.url = url;
         this.cover = cover;
         this.miniature = miniature;
-        this.isActive = isActive;
+        this.active = active;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.author = author;
@@ -80,13 +82,12 @@ public abstract class ArticleDTO implements Serializable {
         url = builder.url;
         cover = builder.cover;
         miniature = builder.miniature;
-        isActive = builder.isActive;
+        active = builder.active;
         createdAt = builder.createdAt;
         updatedAt = builder.updatedAt;
         author = builder.author;
 
     }
-
 
 
     public abstract static class ArticleEntityBuilder<T extends ArticleEntityBuilder<T>> {
@@ -96,7 +97,7 @@ public abstract class ArticleDTO implements Serializable {
         private String url;
         private String cover;
         private String miniature;
-        private boolean isActive;
+        private boolean active;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
         private UserDTO author;
@@ -133,8 +134,8 @@ public abstract class ArticleDTO implements Serializable {
             return this.getThis();
         }
 
-        public T withIsActive(boolean isActive) {
-            this.isActive = isActive;
+        public T withActive(boolean active) {
+            this.active = active;
             return this.getThis();
         }
 
@@ -181,7 +182,7 @@ public abstract class ArticleDTO implements Serializable {
     }
 
     public boolean isActive() {
-        return isActive;
+        return active;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -201,12 +202,12 @@ public abstract class ArticleDTO implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ArticleDTO article = (ArticleDTO) o;
-        return isActive == article.isActive && Objects.equals(id, article.id) && Objects.equals(title, article.title) && Objects.equals(body, article.body) && Objects.equals(url, article.url) && Objects.equals(cover, article.cover) && Objects.equals(miniature, article.miniature) && Objects.equals(createdAt, article.createdAt) && Objects.equals(updatedAt, article.updatedAt) && Objects.equals(author, article.author);
+        return active == article.active && Objects.equals(id, article.id) && Objects.equals(title, article.title) && Objects.equals(body, article.body) && Objects.equals(url, article.url) && Objects.equals(cover, article.cover) && Objects.equals(miniature, article.miniature) && Objects.equals(createdAt, article.createdAt) && Objects.equals(updatedAt, article.updatedAt) && Objects.equals(author, article.author);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, body, url, cover, miniature, isActive, createdAt, updatedAt, author);
+        return Objects.hash(id, title, body, url, cover, miniature, active, createdAt, updatedAt, author);
     }
 
     @Override
@@ -218,7 +219,7 @@ public abstract class ArticleDTO implements Serializable {
         sb.append(", url='").append(url).append('\'');
         sb.append(", cover='").append(cover).append('\'');
         sb.append(", miniature='").append(miniature).append('\'');
-        sb.append(", isActive=").append(isActive);
+        sb.append(", active=").append(active);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
         sb.append(", author=").append(author);

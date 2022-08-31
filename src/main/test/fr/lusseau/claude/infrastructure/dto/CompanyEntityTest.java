@@ -12,12 +12,12 @@ import org.wildfly.common.Assert;
 class CompanyEntityTest {
 
     @Test
-    void shouldGetArticleInformation() {
+    void shouldGetCompanyInformation() {
         CompanyDTO article = CompanyDTO.builder()
                 .withId(1L)
                 .withName("test title")
-                .withUrl("test url")
                 .withPlace("France")
+                .withType("Laboratoire de test logiciel")
                 .build();
         Assert.assertNotNull(article);
     }

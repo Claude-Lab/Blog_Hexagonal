@@ -11,8 +11,6 @@ import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
 
-import static org.wildfly.common.Assert.assertTrue;
-
 /**
  * @author Claude Lusseau
  * @project site_perso
@@ -39,7 +37,7 @@ class UserDaoImplTest {
                 .withLastName("Doe")
                 .withPassword("what")
                 .withRole(Role.SUBSCRIBER).build();
-        this.factoryService.createDaoFactory().getIUserDao().create(user);
+        this.factoryService.getDaoFactory().getUserDao().persistAndFlush(user);
 
     }
 
@@ -52,7 +50,7 @@ class UserDaoImplTest {
                 .withLastName("Doe")
                 .withPassword("what")
                 .withRole(Role.SUBSCRIBER).build();
-        this.factoryService.createDaoFactory().getIUserDao().edit(user);
+        this.factoryService.getDaoFactory().getUserDao().update(user);
         Assertions.assertThat(user).isNotNull();
     }
 }

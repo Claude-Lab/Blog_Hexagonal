@@ -18,7 +18,7 @@ public class Article implements Serializable {
     private final String url;
     private final String cover;
     private final String miniature;
-    private final boolean isActive;
+    private final boolean active;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
     private final User author;
@@ -30,7 +30,7 @@ public class Article implements Serializable {
         url = builder.url;
         cover = builder.cover;
         miniature = builder.miniature;
-        isActive = builder.isActive;
+        active = builder.active;
         createdAt = builder.createdAt;
         updatedAt = builder.updatedAt;
         author = builder.author;
@@ -53,7 +53,7 @@ public class Article implements Serializable {
         private String url;
         private String cover;
         private String miniature;
-        private boolean isActive;
+        private boolean active;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
         private User author;
@@ -90,8 +90,8 @@ public class Article implements Serializable {
             return this.getThis();
         }
 
-        public T withIsActive(boolean isActive) {
-            this.isActive = isActive;
+        public T withActive(boolean active) {
+            this.active = active;
             return this.getThis();
         }
 
@@ -140,7 +140,7 @@ public class Article implements Serializable {
     }
 
     public boolean isActive() {
-        return isActive;
+        return active;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -160,12 +160,12 @@ public class Article implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Article article = (Article) o;
-        return isActive == article.isActive && Objects.equals(id, article.id) && Objects.equals(title, article.title) && Objects.equals(body, article.body) && Objects.equals(url, article.url) && Objects.equals(cover, article.cover) && Objects.equals(miniature, article.miniature) && Objects.equals(createdAt, article.createdAt) && Objects.equals(updatedAt, article.updatedAt) && Objects.equals(author, article.author);
+        return active == article.active && Objects.equals(id, article.id) && Objects.equals(title, article.title) && Objects.equals(body, article.body) && Objects.equals(url, article.url) && Objects.equals(cover, article.cover) && Objects.equals(miniature, article.miniature) && Objects.equals(createdAt, article.createdAt) && Objects.equals(updatedAt, article.updatedAt) && Objects.equals(author, article.author);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, body, url, cover, miniature, isActive, createdAt, updatedAt, author);
+        return Objects.hash(id, title, body, url, cover, miniature, active, createdAt, updatedAt, author);
     }
 
     @Override
@@ -177,7 +177,7 @@ public class Article implements Serializable {
         sb.append(", url='").append(url).append('\'');
         sb.append(", cover='").append(cover).append('\'');
         sb.append(", miniature='").append(miniature).append('\'');
-        sb.append(", isActive=").append(isActive);
+        sb.append(", active=").append(active);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
         sb.append(", author=").append(author);

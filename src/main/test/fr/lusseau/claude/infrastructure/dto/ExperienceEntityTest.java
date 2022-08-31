@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 class ExperienceEntityTest {
 
     @Test
-    void shouldGetArticleInformation() {
+    void shouldGetExperienceInformation() {
         ExperienceDTO article = ExperienceDTO.builder()
                 .withId(1L)
                 .withTitle("test title")

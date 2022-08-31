@@ -1,9 +1,12 @@
 package fr.lusseau.claude.domain.validator;
 
-import fr.lusseau.claude.domain.exception.ValidationException;
 import fr.lusseau.claude.domain.model.Company;
+import fr.lusseau.claude.domain.exception.ValidatorException;
 
-import static org.apache.maven.shared.utils.StringUtils.isBlank;
+import java.io.Serializable;
+
+import static java.util.Objects.isNull;
+
 
 /**
  * @author Claude Lusseau
@@ -11,12 +14,18 @@ import static org.apache.maven.shared.utils.StringUtils.isBlank;
  * @package fr.lusseau.claude.domain.validator
  * @date 16/08/2022
  */
-public class CompanyValidator {
+public class CompanyValidator implements Serializable {
+
+    static String companyNameRequired = "companyNameRequired";
+
+    static String companyPlaceRequired = "companyPlaceRequired";
+
 
     public static void validateCompany(final Company company) {
-        if (company == null) throw new ValidationException("Company should not be null");
-        if (isBlank(company.getName())) throw new ValidationException("Name should not be null");
-        if (isBlank(company.getPlace())) throw new ValidationException("Place should not be null");
-        if (isBlank(company.getName())) throw new ValidationException("Name should not be null");
+
+        if ((company.getName().isBlank())) throw new ValidatorException(companyNameRequired);
+        if (isNull(company.getName())) throw new ValidatorException(companyNameRequired);
+        if ((company.getPlace().isBlank())) throw new ValidatorException(companyPlaceRequired);
+        if (isNull(company.getPlace())) throw new ValidatorException(companyPlaceRequired);
     }
 }

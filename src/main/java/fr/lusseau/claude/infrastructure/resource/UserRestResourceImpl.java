@@ -1,6 +1,5 @@
 package fr.lusseau.claude.infrastructure.resource;
 
-
 import fr.lusseau.claude.domain.model.User;
 import fr.lusseau.claude.domain.validator.UserValidator;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
@@ -9,7 +8,6 @@ import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.inject.Inject;
-import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -28,13 +26,16 @@ public class UserRestResourceImpl {
 
     private final FactoryService factoryService;
 
-    @ConfigProperty(name = "user.custom.error.msg.userNotFound")
+    @ConfigProperty(name = "user.response.error.msg.userNotFound")
     String userNotFound;
-    @ConfigProperty(name = "user.custom.error.msg.invalidUser")
+
+    @ConfigProperty(name = "user.response.error.msg.invalidUser")
     String invalidUser;
-    @ConfigProperty(name = "user.custom.error.msg.emailExist")
+
+    @ConfigProperty(name = "user.response.error.msg.emailExist")
     String emailExist;
-    @ConfigProperty(name = "user.custom.error.msg.emptyUserList")
+
+    @ConfigProperty(name = "user.response.error.msg.emptyUserList")
     String emptyUserList;
 
     @Inject
@@ -45,8 +46,8 @@ public class UserRestResourceImpl {
     @GET
     @Path("")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<User> getAllUsers() throws ResourceException {
-        List<User> users = this.factoryService.createUseCaseFactory().getUserUseCase().getAllUsers();
+    public List<User> getAllUsers() {
+        List<User> users = this.factoryService.getUseCaseFactory().getCrudUserUseCase().getAllUsers();
         if (users.isEmpty()) {
             throw new ResourceException(emptyUserList);
         }
@@ -56,8 +57,8 @@ public class UserRestResourceImpl {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
-    public User getOneUser(@PathParam("id") Long id) {
-        User user = this.factoryService.createUseCaseFactory().getUserUseCase().getOne(id);
+    public User getOne(@PathParam("id") Long id) {
+        User user = this.factoryService.getUseCaseFactory().getCrudUserUseCase().getOne(id);
         if (user == null) {
             throw new ResourceException(userNotFound);
         }
@@ -69,8 +70,9 @@ public class UserRestResourceImpl {
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     public Response removeUser(@PathParam("id") Long id) {
+        User user = this.factoryService.getUseCaseFactory().getCrudUserUseCase().getOne(id);
         try {
-            this.factoryService.createUseCaseFactory().deleteUserUseCase().removeUser(id);
+            this.factoryService.getUseCaseFactory().getCrudUserUseCase().removeUser(user);
         } catch (IllegalArgumentException e) {
             throw new ResourceException(userNotFound);
         }
@@ -82,7 +84,7 @@ public class UserRestResourceImpl {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Transactional
-    public Response createNewUser(User user) throws ResourceException {
+    public Response createNewUser(User user) {
         User newUser = User.builder()
                 .withEmail(user.getEmail())
                 .withPassword(user.getPassword())
@@ -90,16 +92,16 @@ public class UserRestResourceImpl {
                 .withLastName(user.getLastName())
                 .withRole(user.getRole())
                 .build();
-        boolean checkEmail = this.factoryService.createUseCaseFactory().emailCheckUseCase().isEmailExist(newUser.getEmail());
+        boolean isEmailExist = this.factoryService.getUseCaseFactory().getCheckUseCase().isEmailExist(newUser.getEmail());
         try {
             UserValidator.validateUser(newUser);
         } catch (RuntimeException e) {
             throw new ResourceException(invalidUser);
         }
-        if (checkEmail) {
+        if (isEmailExist) {
             throw new ResourceException(emailExist);
         }
-        this.factoryService.createUseCaseFactory().createUserUseCase().createUser(newUser);
+        this.factoryService.getUseCaseFactory().getCrudUserUseCase().create(newUser);
         return Response.ok().status(Response.Status.CREATED).build();
     }
 
@@ -108,11 +110,15 @@ public class UserRestResourceImpl {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/update")
     @Transactional
-    public User updateUser(User user) {
-        User updatedUser = this.factoryService.createUseCaseFactory().updateUserUseCase().updateUser(user);
-        if (updatedUser == null) {
+    public Response updateUser(User user) {
+        if (getOne(user.getId()) == null) {
             throw new ResourceException(userNotFound);
         }
-        return updatedUser;
+        try {
+            this.factoryService.getUseCaseFactory().getCrudUserUseCase().update(user);
+        } catch (RuntimeException e) {
+            throw new ResourceException(invalidUser);
+        }
+        return Response.ok().status(Response.Status.ACCEPTED).build();
     }
 }
