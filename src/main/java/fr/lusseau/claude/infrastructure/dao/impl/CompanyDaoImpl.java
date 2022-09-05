@@ -1,13 +1,13 @@
 package fr.lusseau.claude.infrastructure.dao.impl;
 
+import fr.lusseau.claude.application.dao.ICompanyDao;
 import fr.lusseau.claude.infrastructure.entity.CompanyEntity;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
 import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.List;
 
 /**
  * @author Claude Lusseau
@@ -17,8 +17,7 @@ import javax.inject.Named;
  */
 @Named("CompanyDaoImpl")
 @LogAudited
-@ApplicationScoped
-public class CompanyDaoImpl implements PanacheRepository<CompanyEntity> {
+public class CompanyDaoImpl implements ICompanyDao {
 
     private final FactoryService factoryService;
 
@@ -27,9 +26,35 @@ public class CompanyDaoImpl implements PanacheRepository<CompanyEntity> {
         this.factoryService = factoryService;
     }
 
+    @Override
+    public List<CompanyEntity> getAll() {
+        return factoryService.createEntityManager().createQuery("FROM CompanyEntity").getResultList();
+    }
 
-    public CompanyEntity isNameExist(String name) {
-        return find("name", name).firstResult();
+    @Override
+    public CompanyEntity getOne(Long id) {
+        return factoryService.createEntityManager().find(CompanyEntity.class, id);
+    }
+
+    @Override
+    public void create(CompanyEntity companyEntity) {
+        factoryService.createEntityManager().persist(companyEntity);
+    }
+
+    @Override
+    public void update(CompanyEntity companyEntity) {
+        factoryService.createEntityManager().merge(companyEntity);
+    }
+
+    @Override
+    public void remove(CompanyEntity companyEntity) {
+        companyEntity = getOne(companyEntity.getId());
+        factoryService.createEntityManager().remove(companyEntity);
+    }
+
+    @Override
+    public List<CompanyEntity> isNameExist(String name) {
+        return factoryService.createEntityManager().createNamedQuery("Company.isNameExist").setParameter("name", name).getResultList();
     }
 
 }
