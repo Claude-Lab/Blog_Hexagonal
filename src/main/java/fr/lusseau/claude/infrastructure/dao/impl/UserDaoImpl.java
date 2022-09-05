@@ -4,7 +4,6 @@ import fr.lusseau.claude.application.dao.IUserDao;
 import fr.lusseau.claude.infrastructure.entity.UserEntity;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
 import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
-import org.hibernate.Session;
 
 import javax.inject.Inject;
 import javax.inject.Named;
