@@ -2,6 +2,7 @@ package fr.lusseau.claude.application.factory;
 
 
 import fr.lusseau.claude.application.usecase.*;
+import fr.lusseau.claude.application.usecase.impl.*;
 
 import javax.inject.Named;
 
@@ -13,17 +14,17 @@ import javax.inject.Named;
  */
 public interface IUseCaseFactory {
 
-    @Named
-    CrudCompanyUseCase getCrudCompanyUseCase();
-    @Named
-    CrudUserUseCase getCrudUserUseCase();
-    @Named
-    CrudEducationLevelUseCase getCrudEducationLevelUseCase();
-    @Named
-    CrudExperienceUseCase getCrudExperienceUseCase();
-    @Named
-    CrudEducationUseCase getCrudEducationUseCase();
-    @Named
-    CheckUseCase getCheckUseCase();
+
+    ICrudCompanyUseCase getCrudCompanyUseCase();
+
+    ICrudUserUseCase getCrudUserUseCase();
+
+    ICrudEducationLevelUseCase getCrudEducationLevelUseCase();
+
+    ICrudExperienceUseCase getCrudExperienceUseCase();
+
+    ICrudEducationUseCase getCrudEducationUseCase();
+
+    ICheckUseCase getCheckUseCase();
 
 }
