@@ -1,5 +1,6 @@
-package fr.lusseau.claude.application.usecase;
+package fr.lusseau.claude.application.usecase.impl;
 
+import fr.lusseau.claude.application.usecase.ICrudUserUseCase;
 import fr.lusseau.claude.domain.model.User;
 import fr.lusseau.claude.domain.validator.UserValidator;
 import fr.lusseau.claude.infrastructure.entity.UserEntity;
@@ -20,7 +21,7 @@ import java.util.List;
  */
 @Named
 @LogAudited
-public class CrudUserUseCase {
+public class CrudUserUseCase implements ICrudUserUseCase {
 
     private final FactoryService factoryService;
 
@@ -29,14 +30,19 @@ public class CrudUserUseCase {
         this.factoryService = factoryService;
     }
 
-    public void create(User user) {
+    @Override
+    public User create(User user) {
         UserEntity userEntity = IUserMapper.INSTANCE.userToUserDto(user);
-        this.factoryService.getDaoFactory().getUserDao().persistAndFlush(userEntity);
+        factoryService.getDaoFactory().getUserDao().create(userEntity);
+        if (userEntity.getId() == null) {
+            return null;
+        }
+        return IUserMapper.INSTANCE.userDtoToUser(userEntity);
     }
 
+    @Override
     public User getOne(Long id) {
-
-        UserEntity userEntity = this.factoryService.getDaoFactory().getUserDao().findById(id);
+        UserEntity userEntity = factoryService.getDaoFactory().getUserDao().getOne(id);
         if (userEntity == null) {
             return null;
         }
@@ -44,22 +50,24 @@ public class CrudUserUseCase {
     }
 
 
-    public List<User> getAllUsers() {
-        List<UserEntity> userEntities = this.factoryService.getDaoFactory().getUserDao().listAll();
+    @Override
+    public List<User> getAll() {
+        List<UserEntity> userEntities = factoryService.getDaoFactory().getUserDao().getAll();
         if (userEntities.isEmpty()) {
             return Collections.emptyList();
         }
         return IUserMapper.INSTANCE.userDtoListToUserList(userEntities);
     }
 
+    @Override
     public void update(User user) {
-        User entity = getOne(user.getId());
         UserValidator.validateUser(user);
-        UserEntity userEntity = IUserMapper.INSTANCE.userToUserDto(entity);
-        this.factoryService.getDaoFactory().getUserDao().update(userEntity);
+        UserEntity userEntity = IUserMapper.INSTANCE.userToUserDto(user);
+        factoryService.getDaoFactory().getUserDao().update(userEntity);
     }
 
-    public void removeUser(User user) {
-        this.factoryService.getDaoFactory().getUserDao().delete(IUserMapper.INSTANCE.userToUserDto(user));
+    @Override
+    public void remove(User user) {
+        factoryService.getDaoFactory().getUserDao().remove(IUserMapper.INSTANCE.userToUserDto(user));
     }
 }

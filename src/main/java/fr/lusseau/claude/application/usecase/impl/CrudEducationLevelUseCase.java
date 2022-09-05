@@ -1,10 +1,13 @@
-package fr.lusseau.claude.application.usecase;
+package fr.lusseau.claude.application.usecase.impl;
 
+import fr.lusseau.claude.application.usecase.ICrudEducationLevelUseCase;
 import fr.lusseau.claude.domain.model.EducationLevel;
 import fr.lusseau.claude.domain.validator.EducationLevelValidator;
 import fr.lusseau.claude.infrastructure.entity.EducationLevelEntity;
+import fr.lusseau.claude.infrastructure.entity.UserEntity;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
 import fr.lusseau.claude.infrastructure.mapper.IEducationLevelMapper;
+import fr.lusseau.claude.infrastructure.mapper.IUserMapper;
 import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
 
 import javax.inject.Inject;
@@ -20,7 +23,7 @@ import java.util.List;
  */
 @Named
 @LogAudited
-public class CrudEducationLevelUseCase {
+public class CrudEducationLevelUseCase implements ICrudEducationLevelUseCase {
 
     private final FactoryService factoryService;
 
@@ -29,35 +32,43 @@ public class CrudEducationLevelUseCase {
         this.factoryService = factoryService;
     }
 
-    public void create(EducationLevel educationLevel) {
-        EducationLevelEntity educationLevelLevelDTO = IEducationLevelMapper.INSTANCE.educationLevelToEducationLevelDto(educationLevel);
-        this.factoryService.getDaoFactory().getEducationLevelDao().persistAndFlush(educationLevelLevelDTO);
+    @Override
+    public EducationLevel create(EducationLevel educationLevel) {
+        EducationLevelEntity educationLevelEntity = IEducationLevelMapper.INSTANCE.educationLevelToEducationLevelDto(educationLevel);
+        factoryService.getDaoFactory().getEducationLevelDao().create(educationLevelEntity);
+        if (educationLevelEntity.getId() == null) {
+            return null;
+        }
+        return IEducationLevelMapper.INSTANCE.educationLevelDtoToEducationLevel(educationLevelEntity);
     }
 
+    @Override
     public EducationLevel getOne(Long id) {
-        EducationLevelEntity educationLevelLevelDTO = this.factoryService.getDaoFactory().getEducationLevelDao().findById(id);
+        EducationLevelEntity educationLevelLevelDTO = this.factoryService.getDaoFactory().getEducationLevelDao().getOne(id);
         if (educationLevelLevelDTO == null) {
             return null;
         }
         return IEducationLevelMapper.INSTANCE.educationLevelDtoToEducationLevel(educationLevelLevelDTO);
     }
 
-
+    @Override
     public List<EducationLevel> getAll() {
-        List<EducationLevelEntity> educationLevelLevelDTOS = this.factoryService.getDaoFactory().getEducationLevelDao().listAll();
+        List<EducationLevelEntity> educationLevelLevelDTOS = this.factoryService.getDaoFactory().getEducationLevelDao().getAll();
         if (educationLevelLevelDTOS.isEmpty()) {
             return Collections.emptyList();
         }
         return IEducationLevelMapper.INSTANCE.educationLevelDtoListToEducationLevelList(educationLevelLevelDTOS);
     }
 
+    @Override
     public void update(EducationLevel educationLevel) {
         EducationLevelValidator.validateEducationLevel(educationLevel);
         EducationLevelEntity educationLevelLevelDTO = IEducationLevelMapper.INSTANCE.educationLevelToEducationLevelDto(educationLevel);
         this.factoryService.getDaoFactory().getEducationLevelDao().update(educationLevelLevelDTO);
     }
 
+    @Override
     public void remove(EducationLevel educationLevel) {
-        this.factoryService.getDaoFactory().getEducationLevelDao().delete(IEducationLevelMapper.INSTANCE.educationLevelToEducationLevelDto(educationLevel));
+        this.factoryService.getDaoFactory().getEducationLevelDao().remove(IEducationLevelMapper.INSTANCE.educationLevelToEducationLevelDto(educationLevel));
     }
 }

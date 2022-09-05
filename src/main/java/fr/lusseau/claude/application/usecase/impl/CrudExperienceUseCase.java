@@ -1,5 +1,6 @@
-package fr.lusseau.claude.application.usecase;
+package fr.lusseau.claude.application.usecase.impl;
 
+import fr.lusseau.claude.application.usecase.ICrudExperienceUseCase;
 import fr.lusseau.claude.domain.model.Experience;
 import fr.lusseau.claude.domain.validator.ExperienceValidator;
 import fr.lusseau.claude.infrastructure.entity.ExperienceEntity;
@@ -20,7 +21,7 @@ import java.util.List;
  */
 @Named
 @LogAudited
-public class CrudExperienceUseCase {
+public class CrudExperienceUseCase implements ICrudExperienceUseCase {
 
     private final FactoryService factoryService;
 
@@ -29,35 +30,39 @@ public class CrudExperienceUseCase {
         this.factoryService = factoryService;
     }
 
+    @Override
     public void create(Experience education) {
         ExperienceEntity experienceDTO = IExperienceMapper.INSTANCE.experienceToExperienceDto(education);
-        this.factoryService.getDaoFactory().getExperienceDao().persistAndFlush(experienceDTO);
+        this.factoryService.getDaoFactory().getExperienceDao().create(experienceDTO);
     }
 
+    @Override
     public Experience getOne(Long id) {
-        ExperienceEntity experienceDTO = this.factoryService.getDaoFactory().getExperienceDao().findById(id);
+        ExperienceEntity experienceDTO = this.factoryService.getDaoFactory().getExperienceDao().getOne(id);
         if (experienceDTO == null) {
             return null;
         }
         return IExperienceMapper.INSTANCE.experienceDtoToExperience(experienceDTO);
     }
 
-
+    @Override
     public List<Experience> getAll() {
-        List<ExperienceEntity> experienceDTOS = this.factoryService.getDaoFactory().getExperienceDao().listAll();
+        List<ExperienceEntity> experienceDTOS = this.factoryService.getDaoFactory().getExperienceDao().getAll();
         if (experienceDTOS.isEmpty()) {
             return Collections.emptyList();
         }
         return IExperienceMapper.INSTANCE.experienceDtoListToExperienceList(experienceDTOS);
     }
 
+    @Override
     public void update(Experience education) {
         ExperienceValidator.validateExperienceArticle(education);
         ExperienceEntity experienceDTO = IExperienceMapper.INSTANCE.experienceToExperienceDto(education);
         this.factoryService.getDaoFactory().getExperienceDao().update(experienceDTO);
     }
 
+    @Override
     public void remove(Experience education) {
-        this.factoryService.getDaoFactory().getExperienceDao().delete(IExperienceMapper.INSTANCE.experienceToExperienceDto(education));
+        this.factoryService.getDaoFactory().getExperienceDao().remove(IExperienceMapper.INSTANCE.experienceToExperienceDto(education));
     }
 }

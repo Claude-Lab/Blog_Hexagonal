@@ -1,6 +1,7 @@
-package fr.lusseau.claude.application.usecase;
+package fr.lusseau.claude.application.usecase.impl;
 
 import fr.lusseau.claude.application.factory.IUseCaseFactory;
+import fr.lusseau.claude.application.usecase.*;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
 import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
 
@@ -25,32 +26,32 @@ public class UseCaseFactoryImpl implements IUseCaseFactory {
     }
 
     @Override
-    public CrudCompanyUseCase getCrudCompanyUseCase() {
+    public ICrudCompanyUseCase getCrudCompanyUseCase() {
         return new CrudCompanyUseCase(factoryService);
     }
 
     @Override
-    public CrudUserUseCase getCrudUserUseCase() {
+    public ICrudUserUseCase getCrudUserUseCase() {
         return new CrudUserUseCase(factoryService);
     }
 
     @Override
-    public CrudEducationLevelUseCase getCrudEducationLevelUseCase() {
+    public ICrudEducationLevelUseCase getCrudEducationLevelUseCase() {
         return new CrudEducationLevelUseCase(factoryService);
     }
 
     @Override
-    public CrudExperienceUseCase getCrudExperienceUseCase() {
+    public ICrudExperienceUseCase getCrudExperienceUseCase() {
         return new CrudExperienceUseCase(factoryService);
     }
 
     @Override
-    public CrudEducationUseCase getCrudEducationUseCase() {
+    public ICrudEducationUseCase getCrudEducationUseCase() {
         return new CrudEducationUseCase(factoryService);
     }
 
     @Override
-    public CheckUseCase getCheckUseCase() {
+    public ICheckUseCase getCheckUseCase() {
         return new CheckUseCase(factoryService);
     }
 
