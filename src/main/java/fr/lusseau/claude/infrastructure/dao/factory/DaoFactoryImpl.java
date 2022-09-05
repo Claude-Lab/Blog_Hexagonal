@@ -1,5 +1,6 @@
 package fr.lusseau.claude.infrastructure.dao.factory;
 
+import fr.lusseau.claude.application.dao.*;
 import fr.lusseau.claude.application.factory.IDaoFactory;
 import fr.lusseau.claude.infrastructure.dao.impl.*;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
@@ -26,27 +27,27 @@ public class DaoFactoryImpl implements IDaoFactory {
     }
 
     @Override
-    public UserDaoImpl getUserDao() {
+    public IUserDao getUserDao() {
         return new UserDaoImpl(factoryService);
     }
 
     @Override
-    public CompanyDaoImpl getCompanyDao() {
+    public ICompanyDao getCompanyDao() {
         return new CompanyDaoImpl(factoryService);
     }
 
     @Override
-    public EducationLevelDaoImpl getEducationLevelDao() {
+    public IEducationLevelDao getEducationLevelDao() {
         return new EducationLevelDaoImpl(factoryService);
     }
 
     @Override
-    public EducationDaoImpl getEducationDao() {
+    public IEducationDao getEducationDao() {
         return new EducationDaoImpl(factoryService);
     }
 
     @Override
-    public ExperienceDaoImpl getExperienceDao() {
+    public IExperienceDao getExperienceDao() {
         return new ExperienceDaoImpl(factoryService);
     }
 
