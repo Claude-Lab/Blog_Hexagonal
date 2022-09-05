@@ -1,7 +1,5 @@
 package fr.lusseau.claude.infrastructure.entity;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -15,12 +13,13 @@ import java.util.Objects;
 @Entity
 @Table(name = "company_blog")
 @Cacheable
-public class CompanyEntity extends PanacheEntityBase implements Serializable {
+@NamedQuery(name = "Company.update", query = "UPDATE CompanyEntity c SET name = :name, place = :place, type = :type WHERE c.id = :id")
+@NamedQuery(name = "Company.isNameExist", query = "SELECT c FROM CompanyEntity c WHERE name = :name")
+public class CompanyEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(name = "company_name")
     private String name;
     @Column(name = "company_place")
@@ -40,9 +39,9 @@ public class CompanyEntity extends PanacheEntityBase implements Serializable {
 
     public CompanyEntity(CompanyEntityBuilder builder) {
         id = builder.id;
-        name =  builder.name;
-        place =  builder.place;
-        type =  builder.type;
+        name = builder.name;
+        place = builder.place;
+        type = builder.type;
     }
 
     public static CompanyEntityBuilder builder() {
@@ -59,14 +58,17 @@ public class CompanyEntity extends PanacheEntityBase implements Serializable {
             this.id = id;
             return this;
         }
+
         public CompanyEntityBuilder withName(String name) {
             this.name = name;
             return this;
         }
+
         public CompanyEntityBuilder withPlace(String place) {
             this.place = place;
             return this;
         }
+
         public CompanyEntityBuilder withType(String type) {
             this.type = type;
             return this;
