@@ -1,13 +1,14 @@
 package fr.lusseau.claude.infrastructure.dao.impl;
 
+import fr.lusseau.claude.application.dao.IUserDao;
 import fr.lusseau.claude.infrastructure.entity.UserEntity;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
 import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import org.hibernate.Session;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.List;
 
 /**
  * @author Claude Lusseau
@@ -17,8 +18,7 @@ import javax.inject.Named;
  */
 @Named("UserDaoImpl")
 @LogAudited
-@ApplicationScoped
-public class UserDaoImpl implements PanacheRepository<UserEntity> {
+public class UserDaoImpl implements IUserDao {
 
     private final FactoryService factoryService;
 
@@ -27,12 +27,34 @@ public class UserDaoImpl implements PanacheRepository<UserEntity> {
         this.factoryService = factoryService;
     }
 
+    @Override
+    public List<UserEntity> getAll() {
+        return factoryService.createEntityManager().createQuery("FROM UserEntity").getResultList();
+    }
+
+    @Override
+    public UserEntity getOne(Long id) {
+        return factoryService.createEntityManager().find(UserEntity.class, id);
+    }
+
+    @Override
+    public void create(UserEntity userEntity) {
+        factoryService.createEntityManager().persist(userEntity);
+    }
+
+    @Override
     public void update(UserEntity userEntity) {
         factoryService.createEntityManager().merge(userEntity);
     }
 
-    public UserEntity isEmailExist(String email) {
-        return find("email",email).firstResult();
+    @Override
+    public void remove(UserEntity userEntity) {
+        userEntity = getOne(userEntity.getId());
+        factoryService.createEntityManager().remove(userEntity);
     }
 
+    @Override
+    public List<UserEntity> isEmailExist(String email) {
+        return factoryService.createEntityManager().createNamedQuery("User.isEmailExist").setParameter("email", email).getResultList();
+    }
 }
