@@ -8,6 +8,7 @@ import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -21,6 +22,7 @@ import java.util.List;
  * @date 13/08/2022
  */
 @LogAudited
+@Named
 @Path("/companies")
 public class CompanyRestResourceImpl {
 
@@ -47,7 +49,7 @@ public class CompanyRestResourceImpl {
     @GET
     @Path("")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Company> getAllCompany() {
+    public List<Company> getAll() {
         List<Company> companies = this.factoryService.getUseCaseFactory().getCrudCompanyUseCase().getAll();
         if (companies.isEmpty()) {
             throw new ResourceException(emptyCompanyList);
@@ -58,7 +60,7 @@ public class CompanyRestResourceImpl {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
-    public Company getOneCompany(@PathParam("id") Long id) {
+    public Company getOne(@PathParam("id") Long id) {
         Company company = this.factoryService.getUseCaseFactory().getCrudCompanyUseCase().getOne(id);
         if (company == null) {
             throw new ResourceException(companyNotFound);
@@ -66,31 +68,13 @@ public class CompanyRestResourceImpl {
         return company;
     }
 
-    @DELETE
-    @Path("/delete/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Transactional
-    public Response removeCompany(@PathParam("id") Long id) {
-        Company company = factoryService.getUseCaseFactory().getCrudCompanyUseCase().getOne(id);
-        try {
-            this.factoryService.getUseCaseFactory().getCrudCompanyUseCase().remove(company);
-        } catch (RuntimeException e) {
-            throw new ResourceException(companyNotFound);
-        }
-        return Response.ok().status(Response.Status.ACCEPTED).build();
-    }
-
     @POST
     @Path("/create")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Transactional
-    public Response createNewCompany(Company company) {
-        Company newCompany = Company.builder()
-                .withName(company.getName())
-                .withPlace(company.getPlace())
-                .withType(company.getType())
-                .build();
+    public Response create(Company company) {
+        Company newCompany = Company.builder().withName(company.getName()).withPlace(company.getPlace()).withType(company.getType()).build();
         boolean isNameExist = this.factoryService.getUseCaseFactory().getCheckUseCase().checkIfCompanyNameExist(newCompany.getName());
         try {
             CompanyValidator.validateCompany(newCompany);
@@ -100,7 +84,10 @@ public class CompanyRestResourceImpl {
         if (isNameExist) {
             throw new ResourceException(nameExist);
         }
-        this.factoryService.getUseCaseFactory().getCrudCompanyUseCase().create(newCompany);
+        company = this.factoryService.getUseCaseFactory().getCrudCompanyUseCase().create(newCompany);
+        if (company == null) {
+            return Response.notModified().status(Response.Status.NOT_IMPLEMENTED).build();
+        }
         return Response.ok().status(Response.Status.CREATED).build();
     }
 
@@ -109,15 +96,31 @@ public class CompanyRestResourceImpl {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/update")
     @Transactional
-    public Response updateCompany(Company company) {
+    public Response update(Company company) {
         if (this.factoryService.getUseCaseFactory().getCrudCompanyUseCase().getOne(company.getId()) == null) {
             throw new ResourceException(companyNotFound);
+        }
+        if (factoryService.getUseCaseFactory().getCheckUseCase().checkIfCompanyNameExist(company.getName())) {
+            throw new ResourceException(nameExist);
         }
         try {
             this.factoryService.getUseCaseFactory().getCrudCompanyUseCase().update(company);
         } catch (RuntimeException e) {
             throw new ResourceException(invalidCompany);
         }
+        return Response.ok().status(Response.Status.ACCEPTED).build();
+    }
+
+    @DELETE
+    @Path("/delete/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Transactional
+    public Response remove(@PathParam("id") Long id) {
+        Company company = factoryService.getUseCaseFactory().getCrudCompanyUseCase().getOne(id);
+        if (company == null) {
+            throw new ResourceException(companyNotFound);
+        }
+        this.factoryService.getUseCaseFactory().getCrudCompanyUseCase().remove(company);
         return Response.ok().status(Response.Status.ACCEPTED).build();
     }
 }
