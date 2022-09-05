@@ -47,7 +47,7 @@ public class EducationLevelRestResourceImpl {
     @GET
     @Path("")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<EducationLevel> getAllEducationLevel() {
+    public List<EducationLevel> getAll() {
         List<EducationLevel> educationLevels = this.factoryService.getUseCaseFactory().getCrudEducationLevelUseCase().getAll();
         if (educationLevels.isEmpty()) {
             throw new ResourceException(emptyEducationLevelList);
@@ -58,7 +58,7 @@ public class EducationLevelRestResourceImpl {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
-    public EducationLevel getOneEducationLevel(@PathParam("id") Long id) {
+    public EducationLevel getOne(@PathParam("id") Long id) {
         EducationLevel educationLevel = this.factoryService.getUseCaseFactory().getCrudEducationLevelUseCase().getOne(id);
         if (educationLevel == null) {
             throw new ResourceException(emptyEducationLevelList);
@@ -66,26 +66,12 @@ public class EducationLevelRestResourceImpl {
         return educationLevel;
     }
 
-    @DELETE
-    @Path("/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Transactional
-    public Response removeEducationLevel(@PathParam("id") Long id) {
-        EducationLevel educationLevel = factoryService.getUseCaseFactory().getCrudEducationLevelUseCase().getOne(id);
-        try {
-            this.factoryService.getUseCaseFactory().getCrudEducationLevelUseCase().remove(educationLevel);
-        } catch (IllegalArgumentException e) {
-            throw new ResourceException(educationLevelNotFound);
-        }
-        return Response.ok().status(Response.Status.ACCEPTED).build();
-    }
-
     @POST
     @Path("/create")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Transactional
-    public Response createNewEducationLevel(EducationLevel educationLevel) {
+    public Response create(EducationLevel educationLevel) {
         EducationLevel newEducationLevel = EducationLevel.builder()
                 .withName(educationLevel.getName())
                 .build();
@@ -105,13 +91,33 @@ public class EducationLevelRestResourceImpl {
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/{id}")
+    @Path("/update")
     @Transactional
-    public EducationLevel updateEducationLevel(@PathParam("id")Long id) {
-        EducationLevel updatedEducationLevel = this.getOneEducationLevel(id);
-        if (updatedEducationLevel == null) {
+    public Response update(EducationLevel educationLevel) {
+        if (getOne(educationLevel.getId()) == null) {
             throw new ResourceException(educationLevelNotFound);
         }
-        return updatedEducationLevel;
+        if (factoryService.getUseCaseFactory().getCheckUseCase().checkIfEducationLevelNameExist(educationLevel.getName())) {
+            throw new ResourceException(nameExist);
+        }
+        try {
+            factoryService.getUseCaseFactory().getCrudEducationLevelUseCase().update(educationLevel);
+        } catch (RuntimeException e) {
+            throw new ResourceException(invalidEducationLevel);
+        }
+        return Response.ok().status(Response.Status.ACCEPTED).build();
+    }
+
+    @DELETE
+    @Path("/delete/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Transactional
+    public Response remove(@PathParam("id") Long id) {
+        EducationLevel educationLevel = factoryService.getUseCaseFactory().getCrudEducationLevelUseCase().getOne(id);
+        if (educationLevel == null) {
+            throw new ResourceException(educationLevelNotFound);
+        }
+        this.factoryService.getUseCaseFactory().getCrudEducationLevelUseCase().remove(educationLevel);
+        return Response.ok().status(Response.Status.ACCEPTED).build();
     }
 }
