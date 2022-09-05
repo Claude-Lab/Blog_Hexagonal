@@ -23,7 +23,7 @@ public class LogListener {
 
     @AroundInvoke
     public Object audit(InvocationContext context) throws Exception {
-        LOGGER.info("Calling Method : " + context.getMethod().getName() + " On Class : " + context.getClass());
+        LOGGER.info("Calling Method : " + context.getMethod().getName() + " On Class : " + context.getClass().getCanonicalName());
         return context.proceed();
     }
 }
