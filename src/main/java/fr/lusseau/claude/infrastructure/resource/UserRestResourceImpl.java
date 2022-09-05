@@ -8,6 +8,7 @@ import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -21,6 +22,7 @@ import java.util.List;
  * @date 13/08/2022
  */
 @LogAudited
+@Named
 @Path("/users")
 public class UserRestResourceImpl {
 
@@ -46,8 +48,8 @@ public class UserRestResourceImpl {
     @GET
     @Path("")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<User> getAllUsers() {
-        List<User> users = this.factoryService.getUseCaseFactory().getCrudUserUseCase().getAllUsers();
+    public List<User> getAll() {
+        List<User> users = this.factoryService.getUseCaseFactory().getCrudUserUseCase().getAll();
         if (users.isEmpty()) {
             throw new ResourceException(emptyUserList);
         }
@@ -65,26 +67,12 @@ public class UserRestResourceImpl {
         return user;
     }
 
-    @DELETE
-    @Path("/delete/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Transactional
-    public Response removeUser(@PathParam("id") Long id) {
-        User user = this.factoryService.getUseCaseFactory().getCrudUserUseCase().getOne(id);
-        try {
-            this.factoryService.getUseCaseFactory().getCrudUserUseCase().removeUser(user);
-        } catch (IllegalArgumentException e) {
-            throw new ResourceException(userNotFound);
-        }
-        return Response.ok().status(Response.Status.ACCEPTED).build();
-    }
-
     @POST
     @Path("/create")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Transactional
-    public Response createNewUser(User user) {
+    public Response create(User user) {
         User newUser = User.builder()
                 .withEmail(user.getEmail())
                 .withPassword(user.getPassword())
@@ -92,16 +80,19 @@ public class UserRestResourceImpl {
                 .withLastName(user.getLastName())
                 .withRole(user.getRole())
                 .build();
-        boolean isEmailExist = this.factoryService.getUseCaseFactory().getCheckUseCase().isEmailExist(newUser.getEmail());
         try {
             UserValidator.validateUser(newUser);
         } catch (RuntimeException e) {
             throw new ResourceException(invalidUser);
         }
-        if (isEmailExist) {
+        if (factoryService.getUseCaseFactory().getCheckUseCase().isEmailExist(user.getEmail())) {
             throw new ResourceException(emailExist);
         }
-        this.factoryService.getUseCaseFactory().getCrudUserUseCase().create(newUser);
+        user = this.factoryService.getUseCaseFactory().getCrudUserUseCase().create(newUser);
+
+        if (user == null) {
+            return Response.notModified().status(Response.Status.NOT_IMPLEMENTED).build();
+        }
         return Response.ok().status(Response.Status.CREATED).build();
     }
 
@@ -110,15 +101,31 @@ public class UserRestResourceImpl {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/update")
     @Transactional
-    public Response updateUser(User user) {
+    public Response update(User user) {
         if (getOne(user.getId()) == null) {
             throw new ResourceException(userNotFound);
+        }
+        if (!factoryService.getUseCaseFactory().getCheckUseCase().isEmailExist(user.getEmail())) {
+            throw new ResourceException(emailExist);
         }
         try {
             this.factoryService.getUseCaseFactory().getCrudUserUseCase().update(user);
         } catch (RuntimeException e) {
             throw new ResourceException(invalidUser);
         }
+        return Response.ok().status(Response.Status.ACCEPTED).build();
+    }
+
+    @DELETE
+    @Path("/delete/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Transactional
+    public Response remove(@PathParam("id") Long id) {
+        User user = this.factoryService.getUseCaseFactory().getCrudUserUseCase().getOne(id);
+        if (user == null) {
+            throw new ResourceException(userNotFound);
+        }
+        this.factoryService.getUseCaseFactory().getCrudUserUseCase().remove(user);
         return Response.ok().status(Response.Status.ACCEPTED).build();
     }
 }
