@@ -37,7 +37,7 @@ class UserDaoImplTest {
                 .withLastName("Doe")
                 .withPassword("what")
                 .withRole(Role.SUBSCRIBER).build();
-        this.factoryService.getDaoFactory().getUserDao().persistAndFlush(user);
+        this.factoryService.getDaoFactory().getUserDao().create(user);
 
     }
 
