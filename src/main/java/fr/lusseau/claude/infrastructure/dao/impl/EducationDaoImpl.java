@@ -1,13 +1,14 @@
 package fr.lusseau.claude.infrastructure.dao.impl;
 
+import fr.lusseau.claude.application.dao.IEducationDao;
 import fr.lusseau.claude.infrastructure.entity.EducationEntity;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
 import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.List;
 
 /**
  * @author Claude Lusseau
@@ -18,7 +19,7 @@ import javax.inject.Named;
 @Named("EducationDaoImpl")
 @LogAudited
 @ApplicationScoped
-public class EducationDaoImpl implements PanacheRepository<EducationEntity> {
+public class EducationDaoImpl implements IEducationDao {
 
     private final FactoryService factoryService;
 
@@ -27,15 +28,40 @@ public class EducationDaoImpl implements PanacheRepository<EducationEntity> {
         this.factoryService = factoryService;
     }
 
-    public void update(EducationEntity educationDTO) {
-        factoryService.createEntityManager().merge(educationDTO);
+    @Override
+    public List<EducationEntity> getAll() {
+        return factoryService.createEntityManager().createQuery("FROM EducationEntity").getResultList();
     }
 
-    public EducationEntity isTitleExist(String title) {
-        return find("title",title).firstResult();
+    @Override
+    public EducationEntity getOne(Long id) {
+        return factoryService.createEntityManager().find(EducationEntity.class, id);
     }
 
-    public EducationEntity isUrlExist(String url) {
-        return find("url",url).firstResult();
+    @Override
+    public void create(EducationEntity educationEntity) {
+        factoryService.createEntityManager().persist(educationEntity);
     }
+
+    @Override
+    public void update(EducationEntity educationEntity) {
+        factoryService.createEntityManager().merge(educationEntity);
+    }
+
+    @Override
+    public void remove(EducationEntity educationEntity) {
+        educationEntity = getOne(educationEntity.getId());
+        factoryService.createEntityManager().remove(educationEntity);
+    }
+
+    @Override
+    public List<EducationEntity> isTitleExist(String title) {
+        return factoryService.createEntityManager().createNamedQuery("Education.isTitleExist").setParameter("title", title).getResultList();
+    }
+
+    @Override
+    public List<EducationEntity> isUrlExist(String url) {
+        return factoryService.createEntityManager().createNamedQuery("Education.isUrlExist").setParameter("url", url).getResultList();
+    }
+
 }
