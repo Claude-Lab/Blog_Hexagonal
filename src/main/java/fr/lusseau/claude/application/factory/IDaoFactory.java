@@ -1,5 +1,6 @@
 package fr.lusseau.claude.application.factory;
 
+import fr.lusseau.claude.application.dao.*;
 import fr.lusseau.claude.infrastructure.dao.impl.*;
 
 /**
@@ -10,14 +11,14 @@ import fr.lusseau.claude.infrastructure.dao.impl.*;
  */
 public interface IDaoFactory {
 
-    UserDaoImpl getUserDao();
+    IUserDao getUserDao();
 
-    CompanyDaoImpl getCompanyDao();
+    ICompanyDao getCompanyDao();
 
-    EducationLevelDaoImpl getEducationLevelDao();
+    IEducationLevelDao getEducationLevelDao();
 
-    EducationDaoImpl getEducationDao();
+    IEducationDao getEducationDao();
 
-    ExperienceDaoImpl getExperienceDao();
+    IExperienceDao getExperienceDao();
 
 }
