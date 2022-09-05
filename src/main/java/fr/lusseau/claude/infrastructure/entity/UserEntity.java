@@ -1,7 +1,6 @@
 package fr.lusseau.claude.infrastructure.entity;
 
 import fr.lusseau.claude.domain.model.Role;
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -18,7 +17,9 @@ import java.util.Objects;
 @Entity
 @Table(name = "user_blog")
 @Cacheable
-public class UserEntity extends PanacheEntityBase implements Serializable {
+@NamedQuery(name = "User.update", query = "UPDATE UserEntity u SET email = :email, password = :password, firstName = :firstName, lastName = :lastName, role = :role WHERE u.id = :id")
+@NamedQuery(name = "User.isEmailExist", query = "SELECT u FROM UserEntity u WHERE email = :email")
+public class UserEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
