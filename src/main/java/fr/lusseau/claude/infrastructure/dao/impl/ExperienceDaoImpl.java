@@ -1,13 +1,13 @@
 package fr.lusseau.claude.infrastructure.dao.impl;
 
+import fr.lusseau.claude.application.dao.IExperienceDao;
 import fr.lusseau.claude.infrastructure.entity.ExperienceEntity;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
 import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.List;
 
 /**
  * @author Claude Lusseau
@@ -17,8 +17,7 @@ import javax.inject.Named;
  */
 @Named("ExperienceDaoImpl")
 @LogAudited
-@ApplicationScoped
-public class ExperienceDaoImpl implements PanacheRepository<ExperienceEntity>  {
+public class ExperienceDaoImpl implements IExperienceDao {
 
     private final FactoryService factoryService;
 
@@ -27,17 +26,40 @@ public class ExperienceDaoImpl implements PanacheRepository<ExperienceEntity>  {
         this.factoryService = factoryService;
     }
 
-    public void update(ExperienceEntity experienceDTO) {
-        factoryService.createEntityManager().merge(experienceDTO);
+    @Override
+    public List<ExperienceEntity> getAll() {
+        return factoryService.createEntityManager().createQuery("FROM ExperienceEntity").getResultList();
     }
 
-    public ExperienceEntity isTitleExist(String title) {
-        return find("title", title).firstResult();
+    @Override
+    public ExperienceEntity getOne(Long id) {
+        return factoryService.createEntityManager().find(ExperienceEntity.class, id);
     }
 
-    public ExperienceEntity isUrlExist(String url) {
-        return find("url", url).firstResult();
+    @Override
+    public void create(ExperienceEntity experienceEntity) {
+        factoryService.createEntityManager().persist(experienceEntity);
     }
 
+    @Override
+    public void update(ExperienceEntity experienceEntity) {
+        factoryService.createEntityManager().merge(experienceEntity);
+    }
+
+    @Override
+    public void remove(ExperienceEntity experienceEntity) {
+        experienceEntity = getOne(experienceEntity.getId());
+        factoryService.createEntityManager().remove(experienceEntity);
+    }
+
+    @Override
+    public List<ExperienceEntity> isTitleExist(String title) {
+        return factoryService.createEntityManager().createNamedQuery("Experience.isTitleExist").setParameter("title", title).getResultList();
+    }
+
+    @Override
+    public List<ExperienceEntity> isUrlExist(String url) {
+        return factoryService.createEntityManager().createNamedQuery("Experience.isUrlExist").setParameter("url", url).getResultList();
+    }
 
 }
