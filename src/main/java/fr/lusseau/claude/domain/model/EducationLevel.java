@@ -11,8 +11,12 @@ import java.util.Objects;
  */
 public class EducationLevel implements Serializable {
 
-    private final Long id;
-    private final String name;
+    private Long id;
+    private String name;
+
+
+    public EducationLevel() {
+    }
 
     public EducationLevel(EducationLevelBuilder builder) {
         id = builder.id;
