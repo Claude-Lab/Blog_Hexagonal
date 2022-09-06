@@ -61,7 +61,7 @@ public class EducationLevelRestResourceImpl {
     public EducationLevel getOne(@PathParam("id") Long id) {
         EducationLevel educationLevel = this.factoryService.getUseCaseFactory().getCrudEducationLevelUseCase().getOne(id);
         if (educationLevel == null) {
-            throw new ResourceException(emptyEducationLevelList);
+            throw new ResourceException(educationLevelNotFound);
         }
         return educationLevel;
     }
@@ -75,16 +75,18 @@ public class EducationLevelRestResourceImpl {
         EducationLevel newEducationLevel = EducationLevel.builder()
                 .withName(educationLevel.getName())
                 .build();
-        boolean isNameExist = this.factoryService.getUseCaseFactory().getCheckUseCase().checkIfEducationLevelNameExist(newEducationLevel.getName());
         try {
             EducationLevelValidator.validateEducationLevel(newEducationLevel);
         } catch (RuntimeException e) {
             throw new ResourceException(invalidEducationLevel);
         }
-        if (isNameExist) {
+        if (this.factoryService.getUseCaseFactory().getCheckUseCase().checkIfEducationLevelNameExist(educationLevel.getName())) {
             throw new ResourceException(nameExist);
         }
-        this.factoryService.getUseCaseFactory().getCrudEducationLevelUseCase().create(newEducationLevel);
+        educationLevel = this.factoryService.getUseCaseFactory().getCrudEducationLevelUseCase().create(newEducationLevel);
+        if (educationLevel == null) {
+            return Response.notModified().status(Response.Status.NOT_IMPLEMENTED).build();
+        }
         return Response.ok().status(Response.Status.CREATED).build();
     }
 
