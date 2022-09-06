@@ -17,6 +17,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "education_level_blog")
 @Cacheable
+@NamedQuery(name = "EducationLevel.findByName", query = "SELECT e FROM EducationLevelEntity e WHERE e.name = :name")
 public class EducationLevelEntity extends PanacheEntityBase implements Serializable {
 
     @Id
@@ -27,18 +28,14 @@ public class EducationLevelEntity extends PanacheEntityBase implements Serializa
     @Column(name = "education_level_name")
     private String name;
 
+    protected EducationLevelEntity() {
+    }
+
     public EducationLevelEntity(EducationLevelEntityBuilder builder) {
         id = builder.id;
         name = builder.name;
     }
 
-    protected EducationLevelEntity() {
-    }
-
-    private EducationLevelEntity(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 
     public static EducationLevelEntityBuilder builder() {
         return new EducationLevelEntityBuilder();
