@@ -21,5 +21,5 @@ public interface IUserDao {
 
     void remove(UserEntity userEntity);
 
-    List<UserEntity>  isEmailExist(String email);
+    List<UserEntity> findByEmail(String email);
 }
