@@ -18,7 +18,7 @@ import java.util.Objects;
 @Table(name = "user_blog")
 @Cacheable
 @NamedQuery(name = "User.update", query = "UPDATE UserEntity u SET email = :email, password = :password, firstName = :firstName, lastName = :lastName, role = :role WHERE u.id = :id")
-@NamedQuery(name = "User.isEmailExist", query = "SELECT u FROM UserEntity u WHERE email = :email")
+@NamedQuery(name = "User.findByEmail", query = "SELECT u FROM UserEntity u WHERE email = :email")
 public class UserEntity implements Serializable {
 
     @Id
