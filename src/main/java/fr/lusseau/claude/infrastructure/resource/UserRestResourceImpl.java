@@ -85,7 +85,7 @@ public class UserRestResourceImpl {
         } catch (RuntimeException e) {
             throw new ResourceException(invalidUser);
         }
-        if (factoryService.getUseCaseFactory().getCheckUseCase().isEmailExist(user.getEmail())) {
+        if (factoryService.getUseCaseFactory().getCheckUseCase().isEmailExistForCreate(user.getEmail())) {
             throw new ResourceException(emailExist);
         }
         user = this.factoryService.getUseCaseFactory().getCrudUserUseCase().create(newUser);
@@ -105,7 +105,7 @@ public class UserRestResourceImpl {
         if (getOne(user.getId()) == null) {
             throw new ResourceException(userNotFound);
         }
-        if (!factoryService.getUseCaseFactory().getCheckUseCase().isEmailExist(user.getEmail())) {
+        if (factoryService.getUseCaseFactory().getCheckUseCase().isEmailExist(user.getEmail(),user.getId())) {
             throw new ResourceException(emailExist);
         }
         try {
