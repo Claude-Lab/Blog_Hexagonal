@@ -54,8 +54,8 @@ public class EducationLevelDaoImpl implements IEducationLevelDao {
     }
 
     @Override
-    public List<EducationLevelEntity> isNameExist(String name) {
-        return factoryService.createEntityManager().createNamedQuery("EducationLevel.isNameExist").setParameter("name", name).getResultList();
+    public List<EducationLevelEntity> findByName(String name) {
+        return factoryService.createEntityManager().createNamedQuery("EducationLevel.findByName").setParameter("name", name).getResultList();
     }
 
 }
