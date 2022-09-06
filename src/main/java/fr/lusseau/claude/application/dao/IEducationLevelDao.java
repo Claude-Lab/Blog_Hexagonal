@@ -21,5 +21,5 @@ public interface IEducationLevelDao {
 
     void remove(EducationLevelEntity educationLevelEntity);
 
-    List<EducationLevelEntity> isNameExist(String name);
+    List<EducationLevelEntity> findByName(String name);
 }
