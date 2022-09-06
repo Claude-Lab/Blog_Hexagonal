@@ -31,42 +31,89 @@ public class CheckUseCase implements ICheckUseCase {
     @Override
     public boolean checkIfTitleExperienceExist(String title) {
         List<Experience> experiences = IExperienceMapper.INSTANCE.experienceDtoListToExperienceList(this.factoryService.getDaoFactory().getExperienceDao().isTitleExist(title));
-        return experiences.stream().anyMatch(experience -> experience.getTitle().equals(title));
+        for (Experience experience : experiences) {
+            Long withSameTitle = experience.getId();
+            if (Objects.equals(withSameTitle, experience.getId())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
     public boolean checkIfUrlExperienceExist(String url) {
         List<Experience> experiences = IExperienceMapper.INSTANCE.experienceDtoListToExperienceList(this.factoryService.getDaoFactory().getExperienceDao().isUrlExist(url));
-        return experiences.stream().anyMatch(experience -> experience.getUrl().equals(url));
+        for (Experience experience : experiences) {
+            Long withSameUrl = experience.getId();
+            if (Objects.equals(withSameUrl, experience.getId())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
     public boolean checkIfTitleEducationExist(String title) {
         List<Education> educations = IEducationMapper.INSTANCE.educationDtoListToEducationList(this.factoryService.getDaoFactory().getEducationDao().isTitleExist(title));
-        return educations.stream().anyMatch(education -> education.getTitle().equals(title));
+        for (Education education : educations) {
+            Long withSameTitle = education.getId();
+            if (Objects.equals(withSameTitle, education.getId())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
     public boolean checkIfUrlEducationExist(String url) {
         List<Education> educations = IEducationMapper.INSTANCE.educationDtoListToEducationList(this.factoryService.getDaoFactory().getEducationDao().isUrlExist(url));
-        return educations.stream().anyMatch(education -> education.getUrl().equals(url));
+        for (Education education : educations) {
+            Long withSameUrl = education.getId();
+            if (Objects.equals(withSameUrl, education.getId())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
     public boolean checkIfEducationLevelNameExist(String name) {
-        List<EducationLevel> educationLevels = IEducationLevelMapper.INSTANCE.educationLevelDtoListToEducationLevelList(factoryService.getDaoFactory().getEducationLevelDao().isNameExist(name));
-        return educationLevels.stream().anyMatch(educationLevel -> educationLevel.getName().equals(name));
+        List<EducationLevel> educationLevels = IEducationLevelMapper.INSTANCE.educationLevelDtoListToEducationLevelList(factoryService.getDaoFactory().getEducationLevelDao().findByName(name));
+        for (EducationLevel educationLevel : educationLevels) {
+            Long withSameName = educationLevel.getId();
+            if (Objects.equals(withSameName, educationLevel.getId())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
     public boolean checkIfCompanyNameExist(String name) {
         List<Company> companies = ICompanyMapper.INSTANCE.companyDtoListToCompanyList(this.factoryService.getDaoFactory().getCompanyDao().isNameExist(name));
-        return companies.stream().anyMatch(company -> company.getName().equals(name));
+        for (Company company : companies) {
+            Long withSameName = company.getId();
+            if (Objects.equals(withSameName, company.getId())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
-    public boolean isEmailExist(String email) {
-        List<User> users = IUserMapper.INSTANCE.userDtoListToUserList(this.factoryService.getDaoFactory().getUserDao().isEmailExist(email));
-        return users.stream().anyMatch(user -> user.getEmail().equals(email));
+    public boolean isEmailExist(String email, Long id) {
+        List<User> users = IUserMapper.INSTANCE.userDtoListToUserList(this.factoryService.getDaoFactory().getUserDao().findByEmail(email));
+        for (User user : users) {
+            if (!Objects.equals(id, user.getId())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean  isEmailExistForCreate(String email) {
+        List<User> users = IUserMapper.INSTANCE.userDtoListToUserList(this.factoryService.getDaoFactory().getUserDao().findByEmail(email));
+        return users != null;
     }
 }
