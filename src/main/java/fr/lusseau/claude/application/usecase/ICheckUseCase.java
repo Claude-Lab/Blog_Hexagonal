@@ -1,9 +1,5 @@
 package fr.lusseau.claude.application.usecase;
 
-import fr.lusseau.claude.domain.model.User;
-
-import java.util.List;
-
 /**
  * @author Claude Lusseau
  * @project site_perso
@@ -23,5 +19,7 @@ public interface ICheckUseCase {
 
     boolean checkIfCompanyNameExist(String name);
 
-    boolean isEmailExist(String email);
+    boolean isEmailExist(String email, Long id);
+
+    boolean  isEmailExistForCreate(String email);
 }
