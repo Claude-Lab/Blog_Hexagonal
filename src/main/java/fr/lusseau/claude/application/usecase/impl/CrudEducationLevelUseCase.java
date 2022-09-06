@@ -63,8 +63,8 @@ public class CrudEducationLevelUseCase implements ICrudEducationLevelUseCase {
     @Override
     public void update(EducationLevel educationLevel) {
         EducationLevelValidator.validateEducationLevel(educationLevel);
-        EducationLevelEntity educationLevelLevelDTO = IEducationLevelMapper.INSTANCE.educationLevelToEducationLevelDto(educationLevel);
-        this.factoryService.getDaoFactory().getEducationLevelDao().update(educationLevelLevelDTO);
+        EducationLevelEntity educationLevelEntity= IEducationLevelMapper.INSTANCE.educationLevelToEducationLevelDto(educationLevel);
+        factoryService.getDaoFactory().getEducationLevelDao().update(educationLevelEntity);
     }
 
     @Override
