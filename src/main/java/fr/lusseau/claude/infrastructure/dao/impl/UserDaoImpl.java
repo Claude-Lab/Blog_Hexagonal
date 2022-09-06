@@ -53,7 +53,7 @@ public class UserDaoImpl implements IUserDao {
     }
 
     @Override
-    public List<UserEntity> isEmailExist(String email) {
-        return factoryService.createEntityManager().createNamedQuery("User.isEmailExist").setParameter("email", email).getResultList();
+    public List<UserEntity> findByEmail(String email) {
+        return factoryService.createEntityManager().createNamedQuery("User.findByEmail").setParameter("email", email).getResultList();
     }
 }
