@@ -1,6 +1,8 @@
 package fr.lusseau.claude.infrastructure.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -13,7 +15,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "company_blog")
 @Cacheable
-@NamedQuery(name = "Company.update", query = "UPDATE CompanyEntity c SET name = :name, place = :place, type = :type WHERE c.id = :id")
 @NamedQuery(name = "Company.isNameExist", query = "SELECT c FROM CompanyEntity c WHERE name = :name")
 public class CompanyEntity implements Serializable {
 
@@ -21,6 +22,8 @@ public class CompanyEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "company_name")
+    @NotNull(message = "Name is required.")
+    @NotBlank(message = "Name is required.")
     private String name;
     @Column(name = "company_place")
     private String place;
@@ -28,13 +31,6 @@ public class CompanyEntity implements Serializable {
     private String type;
 
     protected CompanyEntity() {
-    }
-
-    private CompanyEntity(Long id, String name, String place, String type) {
-        this.id = id;
-        this.name = name;
-        this.place = place;
-        this.type = type;
     }
 
     public CompanyEntity(CompanyEntityBuilder builder) {
