@@ -17,7 +17,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "user_blog")
 @Cacheable
-@NamedQuery(name = "User.update", query = "UPDATE UserEntity u SET email = :email, password = :password, firstName = :firstName, lastName = :lastName, role = :role WHERE u.id = :id")
 @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM UserEntity u WHERE email = :email")
 public class UserEntity implements Serializable {
 
@@ -47,7 +46,6 @@ public class UserEntity implements Serializable {
 
     protected UserEntity() {
     }
-
 
     public UserEntity(UserEntityBuilder builder) {
         id = builder.id;
