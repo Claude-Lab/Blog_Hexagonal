@@ -72,6 +72,7 @@ public class EducationLevelRestResourceImpl {
     @Consumes(MediaType.APPLICATION_JSON)
     @Transactional
     public Response create(EducationLevel educationLevel) {
+        Long id = null;
         EducationLevel newEducationLevel = EducationLevel.builder()
                 .withName(educationLevel.getName())
                 .build();
@@ -80,10 +81,10 @@ public class EducationLevelRestResourceImpl {
         } catch (RuntimeException e) {
             throw new ResourceException(invalidEducationLevel);
         }
-        if (this.factoryService.getUseCaseFactory().getCheckUseCase().checkIfEducationLevelNameExist(educationLevel.getName())) {
+        if (factoryService.getUseCaseFactory().getCheckUseCase().checkIfEducationLevelNameExist(educationLevel.getName(), id)) {
             throw new ResourceException(nameExist);
         }
-        educationLevel = this.factoryService.getUseCaseFactory().getCrudEducationLevelUseCase().create(newEducationLevel);
+        educationLevel = factoryService.getUseCaseFactory().getCrudEducationLevelUseCase().create(newEducationLevel);
         if (educationLevel == null) {
             return Response.notModified().status(Response.Status.NOT_IMPLEMENTED).build();
         }
@@ -99,7 +100,7 @@ public class EducationLevelRestResourceImpl {
         if (getOne(educationLevel.getId()) == null) {
             throw new ResourceException(educationLevelNotFound);
         }
-        if (factoryService.getUseCaseFactory().getCheckUseCase().checkIfEducationLevelNameExist(educationLevel.getName())) {
+        if (factoryService.getUseCaseFactory().getCheckUseCase().checkIfEducationLevelNameExist(educationLevel.getName(), educationLevel.getId())) {
             throw new ResourceException(nameExist);
         }
         try {
@@ -119,7 +120,7 @@ public class EducationLevelRestResourceImpl {
         if (educationLevel == null) {
             throw new ResourceException(educationLevelNotFound);
         }
-        this.factoryService.getUseCaseFactory().getCrudEducationLevelUseCase().remove(educationLevel);
+        factoryService.getUseCaseFactory().getCrudEducationLevelUseCase().remove(educationLevel);
         return Response.ok().status(Response.Status.ACCEPTED).build();
     }
 }
