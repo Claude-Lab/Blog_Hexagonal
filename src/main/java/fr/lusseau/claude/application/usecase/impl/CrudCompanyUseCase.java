@@ -2,6 +2,7 @@ package fr.lusseau.claude.application.usecase.impl;
 
 import fr.lusseau.claude.application.usecase.ICrudCompanyUseCase;
 import fr.lusseau.claude.domain.model.Company;
+import fr.lusseau.claude.domain.validator.CompanyValidator;
 import fr.lusseau.claude.infrastructure.entity.CompanyEntity;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
 import fr.lusseau.claude.infrastructure.mapper.ICompanyMapper;
@@ -42,7 +43,7 @@ public class CrudCompanyUseCase implements ICrudCompanyUseCase {
 
     @Override
     public Company getOne(Long id) {
-        CompanyEntity companyEntity = this.factoryService.getDaoFactory().getCompanyDao().getOne(id);
+        CompanyEntity companyEntity = factoryService.getDaoFactory().getCompanyDao().getOne(id);
         if (companyEntity == null) {
             return null;
         }
@@ -52,7 +53,7 @@ public class CrudCompanyUseCase implements ICrudCompanyUseCase {
 
     @Override
     public List<Company> getAll() {
-        List<CompanyEntity> companyEntities = this.factoryService.getDaoFactory().getCompanyDao().getAll();
+        List<CompanyEntity> companyEntities = factoryService.getDaoFactory().getCompanyDao().getAll();
         if (companyEntities.isEmpty()) {
             return Collections.emptyList();
         }
@@ -61,13 +62,14 @@ public class CrudCompanyUseCase implements ICrudCompanyUseCase {
 
     @Override
     public void update(Company company) {
+        CompanyValidator.validateCompany(company);
         CompanyEntity companyEntity = ICompanyMapper.INSTANCE.companyToCompanyDto(company);
-        this.factoryService.getDaoFactory().getCompanyDao().update(companyEntity);
+        factoryService.getDaoFactory().getCompanyDao().update(companyEntity);
     }
 
     @Override
     public void remove(Company company) {
-        this.factoryService.getDaoFactory().getCompanyDao().remove(ICompanyMapper.INSTANCE.companyToCompanyDto(company));
+        factoryService.getDaoFactory().getCompanyDao().remove(ICompanyMapper.INSTANCE.companyToCompanyDto(company));
     }
 
 
