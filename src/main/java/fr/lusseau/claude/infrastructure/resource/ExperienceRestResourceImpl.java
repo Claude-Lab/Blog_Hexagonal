@@ -50,7 +50,7 @@ public class ExperienceRestResourceImpl {
     @Path("")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Experience> getAllExperience() {
-        List<Experience> experiences = this.factoryService.getUseCaseFactory().getCrudExperienceUseCase().getAll();
+        List<Experience> experiences = factoryService.getUseCaseFactory().getCrudExperienceUseCase().getAll();
         if (experiences.isEmpty()) {
             throw new ResourceException(emptyArticleList);
         }
@@ -61,7 +61,7 @@ public class ExperienceRestResourceImpl {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
     public Experience getOneExperience(@PathParam("id") Long id) {
-        Experience experience = this.factoryService.getUseCaseFactory().getCrudExperienceUseCase().getOne(id);
+        Experience experience = factoryService.getUseCaseFactory().getCrudExperienceUseCase().getOne(id);
         if (experience == null) {
             throw new ResourceException(articleNotFound);
         }
@@ -73,9 +73,9 @@ public class ExperienceRestResourceImpl {
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     public Response removeExperience(@PathParam("id") Long id) {
-        Experience experience = this.factoryService.getUseCaseFactory().getCrudExperienceUseCase().getOne(id);
+        Experience experience = factoryService.getUseCaseFactory().getCrudExperienceUseCase().getOne(id);
         try {
-            this.factoryService.getUseCaseFactory().getCrudExperienceUseCase().remove(experience);
+            factoryService.getUseCaseFactory().getCrudExperienceUseCase().remove(experience);
         } catch (IllegalArgumentException e) {
             throw new ResourceException(articleNotFound);
         }
@@ -88,6 +88,7 @@ public class ExperienceRestResourceImpl {
     @Consumes(MediaType.APPLICATION_JSON)
     @Transactional
     public Response createNewExperience(Experience experience) {
+        Long id = null;
         Experience newExperience = Experience.builder()
                 .withTitle(experience.getTitle())
                 .withAuthor(experience.getAuthor())
@@ -102,8 +103,8 @@ public class ExperienceRestResourceImpl {
                 .withMiniature(experience.getMiniature())
                 .withActive(experience.isActive())
                 .build();
-        boolean isTitleExist = this.factoryService.getUseCaseFactory().getCheckUseCase().checkIfTitleExperienceExist(experience.getTitle());
-        boolean isUrlExist = this.factoryService.getUseCaseFactory().getCheckUseCase().checkIfUrlEducationExist(experience.getUrl());
+        boolean isTitleExist = factoryService.getUseCaseFactory().getCheckUseCase().checkIfTitleExperienceExist(experience.getTitle(), id);
+        boolean isUrlExist = factoryService.getUseCaseFactory().getCheckUseCase().checkIfUrlExperienceExist(experience.getUrl(), id);
         try {
             ExperienceValidator.validateExperienceArticle(newExperience);
         } catch (RuntimeException e) {
@@ -115,7 +116,7 @@ public class ExperienceRestResourceImpl {
         if (isUrlExist) {
             throw new ResourceException(urlExist);
         }
-        this.factoryService.getUseCaseFactory().getCrudExperienceUseCase().create(experience);
+        factoryService.getUseCaseFactory().getCrudExperienceUseCase().create(experience);
         return Response.ok().status(Response.Status.CREATED).build();
     }
 
@@ -129,7 +130,7 @@ public class ExperienceRestResourceImpl {
             throw new ResourceException(articleNotFound);
         }
         try {
-            this.factoryService.getUseCaseFactory().getCrudExperienceUseCase().update(experience);
+            factoryService.getUseCaseFactory().getCrudExperienceUseCase().update(experience);
          }catch (RuntimeException e) {
             throw new ResourceException(invalidExperienceArticle);
         }
