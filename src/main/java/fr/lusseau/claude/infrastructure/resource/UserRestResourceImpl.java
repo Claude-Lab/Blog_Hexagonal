@@ -73,6 +73,7 @@ public class UserRestResourceImpl {
     @Consumes(MediaType.APPLICATION_JSON)
     @Transactional
     public Response create(User user) {
+        Long id = null;
         User newUser = User.builder()
                 .withEmail(user.getEmail())
                 .withPassword(user.getPassword())
@@ -85,7 +86,7 @@ public class UserRestResourceImpl {
         } catch (RuntimeException e) {
             throw new ResourceException(invalidUser);
         }
-        if (factoryService.getUseCaseFactory().getCheckUseCase().isEmailExistForCreate(user.getEmail())) {
+        if (factoryService.getUseCaseFactory().getCheckUseCase().isEmailExist(user.getEmail(), id)) {
             throw new ResourceException(emailExist);
         }
         user = this.factoryService.getUseCaseFactory().getCrudUserUseCase().create(newUser);
