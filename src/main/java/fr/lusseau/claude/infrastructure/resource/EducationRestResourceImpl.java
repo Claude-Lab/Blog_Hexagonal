@@ -50,8 +50,8 @@ public class EducationRestResourceImpl {
     @GET
     @Path("")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Education> getAllEducations() {
-        List<Education> educations = this.factoryService.getUseCaseFactory().getCrudEducationUseCase().getAll();
+    public List<Education> getAll() {
+        List<Education> educations = factoryService.getUseCaseFactory().getCrudEducationUseCase().getAll();
         if (educations.isEmpty()) {
             throw new ResourceException(emptyArticleList);
         }
@@ -61,8 +61,8 @@ public class EducationRestResourceImpl {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
-    public Education getOneEducation(@PathParam("id") Long id) {
-        Education education = this.factoryService.getUseCaseFactory().getCrudEducationUseCase().getOne(id);
+    public Education getOne(@PathParam("id") Long id) {
+        Education education = factoryService.getUseCaseFactory().getCrudEducationUseCase().getOne(id);
         if (education == null) {
             throw new ResourceException(articleNotFound);
         }
@@ -73,10 +73,10 @@ public class EducationRestResourceImpl {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    public Response removeEducation(@PathParam("id") Long id) {
-        Education education  = this.factoryService.getUseCaseFactory().getCrudEducationUseCase().getOne(id);
+    public Response remove(@PathParam("id") Long id) {
+        Education education  = factoryService.getUseCaseFactory().getCrudEducationUseCase().getOne(id);
         try {
-            this.factoryService.getUseCaseFactory().getCrudEducationUseCase().remove(education);
+            factoryService.getUseCaseFactory().getCrudEducationUseCase().remove(education);
         } catch (IllegalArgumentException e) {
             throw new ResourceException(articleNotFound);
         }
@@ -88,7 +88,8 @@ public class EducationRestResourceImpl {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Transactional
-    public Response createNewEducation(Education education) {
+    public Response create(Education education) {
+        Long id = null;
         Education newEducation = Education.builder()
                 .withTitle(education.getTitle())
                 .withAuthor(education.getAuthor())
@@ -104,8 +105,8 @@ public class EducationRestResourceImpl {
                 .withMiniature(education.getMiniature())
                 .withActive(education.isActive())
                 .build();
-        boolean isTitleExist = this.factoryService.getUseCaseFactory().getCheckUseCase().checkIfTitleEducationExist(newEducation.getTitle());
-        boolean isUrlExist = this.factoryService.getUseCaseFactory().getCheckUseCase().checkIfUrlEducationExist(newEducation.getUrl());
+        boolean isTitleExist = factoryService.getUseCaseFactory().getCheckUseCase().checkIfTitleEducationExist(newEducation.getTitle(), id);
+        boolean isUrlExist = factoryService.getUseCaseFactory().getCheckUseCase().checkIfUrlEducationExist(newEducation.getUrl(), id);
         try {
             EducationValidator.validateEducationArticle(newEducation);
         } catch (RuntimeException e) {
@@ -117,7 +118,7 @@ public class EducationRestResourceImpl {
         if (isUrlExist) {
             throw new ResourceException(urlExist);
         }
-        this.factoryService.getUseCaseFactory().getCrudEducationUseCase().create(newEducation);
+        factoryService.getUseCaseFactory().getCrudEducationUseCase().create(newEducation);
         return Response.ok().status(Response.Status.CREATED).build();
     }
 
@@ -126,9 +127,9 @@ public class EducationRestResourceImpl {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/{id}")
     @Transactional
-    public Education updateEducation(@PathParam("id")Long id) {
-        Education education = this.getOneEducation(id);
-        this.factoryService.getUseCaseFactory().getCrudEducationUseCase().update(education);
+    public Education update(@PathParam("id")Long id) {
+        Education education = getOne(id);
+        factoryService.getUseCaseFactory().getCrudEducationUseCase().update(education);
         if (education == null) {
             throw new ResourceException(articleNotFound);
         }
