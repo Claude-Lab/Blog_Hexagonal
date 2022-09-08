@@ -6,7 +6,6 @@ import fr.lusseau.claude.infrastructure.entity.EducationEntity;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
 import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.List;
@@ -19,7 +18,6 @@ import java.util.List;
  */
 @Named("EducationDaoImpl")
 @LogAudited
-@ApplicationScoped
 public class EducationDaoImpl implements IAbstractCrudDaoFactory<EducationEntity>, IEducationDao {
 
     private final FactoryService factoryService;
