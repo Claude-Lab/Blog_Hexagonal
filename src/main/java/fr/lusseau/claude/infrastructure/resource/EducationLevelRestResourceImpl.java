@@ -10,6 +10,7 @@ import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -23,6 +24,7 @@ import java.util.List;
  * @date 13/08/2022
  */
 @LogAudited
+@Named
 @Path("/levels")
 public class EducationLevelRestResourceImpl {
 
