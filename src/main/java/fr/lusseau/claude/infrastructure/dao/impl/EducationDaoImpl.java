@@ -1,6 +1,7 @@
 package fr.lusseau.claude.infrastructure.dao.impl;
 
 import fr.lusseau.claude.application.dao.IEducationDao;
+import fr.lusseau.claude.application.factory.IAbstractCrudDaoFactory;
 import fr.lusseau.claude.infrastructure.entity.EducationEntity;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
 import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
@@ -19,7 +20,7 @@ import java.util.List;
 @Named("EducationDaoImpl")
 @LogAudited
 @ApplicationScoped
-public class EducationDaoImpl implements IEducationDao {
+public class EducationDaoImpl implements IAbstractCrudDaoFactory<EducationEntity>, IEducationDao {
 
     private final FactoryService factoryService;
 

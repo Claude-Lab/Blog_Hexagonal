@@ -1,5 +1,7 @@
 package fr.lusseau.claude.infrastructure.resource;
 
+import fr.lusseau.claude.application.factory.IAbstractCrudUseCaseFactory;
+import fr.lusseau.claude.domain.model.Company;
 import fr.lusseau.claude.domain.model.EducationLevel;
 import fr.lusseau.claude.domain.validator.EducationLevelValidator;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
@@ -24,6 +26,8 @@ import java.util.List;
 @Path("/levels")
 public class EducationLevelRestResourceImpl {
 
+    private final IAbstractCrudUseCaseFactory<EducationLevel> crudUseCaseFactory;
+
     private final FactoryService factoryService;
 
     @ConfigProperty(name = "educationLevel.response.error.msg.invalidEducationLevel")
@@ -40,7 +44,8 @@ public class EducationLevelRestResourceImpl {
 
 
     @Inject
-    public EducationLevelRestResourceImpl(FactoryService factoryService) {
+    public EducationLevelRestResourceImpl(IAbstractCrudUseCaseFactory<EducationLevel> crudUseCaseFactory, FactoryService factoryService) {
+        this.crudUseCaseFactory = crudUseCaseFactory;
         this.factoryService = factoryService;
     }
 
@@ -48,7 +53,7 @@ public class EducationLevelRestResourceImpl {
     @Path("")
     @Produces(MediaType.APPLICATION_JSON)
     public List<EducationLevel> getAll() {
-        List<EducationLevel> educationLevels = this.factoryService.getUseCaseFactory().getCrudEducationLevelUseCase().getAll();
+        List<EducationLevel> educationLevels = crudUseCaseFactory.getAll();
         if (educationLevels.isEmpty()) {
             throw new ResourceException(emptyEducationLevelList);
         }
@@ -59,7 +64,7 @@ public class EducationLevelRestResourceImpl {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
     public EducationLevel getOne(@PathParam("id") Long id) {
-        EducationLevel educationLevel = this.factoryService.getUseCaseFactory().getCrudEducationLevelUseCase().getOne(id);
+        EducationLevel educationLevel = crudUseCaseFactory.getOne(id);
         if (educationLevel == null) {
             throw new ResourceException(educationLevelNotFound);
         }
@@ -84,7 +89,7 @@ public class EducationLevelRestResourceImpl {
         if (factoryService.getUseCaseFactory().getCheckUseCase().checkIfEducationLevelNameExist(educationLevel.getName(), id)) {
             throw new ResourceException(nameExist);
         }
-        educationLevel = factoryService.getUseCaseFactory().getCrudEducationLevelUseCase().create(newEducationLevel);
+        educationLevel = crudUseCaseFactory.create(newEducationLevel);
         if (educationLevel == null) {
             return Response.notModified().status(Response.Status.NOT_IMPLEMENTED).build();
         }
@@ -104,7 +109,7 @@ public class EducationLevelRestResourceImpl {
             throw new ResourceException(nameExist);
         }
         try {
-            factoryService.getUseCaseFactory().getCrudEducationLevelUseCase().update(educationLevel);
+            crudUseCaseFactory.update(educationLevel);
         } catch (RuntimeException e) {
             throw new ResourceException(invalidEducationLevel);
         }
@@ -116,11 +121,11 @@ public class EducationLevelRestResourceImpl {
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     public Response remove(@PathParam("id") Long id) {
-        EducationLevel educationLevel = factoryService.getUseCaseFactory().getCrudEducationLevelUseCase().getOne(id);
+        EducationLevel educationLevel = crudUseCaseFactory.getOne(id);
         if (educationLevel == null) {
             throw new ResourceException(educationLevelNotFound);
         }
-        factoryService.getUseCaseFactory().getCrudEducationLevelUseCase().remove(educationLevel);
+        crudUseCaseFactory.remove(educationLevel);
         return Response.ok().status(Response.Status.ACCEPTED).build();
     }
 }

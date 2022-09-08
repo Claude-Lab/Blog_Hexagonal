@@ -1,6 +1,7 @@
 package fr.lusseau.claude.infrastructure.dao.impl;
 
 import fr.lusseau.claude.application.dao.IUserDao;
+import fr.lusseau.claude.application.factory.IAbstractCrudDaoFactory;
 import fr.lusseau.claude.infrastructure.entity.UserEntity;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
 import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
@@ -17,7 +18,7 @@ import java.util.List;
  */
 @Named("UserDaoImpl")
 @LogAudited
-public class UserDaoImpl implements IUserDao {
+public class UserDaoImpl implements IAbstractCrudDaoFactory<UserEntity>, IUserDao {
 
     private final FactoryService factoryService;
 

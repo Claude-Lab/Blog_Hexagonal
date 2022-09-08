@@ -3,11 +3,10 @@ package fr.lusseau.claude.infrastructure.factory;
 import fr.lusseau.claude.application.factory.IDaoFactory;
 import fr.lusseau.claude.application.factory.IUseCaseFactory;
 import fr.lusseau.claude.application.usecase.impl.UseCaseFactoryImpl;
-import fr.lusseau.claude.infrastructure.dao.factory.DaoFactoryImpl;
+import fr.lusseau.claude.infrastructure.dao.DaoFactoryImpl;
 import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
 
 import javax.enterprise.context.RequestScoped;
-import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Produces;
@@ -35,18 +34,14 @@ public class FactoryService {
         return entityManager;
     }
 
-    @Produces
-    @Named
-    public IDaoFactory getDaoFactory() {
-        return new DaoFactoryImpl(this);
-    }
 
     @Produces
-    @Named
     public IUseCaseFactory getUseCaseFactory() {
         return new UseCaseFactoryImpl(this);
     }
 
-
-
+    @Produces
+    public IDaoFactory getDaoFactory() {
+        return new DaoFactoryImpl(this);
+    }
 }

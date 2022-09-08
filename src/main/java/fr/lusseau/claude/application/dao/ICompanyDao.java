@@ -11,15 +11,6 @@ import java.util.List;
  * @date 04/09/2022
  */
 public interface ICompanyDao {
-    List<CompanyEntity> getAll();
-
-    CompanyEntity getOne(Long id);
-
-    void create(CompanyEntity companyEntity);
-
-    void update(CompanyEntity companyEntity);
-
-    void remove(CompanyEntity companyEntity);
 
     List<CompanyEntity> isNameExist(String name);
 }

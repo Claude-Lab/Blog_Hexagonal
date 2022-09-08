@@ -1,10 +1,10 @@
-package fr.lusseau.claude.application.usecase.impl;
+package fr.lusseau.claude.application.usecase.crud;
 
-import fr.lusseau.claude.application.usecase.ICrudCompanyUseCase;
+import fr.lusseau.claude.application.factory.IAbstractCrudDaoFactory;
+import fr.lusseau.claude.application.factory.IAbstractCrudUseCaseFactory;
 import fr.lusseau.claude.domain.model.Company;
 import fr.lusseau.claude.domain.validator.CompanyValidator;
 import fr.lusseau.claude.infrastructure.entity.CompanyEntity;
-import fr.lusseau.claude.infrastructure.factory.FactoryService;
 import fr.lusseau.claude.infrastructure.mapper.ICompanyMapper;
 import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
 
@@ -21,20 +21,20 @@ import java.util.List;
  */
 @Named
 @LogAudited
-public class CrudCompanyUseCase implements ICrudCompanyUseCase {
+public class CrudCompanyUseCase implements IAbstractCrudUseCaseFactory<Company> {
 
-    private final FactoryService factoryService;
+    private final IAbstractCrudDaoFactory<CompanyEntity> dao;
 
     @Inject
-    public CrudCompanyUseCase(FactoryService factoryService) {
-        this.factoryService = factoryService;
+    public CrudCompanyUseCase(IAbstractCrudDaoFactory<CompanyEntity> dao) {
+        this.dao = dao;
     }
 
 
     @Override
     public Company create(Company company) {
         CompanyEntity companyEntity = ICompanyMapper.INSTANCE.companyToCompanyDto(company);
-        factoryService.getDaoFactory().getCompanyDao().create(companyEntity);
+        dao.create(companyEntity);
         if(companyEntity.getId() == null) {
             return null;
         }
@@ -43,7 +43,7 @@ public class CrudCompanyUseCase implements ICrudCompanyUseCase {
 
     @Override
     public Company getOne(Long id) {
-        CompanyEntity companyEntity = factoryService.getDaoFactory().getCompanyDao().getOne(id);
+        CompanyEntity companyEntity = dao.getOne(id);
         if (companyEntity == null) {
             return null;
         }
@@ -53,7 +53,7 @@ public class CrudCompanyUseCase implements ICrudCompanyUseCase {
 
     @Override
     public List<Company> getAll() {
-        List<CompanyEntity> companyEntities = factoryService.getDaoFactory().getCompanyDao().getAll();
+        List<CompanyEntity> companyEntities = dao.getAll();
         if (companyEntities.isEmpty()) {
             return Collections.emptyList();
         }
@@ -64,12 +64,12 @@ public class CrudCompanyUseCase implements ICrudCompanyUseCase {
     public void update(Company company) {
         CompanyValidator.validateCompany(company);
         CompanyEntity companyEntity = ICompanyMapper.INSTANCE.companyToCompanyDto(company);
-        factoryService.getDaoFactory().getCompanyDao().update(companyEntity);
+        dao.update(companyEntity);
     }
 
     @Override
     public void remove(Company company) {
-        factoryService.getDaoFactory().getCompanyDao().remove(ICompanyMapper.INSTANCE.companyToCompanyDto(company));
+        dao.remove(ICompanyMapper.INSTANCE.companyToCompanyDto(company));
     }
 
 

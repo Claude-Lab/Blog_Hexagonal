@@ -11,15 +11,6 @@ import java.util.List;
  * @date 04/09/2022
  */
 public interface IEducationDao {
-    List<EducationEntity> getAll();
-
-    EducationEntity getOne(Long id);
-
-    void create(EducationEntity educationEntity);
-
-    void update(EducationEntity educationEntity);
-
-    void remove(EducationEntity educationEntity);
 
     List<EducationEntity> isTitleExist(String title);
 

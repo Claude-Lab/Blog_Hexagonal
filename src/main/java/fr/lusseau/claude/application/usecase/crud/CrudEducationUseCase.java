@@ -1,10 +1,10 @@
-package fr.lusseau.claude.application.usecase.impl;
+package fr.lusseau.claude.application.usecase.crud;
 
-import fr.lusseau.claude.application.usecase.ICrudEducationUseCase;
+import fr.lusseau.claude.application.factory.IAbstractCrudDaoFactory;
+import fr.lusseau.claude.application.factory.IAbstractCrudUseCaseFactory;
 import fr.lusseau.claude.domain.model.Education;
 import fr.lusseau.claude.domain.validator.EducationValidator;
 import fr.lusseau.claude.infrastructure.entity.EducationEntity;
-import fr.lusseau.claude.infrastructure.factory.FactoryService;
 import fr.lusseau.claude.infrastructure.mapper.IEducationMapper;
 import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
 
@@ -21,33 +21,34 @@ import java.util.List;
  */
 @Named
 @LogAudited
-public class CrudEducationUseCase implements ICrudEducationUseCase {
+public class CrudEducationUseCase implements IAbstractCrudUseCaseFactory<Education> {
 
-    private final FactoryService factoryService;
+    private final IAbstractCrudDaoFactory<EducationEntity> dao;
 
     @Inject
-    public CrudEducationUseCase(FactoryService factoryService) {
-        this.factoryService = factoryService;
+    public CrudEducationUseCase(IAbstractCrudDaoFactory<EducationEntity> dao) {
+        this.dao = dao;
     }
 
     @Override
-    public void create(Education education) {
-        EducationEntity educationDTO = IEducationMapper.INSTANCE.educationToEducationDto(education);
-        this.factoryService.getDaoFactory().getEducationDao().create(educationDTO);
+    public Education create(Education education) {
+        EducationEntity educationEntity = IEducationMapper.INSTANCE.educationToEducationDto(education);
+        dao.create(educationEntity);
+        return education;
     }
 
     @Override
     public Education getOne(Long id) {
-        EducationEntity educationDTO = this.factoryService.getDaoFactory().getEducationDao().getOne(id);
-        if (educationDTO == null) {
+        EducationEntity educationEntity = dao.getOne(id);
+        if (educationEntity == null) {
             return null;
         }
-        return IEducationMapper.INSTANCE.educationDtoToEducation(educationDTO);
+        return IEducationMapper.INSTANCE.educationDtoToEducation(educationEntity);
     }
 
     @Override
     public List<Education> getAll() {
-        List<EducationEntity> educationDTOS = this.factoryService.getDaoFactory().getEducationDao().getAll();
+        List<EducationEntity> educationDTOS = dao.getAll();
         if (educationDTOS.isEmpty()) {
             return Collections.emptyList();
         }
@@ -58,11 +59,11 @@ public class CrudEducationUseCase implements ICrudEducationUseCase {
     public void update(Education education) {
         EducationValidator.validateEducationArticle(education);
         EducationEntity educationDTO = IEducationMapper.INSTANCE.educationToEducationDto(education);
-        this.factoryService.getDaoFactory().getEducationDao().update(educationDTO);
+        dao.update(educationDTO);
     }
 
     @Override
     public void remove(Education education) {
-        this.factoryService.getDaoFactory().getEducationDao().remove(IEducationMapper.INSTANCE.educationToEducationDto(education));
+        dao.remove(IEducationMapper.INSTANCE.educationToEducationDto(education));
     }
 }

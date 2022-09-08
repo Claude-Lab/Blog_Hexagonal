@@ -1,5 +1,7 @@
 package fr.lusseau.claude.infrastructure.resource;
 
+import fr.lusseau.claude.application.factory.IAbstractCrudUseCaseFactory;
+import fr.lusseau.claude.domain.model.Education;
 import fr.lusseau.claude.domain.model.Experience;
 import fr.lusseau.claude.domain.validator.ExperienceValidator;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
@@ -24,6 +26,8 @@ import java.util.List;
 @Path("/experiences")
 public class ExperienceRestResourceImpl {
 
+    private final IAbstractCrudUseCaseFactory<Experience> crudUseCaseFactory;
+
     private final FactoryService factoryService;
 
     @ConfigProperty(name = "article.response.error.msg.articleNotFound")
@@ -42,7 +46,8 @@ public class ExperienceRestResourceImpl {
     String urlExist;
 
     @Inject
-    public ExperienceRestResourceImpl(FactoryService factoryService) {
+    public ExperienceRestResourceImpl(IAbstractCrudUseCaseFactory<Experience> crudUseCaseFactory, FactoryService factoryService) {
+        this.crudUseCaseFactory = crudUseCaseFactory;
         this.factoryService = factoryService;
     }
 
@@ -50,7 +55,7 @@ public class ExperienceRestResourceImpl {
     @Path("")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Experience> getAllExperience() {
-        List<Experience> experiences = factoryService.getUseCaseFactory().getCrudExperienceUseCase().getAll();
+        List<Experience> experiences = crudUseCaseFactory.getAll();
         if (experiences.isEmpty()) {
             throw new ResourceException(emptyArticleList);
         }
@@ -61,7 +66,7 @@ public class ExperienceRestResourceImpl {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
     public Experience getOneExperience(@PathParam("id") Long id) {
-        Experience experience = factoryService.getUseCaseFactory().getCrudExperienceUseCase().getOne(id);
+        Experience experience = crudUseCaseFactory.getOne(id);
         if (experience == null) {
             throw new ResourceException(articleNotFound);
         }
@@ -73,9 +78,9 @@ public class ExperienceRestResourceImpl {
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     public Response removeExperience(@PathParam("id") Long id) {
-        Experience experience = factoryService.getUseCaseFactory().getCrudExperienceUseCase().getOne(id);
+        Experience experience = crudUseCaseFactory.getOne(id);
         try {
-            factoryService.getUseCaseFactory().getCrudExperienceUseCase().remove(experience);
+            crudUseCaseFactory.remove(experience);
         } catch (IllegalArgumentException e) {
             throw new ResourceException(articleNotFound);
         }
@@ -116,7 +121,7 @@ public class ExperienceRestResourceImpl {
         if (isUrlExist) {
             throw new ResourceException(urlExist);
         }
-        factoryService.getUseCaseFactory().getCrudExperienceUseCase().create(experience);
+        crudUseCaseFactory.create(experience);
         return Response.ok().status(Response.Status.CREATED).build();
     }
 
@@ -130,7 +135,7 @@ public class ExperienceRestResourceImpl {
             throw new ResourceException(articleNotFound);
         }
         try {
-            factoryService.getUseCaseFactory().getCrudExperienceUseCase().update(experience);
+            crudUseCaseFactory.update(experience);
          }catch (RuntimeException e) {
             throw new ResourceException(invalidExperienceArticle);
         }

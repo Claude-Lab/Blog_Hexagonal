@@ -1,6 +1,7 @@
 package fr.lusseau.claude.infrastructure.dao.impl;
 
 import fr.lusseau.claude.application.dao.ICompanyDao;
+import fr.lusseau.claude.application.factory.IAbstractCrudDaoFactory;
 import fr.lusseau.claude.infrastructure.entity.CompanyEntity;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
 import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
@@ -17,7 +18,7 @@ import java.util.List;
  */
 @Named("CompanyDaoImpl")
 @LogAudited
-public class CompanyDaoImpl implements ICompanyDao {
+public class CompanyDaoImpl implements IAbstractCrudDaoFactory<CompanyEntity>, ICompanyDao {
 
     private final FactoryService factoryService;
 

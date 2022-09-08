@@ -1,5 +1,6 @@
 package fr.lusseau.claude.infrastructure.resource;
 
+import fr.lusseau.claude.application.factory.IAbstractCrudUseCaseFactory;
 import fr.lusseau.claude.domain.model.Company;
 import fr.lusseau.claude.domain.validator.CompanyValidator;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
@@ -26,6 +27,8 @@ import java.util.List;
 @Path("/companies")
 public class CompanyRestResourceImpl {
 
+    private final IAbstractCrudUseCaseFactory<Company> crudUseCaseFactory;
+
     private final FactoryService factoryService;
 
     @ConfigProperty(name = "company.response.error.msg.companyNotFound")
@@ -42,7 +45,8 @@ public class CompanyRestResourceImpl {
 
 
     @Inject
-    public CompanyRestResourceImpl(FactoryService factoryService) {
+    public CompanyRestResourceImpl(FactoryService factoryService, IAbstractCrudUseCaseFactory<Company> crudUseCaseFactory) {
+        this.crudUseCaseFactory = crudUseCaseFactory;
         this.factoryService = factoryService;
     }
 
@@ -50,7 +54,7 @@ public class CompanyRestResourceImpl {
     @Path("")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Company> getAll() {
-        List<Company> companies = factoryService.getUseCaseFactory().getCrudCompanyUseCase().getAll();
+        List<Company> companies = crudUseCaseFactory.getAll();
         if (companies.isEmpty()) {
             throw new ResourceException(emptyCompanyList);
         }
@@ -61,7 +65,7 @@ public class CompanyRestResourceImpl {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
     public Company getOne(@PathParam("id") Long id) {
-        Company company = factoryService.getUseCaseFactory().getCrudCompanyUseCase().getOne(id);
+        Company company =crudUseCaseFactory.getOne(id);
         if (company == null) {
             throw new ResourceException(companyNotFound);
         }
@@ -88,7 +92,7 @@ public class CompanyRestResourceImpl {
         if (factoryService.getUseCaseFactory().getCheckUseCase().checkIfCompanyNameExist(newCompany.getName(),id)) {
             throw new ResourceException(nameExist);
         }
-        company = factoryService.getUseCaseFactory().getCrudCompanyUseCase().create(newCompany);
+        company = crudUseCaseFactory.create(newCompany);
         if (company == null) {
             return Response.notModified().status(Response.Status.NOT_IMPLEMENTED).build();
         }
@@ -101,14 +105,14 @@ public class CompanyRestResourceImpl {
     @Path("/update")
     @Transactional
     public Response update(Company company) {
-        if (factoryService.getUseCaseFactory().getCrudCompanyUseCase().getOne(company.getId()) == null) {
+        if (crudUseCaseFactory.getOne(company.getId()) == null) {
             throw new ResourceException(companyNotFound);
         }
         if (factoryService.getUseCaseFactory().getCheckUseCase().checkIfCompanyNameExist(company.getName(), company.getId())) {
             throw new ResourceException(nameExist);
         }
         try {
-            factoryService.getUseCaseFactory().getCrudCompanyUseCase().update(company);
+            crudUseCaseFactory.update(company);
         } catch (RuntimeException e) {
             throw new ResourceException(invalidCompany);
         }
@@ -120,11 +124,11 @@ public class CompanyRestResourceImpl {
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     public Response remove(@PathParam("id") Long id) {
-        Company company = factoryService.getUseCaseFactory().getCrudCompanyUseCase().getOne(id);
+        Company company = crudUseCaseFactory.getOne(id);
         if (company == null) {
             throw new ResourceException(companyNotFound);
         }
-        factoryService.getUseCaseFactory().getCrudCompanyUseCase().remove(company);
+        crudUseCaseFactory.remove(company);
         return Response.ok().status(Response.Status.ACCEPTED).build();
     }
 }

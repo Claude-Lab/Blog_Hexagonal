@@ -1,6 +1,7 @@
 package fr.lusseau.claude.infrastructure.dao.impl;
 
 import fr.lusseau.claude.application.dao.IExperienceDao;
+import fr.lusseau.claude.application.factory.IAbstractCrudDaoFactory;
 import fr.lusseau.claude.infrastructure.entity.ExperienceEntity;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
 import fr.lusseau.claude.infrastructure.utils.annotation.LogAudited;
@@ -17,7 +18,7 @@ import java.util.List;
  */
 @Named("ExperienceDaoImpl")
 @LogAudited
-public class ExperienceDaoImpl implements IExperienceDao {
+public class ExperienceDaoImpl implements IAbstractCrudDaoFactory<ExperienceEntity>, IExperienceDao {
 
     private final FactoryService factoryService;
 

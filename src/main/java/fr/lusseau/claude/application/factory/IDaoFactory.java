@@ -1,13 +1,12 @@
 package fr.lusseau.claude.application.factory;
 
 import fr.lusseau.claude.application.dao.*;
-import fr.lusseau.claude.infrastructure.dao.impl.*;
 
 /**
  * @author Claude Lusseau
  * @project site_perso
- * @package fr.lusseau.claude.application.dao.factory
- * @date 15/08/2022
+ * @package fr.lusseau.claude.application.factory
+ * @date 08/09/2022
  */
 public interface IDaoFactory {
 
@@ -15,10 +14,9 @@ public interface IDaoFactory {
 
     ICompanyDao getCompanyDao();
 
-    IEducationLevelDao getEducationLevelDao();
-
     IEducationDao getEducationDao();
 
     IExperienceDao getExperienceDao();
 
+    IEducationLevelDao getEducationLevelDao();
 }

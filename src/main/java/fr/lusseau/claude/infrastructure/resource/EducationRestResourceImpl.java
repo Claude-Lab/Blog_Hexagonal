@@ -1,6 +1,8 @@
 package fr.lusseau.claude.infrastructure.resource;
 
+import fr.lusseau.claude.application.factory.IAbstractCrudUseCaseFactory;
 import fr.lusseau.claude.domain.model.Education;
+import fr.lusseau.claude.domain.model.EducationLevel;
 import fr.lusseau.claude.domain.validator.EducationValidator;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
 import fr.lusseau.claude.infrastructure.resource.exception.ResourceException;
@@ -24,6 +26,8 @@ import java.util.List;
 @Path("/educations")
 public class EducationRestResourceImpl {
 
+    private final IAbstractCrudUseCaseFactory<Education> crudUseCaseFactory;
+
     private final FactoryService factoryService;
 
     @ConfigProperty(name = "education.response.error.msg.invalidEducationArticle")
@@ -43,7 +47,8 @@ public class EducationRestResourceImpl {
 
 
     @Inject
-    public EducationRestResourceImpl(FactoryService factoryService) {
+    public EducationRestResourceImpl( IAbstractCrudUseCaseFactory<Education> crudUseCaseFactory, FactoryService factoryService) {
+        this.crudUseCaseFactory = crudUseCaseFactory;
         this.factoryService = factoryService;
     }
 
@@ -51,7 +56,7 @@ public class EducationRestResourceImpl {
     @Path("")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Education> getAll() {
-        List<Education> educations = factoryService.getUseCaseFactory().getCrudEducationUseCase().getAll();
+        List<Education> educations = crudUseCaseFactory.getAll();
         if (educations.isEmpty()) {
             throw new ResourceException(emptyArticleList);
         }
@@ -62,7 +67,7 @@ public class EducationRestResourceImpl {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
     public Education getOne(@PathParam("id") Long id) {
-        Education education = factoryService.getUseCaseFactory().getCrudEducationUseCase().getOne(id);
+        Education education = crudUseCaseFactory.getOne(id);
         if (education == null) {
             throw new ResourceException(articleNotFound);
         }
@@ -74,9 +79,9 @@ public class EducationRestResourceImpl {
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     public Response remove(@PathParam("id") Long id) {
-        Education education  = factoryService.getUseCaseFactory().getCrudEducationUseCase().getOne(id);
+        Education education  = crudUseCaseFactory.getOne(id);
         try {
-            factoryService.getUseCaseFactory().getCrudEducationUseCase().remove(education);
+            crudUseCaseFactory.remove(education);
         } catch (IllegalArgumentException e) {
             throw new ResourceException(articleNotFound);
         }
@@ -118,7 +123,7 @@ public class EducationRestResourceImpl {
         if (isUrlExist) {
             throw new ResourceException(urlExist);
         }
-        factoryService.getUseCaseFactory().getCrudEducationUseCase().create(newEducation);
+        crudUseCaseFactory.create(newEducation);
         return Response.ok().status(Response.Status.CREATED).build();
     }
 
@@ -129,7 +134,7 @@ public class EducationRestResourceImpl {
     @Transactional
     public Education update(@PathParam("id")Long id) {
         Education education = getOne(id);
-        factoryService.getUseCaseFactory().getCrudEducationUseCase().update(education);
+        crudUseCaseFactory.update(education);
         if (education == null) {
             throw new ResourceException(articleNotFound);
         }

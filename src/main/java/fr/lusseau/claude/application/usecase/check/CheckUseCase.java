@@ -1,4 +1,4 @@
-package fr.lusseau.claude.application.usecase.impl;
+package fr.lusseau.claude.application.usecase.check;
 
 import fr.lusseau.claude.application.usecase.ICheckUseCase;
 import fr.lusseau.claude.domain.model.*;
@@ -20,6 +20,7 @@ import java.util.Objects;
 @Named
 @LogAudited
 public class CheckUseCase implements ICheckUseCase {
+
     private final FactoryService factoryService;
 
     @Inject

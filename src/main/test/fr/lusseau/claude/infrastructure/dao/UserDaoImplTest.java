@@ -1,5 +1,6 @@
 package fr.lusseau.claude.infrastructure.dao;
 
+import fr.lusseau.claude.application.factory.IAbstractCrudDaoFactory;
 import fr.lusseau.claude.domain.model.Role;
 import fr.lusseau.claude.infrastructure.entity.UserEntity;
 import fr.lusseau.claude.infrastructure.factory.FactoryService;
@@ -22,11 +23,11 @@ import javax.inject.Inject;
 @TestTransaction
 class UserDaoImplTest {
 
-    private final FactoryService factoryService;
+    private final IAbstractCrudDaoFactory<UserEntity> crudDaoFactory;
 
     @Inject
-    public UserDaoImplTest(FactoryService factoryService) {
-        this.factoryService = factoryService;
+    public UserDaoImplTest(IAbstractCrudDaoFactory<UserEntity> crudDaoFactory) {
+        this.crudDaoFactory = crudDaoFactory;
     }
 
     @Test
@@ -37,7 +38,7 @@ class UserDaoImplTest {
                 .withLastName("Doe")
                 .withPassword("what")
                 .withRole(Role.SUBSCRIBER).build();
-        this.factoryService.getDaoFactory().getUserDao().create(user);
+        crudDaoFactory.create(user);
 
     }
 
@@ -50,7 +51,7 @@ class UserDaoImplTest {
                 .withLastName("Doe")
                 .withPassword("what")
                 .withRole(Role.SUBSCRIBER).build();
-        this.factoryService.getDaoFactory().getUserDao().update(user);
+        crudDaoFactory.update(user);
         Assertions.assertThat(user).isNotNull();
     }
 }

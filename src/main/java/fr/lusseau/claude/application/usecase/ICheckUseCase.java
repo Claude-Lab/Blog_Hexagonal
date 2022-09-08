@@ -7,6 +7,7 @@ package fr.lusseau.claude.application.usecase;
  * @date 04/09/2022
  */
 public interface ICheckUseCase {
+
     boolean checkIfTitleExperienceExist(String title, Long id);
 
     boolean checkIfUrlExperienceExist(String url, Long id);
